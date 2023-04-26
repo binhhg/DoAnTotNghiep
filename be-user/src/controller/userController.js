@@ -7,18 +7,20 @@ module.exports = (container) => {
             User
         }
     } = container.resolve('models')
-    const { httpCode, serverHelper } = container.resolve('config')
+    const {httpCode, serverHelper} = container.resolve('config')
     const firebaseAdmin = container.resolve('firebaseAdmin')
-    const { typeRepo } = container.resolve('repo')
+    const {typeRepo} = container.resolve('repo')
     const loginOrRegister = async (req, res) => {
         try {
-            const body = req.body
+            let {
+                token, method, code, domain
+            } = req.body
             const {
                 error,
                 value
             } = await schemaValidator(body, 'Type')
             if (error) {
-                return res.status(httpCode.BAD_REQUEST).json({ msg: error.message })
+                return res.status(httpCode.BAD_REQUEST).json({msg: error.message})
             }
             const type = await typeRepo.addType(value)
             res.status(httpCode.CREATED).json(type)
