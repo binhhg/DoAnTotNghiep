@@ -21,7 +21,6 @@ mediator.once('di.ready', container => {
     credential: firebaseAdmin.credential.cert(config.firebaseConfig.serviceAccountPath),
     // databaseURL: config.firebaseConfig.databaseURL
   })
-  console.log('connected firebase ', config.firebaseConfig)
   container.registerValue('firebaseAdmin', firebaseAdmin)
   container.registerValue('mediator', mediator)
   mediator.once('db.ready', db => {

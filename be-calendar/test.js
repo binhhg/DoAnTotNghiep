@@ -2,14 +2,8 @@ const axios = require('axios').default
 
 async function getRefreshToken () {
   try {
-    const response = await axios.post(
-      'https://oauth2.googleapis.com/v3/token',
-      {
-        client_id: '217109832798-u2oasqosr3fa40n9nkmfvluq65vrkjbd.apps.googleusercontent.com',
-        client_secret: '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',
-        refresh_token: 'ya29.a0AWY7CknnYRifvYdnj_8zDrGCekhUhoTqHDgetOf3OPaK6bcjUqop_uNSL_WAQ8oMx46YN61cuK8SBYpYzeD0rlRTqUenFL4SplCVTiwJuNqlYrzrLz5IwcZ7zqli2-8HtJMfNZWukKih92nAYlkr6VRHydjsaCgYKAf4SARESFQG1tDrpzG6dsWSb6WMyXq8b2RMMwA0163',
-        grant_type: 'refresh_token'
-      }
+    const response = await axios.get(
+      'https://oauth2.googleapis.com/tokeninfo?access_token=ya29.a0AWY7Cklg7KDpbRLquANT0LEJMvWSsLS2ovooxK0sk_hF2e7Fb1xTjMA8NU_3WmAryxpjkkAZzKuo5z6WQ97wbaFLhbC2xFEElV0oWnfQWoUn_V3p4UvmkaHGa1VjENXhXykqyBx5Ews-_7nTRUnZmYwTkrLwaCgYKATwSAQ4SFQG1tDrpC58m-qnEQ7IwhkqpW5MllA0163',
     )
     const data = response.data
     console.log(data)
@@ -55,4 +49,4 @@ const exchangeRefreshToken = async () => {
   console.log(response)
   return response.data.refresh_token
 }
-exchangeRefreshToken().then()
+getRefreshToken().then()

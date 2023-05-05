@@ -1,6 +1,6 @@
-const DEFAULT_GOOGLE_APPLICATION_CREDENTIALS = require.resolve('./ecommerce-b226b-firebase-adminsdk-1j2vk-e5ab7031ea.json')
+const DEFAULT_GOOGLE_APPLICATION_CREDENTIALS = require('./dulcet-coast-383615-firebase-adminsdk-xo3cc-0cd97dedb8.json')
 const serverSettings = {
-  port: process.env.PORT || 8305,
+  port: process.env.PORT || 8003,
   basePath: process.env.BASE_PATH || ''
 }
 
@@ -16,11 +16,11 @@ const httpCode = {
 }
 
 const dbSettings = {
-  db: process.env.DB || 'ads-campaign',
+  db: process.env.DB || 'da-user',
   user: process.env.DB_USER || '',
   pass: process.env.DB_PASS || '',
   repl: process.env.DB_REPLS || '',
-  servers: (process.env.DB_SERVERS) ? process.env.DB_SERVERS.split(',') : ['mayhao:27017']
+  servers: (process.env.DB_SERVERS) ? process.env.DB_SERVERS.split(',') : ['127.0.0.1:27017']
 }
 const firebaseConfig = {
   // databaseURL: process.env.FIREBASE_DATABASE_URL || 'https://vtvfun-467b4.firebaseio.com/',

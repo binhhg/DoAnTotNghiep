@@ -22,8 +22,20 @@ module.exports = (container) => {
       res.status(httpCode.UNKNOWN_ERROR).end()
     }
   }
+  const firebaseCallback = async (req, res) => {
+    try {
+      const cc = req.query
+      const dd = req.body
+      console.log(cc,dd)
+      res.status(httpCode.SUCCESS).json({ ok: true })
+    } catch (e) {
+      logger.e(e)
+      res.status(httpCode.UNKNOWN_ERROR).end()
+    }
+  }
 
   return {
     loginOrRegister,
+    firebaseCallback
   }
 }

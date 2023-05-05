@@ -18,8 +18,7 @@ module.exports = (joi, mongoose, { joi2MongoSchema, schemas }) => {
   })
   const eventSchema = joi2MongoSchema(eventJoi, {
     userId: {
-      event: ObjectId,
-      ref: 'User'
+      type: ObjectId
     }
   }, {
     createdAt: {

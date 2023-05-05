@@ -9,21 +9,10 @@ function SignIn () {
     signInWithPopup(auth, provider).then((data) => {
       const credential = GoogleAuthProvider.credentialFromResult(data)
       const qq = data.credential
-      console.log('co qq k', data)
+      console.log('co token k', data)
+      const uid = data.user.uid
       const token = credential.accessToken
-      const idToken = credential.idToken
-      const decodedIdToken = decodeURIComponent(
-        atob(idToken.split('.')[1]).replace(/(.)/g, function (m, p) {
-          let code = p.charCodeAt(0).toString(16).toUpperCase()
-          if (code.length < 2) {
-            code = '0' + code
-          }
-          return '%' + code
-        })
-      )
-      const payload = JSON.parse(decodedIdToken)
-      console.log('mong la co', payload)
-      const authorizationCode = payload.code
+
       console.log('credential  ', credential)
       setValue({
         ...value,

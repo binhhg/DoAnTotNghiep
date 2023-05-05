@@ -1,12 +1,22 @@
-const { OAuth2Client } = require('google-auth-library')
+const qs = require('querystring')
+const axios = require('axios')
 
-async function getRefreshTokenFromAccessToken (accessToken) {
-  const client = new OAuth2Client('217109832798-u2oasqosr3fa40n9nkmfvluq65vrkjbd.apps.googleusercontent.com', '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')
-  client.setCredentials({ access_token: accessToken })
-
-  const data = await client.refreshAccessToken()
-
-  return data
+const getRefreshToken = async (accessToken) => {
+  const data = {
+    client_id: '217109832798-u2oasqosr3fa40n9nkmfvluq65vrkjbd.apps.googleusercontent.com',
+    client_secret: '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',
+    refresh_token: accessToken,
+    grant_type: 'refresh_token'
+  }
+  try {
+    const response = await axios.post(
+      `https://securetoken.googleapis.com/v1/token?key=AIzaSyBS9wmuSJ6zPs3QIsFSbZueRLNkj-Nk918`,
+      qs.stringify(data)
+    )
+    console.log(response)
+    return response.data.refresh_token
+  } catch (e) {
+    console.log(e)
+  }
 }
-
-getRefreshTokenFromAccessToken('ya29.a0Ael9sCMTawZTK6GyOwYUWvZ9GYVCmiateFyI3J1PCKcDxOoHRlt8IToB-MUCOJMwZN4ak5zM8dEfhWEgXYeBOF7FosVq5wiW3aKVD3KQgltgHfoPMBqN_KVVj5W8YlEdQhsHhemTzF04zmb9Ly-DhWEe3PTNaCgYKAd4SAQ4SFQF4udJhppTooDaC_Se-cxW9Do5QrQ0163').then()
+getRefreshToken('ya29.a0AWY7Cklg7KDpbRLquANT0LEJMvWSsLS2ovooxK0sk_hF2e7Fb1xTjMA8NU_3WmAryxpjkkAZzKuo5z6WQ97wbaFLhbC2xFEElV0oWnfQWoUn_V3p4UvmkaHGa1VjENXhXykqyBx5Ews-_7nTRUnZmYwTkrLwaCgYKATwSAQ4SFQG1tDrpC58m-qnEQ7IwhkqpW5MllA0163').then()

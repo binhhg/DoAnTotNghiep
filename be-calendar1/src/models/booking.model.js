@@ -1,10 +1,5 @@
 module.exports = (joi, mongoose, { joi2MongoSchema, schemas }) => {
   const { ObjectId } = mongoose.Types
-  const stateConfig = {
-    NORMAL: 1,
-    MEDIUM: 2,
-    IMPORTANT: 3
-  }
   const accountType = {
     GOOGLE: 1,
     MICROSOFT: 2
@@ -17,6 +12,7 @@ module.exports = (joi, mongoose, { joi2MongoSchema, schemas }) => {
   const eventJoi = joi.object({
     eventId: joi.string().required(),
     type: joi.number().valid(...Object.values(accountType)).default(1),
+    userId: joi.string().required(),
     accountId: joi.string().required(),
     attendees: joi.object({
       email: joi.string().required(),
@@ -28,8 +24,14 @@ module.exports = (joi, mongoose, { joi2MongoSchema, schemas }) => {
   })
   const eventSchema = joi2MongoSchema(eventJoi, {
     userId: {
-      event: ObjectId,
-      ref: 'User'
+      type: ObjectId
+    },
+    account: {
+      type: ObjectId
+    },
+    eventId: {
+      type: ObjectId,
+      ref: 'Event'
     }
   }, {
     createdAt: {
@@ -40,7 +42,7 @@ module.exports = (joi, mongoose, { joi2MongoSchema, schemas }) => {
   eventSchema.statics.validateObj = (obj, config = {}) => {
     return eventJoi.validate(obj, config)
   }
-  const eventModel = mongoose.model('Event', eventSchema)
+  const eventModel = mongoose.model('Booking', eventSchema)
   eventModel.syncIndexes()
   return eventModel
 }

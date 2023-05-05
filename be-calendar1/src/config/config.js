@@ -33,7 +33,7 @@ const rabbitConfig = {
   pass: process.env.RABBIT_PASS || 'abcd2000'
 }
 const workerConfig = {
-  queueName: process.env.QUEUE_NAME || 'da.push',
+  queueName: process.env.QUEUE_NAME || 'da.google',
   exchange: process.env.EXCHANGE_NAME || 'da:push',
   exchangeType: process.env.EXCHANGE_TYPE || 'direct'
 }

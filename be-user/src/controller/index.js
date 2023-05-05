@@ -1,6 +1,7 @@
 module.exports = (container) => {
-  const typeController = require('./accountController')(container)
+  const accountController = require('./accountController')(container)
+  const userController = require('./userController')(container)
   return {
-    typeController
+    userController,accountController
   }
 }

@@ -19,7 +19,7 @@ module.exports = (joi, mongoose, { joi2MongoSchema, schemas }) => {
         }
     }, {
         createdAt: {
-            user: Number,
+            type: Number,
             default: () => Math.floor(Date.now() / 1000)
         }
     })
