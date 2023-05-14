@@ -5,15 +5,21 @@ module.exports = (joi, mongoose, { joi2MongoSchema, schemas }) => {
     MICROSOFT: 2
   }
   const accountJoi = joi.object({
+    id: joi.string().required(),
     userId: joi.string().required(),
-    type: joi.number().valid(...Object.values(accountType)).default(1),
+    provider: joi.number().valid(...Object.values(accountType)).default(1),
     refreshToken: joi.string().required(),
-    accessToken: joi.string().required()
+    email: joi.string().required(),
+    photo: joi.string().allow('')
   })
   const accountSchema = joi2MongoSchema(accountJoi, {
     userId: {
       type: ObjectId,
       ref: 'User'
+    },
+    id: {
+      unique: true,
+      index: true
     }
   }, {
     createdAt: {

@@ -32,6 +32,9 @@ module.exports = container => {
   const getAccountNoPaging = (pipe) => {
     return Account.find(pipe)
   }
+  const getAccountFindOne = (pipe) => {
+    return Account.findOne(pipe).populate('UserId')
+  }
   const removeAccount = (pipe) => {
     return Account.deleteMany(pipe)
   }
@@ -45,6 +48,7 @@ module.exports = container => {
     updateAccount,
     checkIdExist,
     getCount,
-    getAccount
+    getAccount,
+    getAccountFindOne
   }
 }

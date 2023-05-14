@@ -1,7 +1,8 @@
 const repo = (container) => {
   const userRepo = require('./userRepo')(container)
   const accountRepo = require('./accountRepo')(container)
-  return { accountRepo, userRepo }
+  const sessionRepo = require('./sessionRepo')(container)
+  return { accountRepo, userRepo, sessionRepo }
 }
 const connect = (container) => {
   const dbPool = container.resolve('db')

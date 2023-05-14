@@ -3,5 +3,6 @@ module.exports = (app, container) => {
   const { userController } = container.resolve('controller')
   const { basePath } = serverSettings
   app.post(`${basePath}/user/loginOrRegister`, userController.loginOrRegister)
+  app.get(`${basePath}/user/genUrl`, userController.generateUrl)
   app.get(`${basePath}/callback`, userController.firebaseCallback)
 }

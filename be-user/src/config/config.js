@@ -46,11 +46,13 @@ const serverHelper = function () {
       })
     })
   }
-
+  function generateHash (str) {
+    return crypto.createHash('md5').update(str).digest('hex')
+  }
   function encryptPassword (password) {
     return crypto.createHash('sha256').update(password, 'binary').digest('base64')
   }
 
-  return { decodeToken, encryptPassword, verifyToken, genToken }
+  return { decodeToken, encryptPassword, verifyToken, genToken, generateHash }
 }
 module.exports = { dbSettings, serverHelper: serverHelper(), serverSettings, httpCode, firebaseConfig }
