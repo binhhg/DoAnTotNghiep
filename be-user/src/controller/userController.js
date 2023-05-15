@@ -9,24 +9,10 @@ module.exports = (container) => {
     } = container.resolve('models')
     const {httpCode, serverHelper} = container.resolve('config')
     const firebaseAdmin = container.resolve('firebaseAdmin')
+    const qq = firebaseAdmin.auth()
     const {accountRepo, userRepo} = container.resolve('repo')
     const MAX_DEVICE = +process.env.MAX_DEVICE || 3
     const {googleHelper} = container.resolve('helper')
-    const kickSessions = async (uid, sessions) => {
-        if (sessions.length === 0) {
-            return
-        }
-        await Promise.all(sessions.map(i => blockRepo.kickSessionById(i.uid, i.hash)))
-        await Promise.all(sessions.map(i => historyRepo.addHistory({
-            uid,
-            type: historyType.KICK,
-            deviceName: i.deviceName,
-            deviceId: i.deviceId,
-            deviceType: i.deviceType,
-            versionCode: i.versionCode
-        })))
-        await sessionRepo.removeSession({ _id: { $in: sessions } })
-    }
     const processLoginGoogle = async (code) => {
         const {tokens} = await googleHelper.getToken(code)
         if (tokens) {
@@ -72,6 +58,7 @@ module.exports = (container) => {
                         console.log('logout ', name, uid, arr.length)
                     }
                 }
+                const sess = {}
                 const { exp } = serverHelper.decodeToken(token)
                 sess.hash = hash
                 sess.expireAt = exp

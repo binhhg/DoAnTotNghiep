@@ -39,7 +39,7 @@ module.exports = container => {
   container.registerValue('ObjectId', mongoose.Types.ObjectId)
   const User = require('./user.model')(joi, mongoose, { joi2MongoSchema })
   const Account = require('./account.model')(joi, mongoose, { joi2MongoSchema })
-  const Session = require('./session.model')(joi, mongoose, { joi2MongoSchema })
+  const Session = require('./session.model')(joi, mongoose)
   const schemas = { User, Account, Session }
   const schemaValidator = (obj, type) => {
     const schema = schemas[type]
