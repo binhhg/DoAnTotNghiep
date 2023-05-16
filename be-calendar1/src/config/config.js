@@ -45,6 +45,9 @@ const actionConfig = {
   UPDATE: 'updated',
   DELETE: 'deleted'
 }
+const urlConfig = {
+  user: process.env.USER_URL || 'http://localhost:8003'
+}
 const serverHelper = function () {
   const jwt = require('jsonwebtoken')
   const crypto = require('crypto')
@@ -72,4 +75,15 @@ const serverHelper = function () {
 
   return { decodeToken, encryptPassword, verifyToken, genToken }
 }
-module.exports = { dbSettings, serverHelper: serverHelper(), serverSettings, httpCode, firebaseConfig, rabbitConfig,workerConfig,actionConfig,eventConfig }
+module.exports = {
+  dbSettings,
+  serverHelper: serverHelper(),
+  serverSettings,
+  httpCode,
+  firebaseConfig,
+  rabbitConfig,
+  workerConfig,
+  actionConfig,
+  eventConfig,
+  urlConfig
+}
