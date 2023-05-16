@@ -8,15 +8,12 @@ module.exports = (container) => {
         }
     } = container.resolve('models')
     const {httpCode, serverHelper} = container.resolve('config')
-    const firebaseAdmin = container.resolve('firebaseAdmin')
-    const qq = firebaseAdmin.auth()
-    const {accountRepo, userRepo} = container.resolve('repo')
-    const MAX_DEVICE = +process.env.MAX_DEVICE || 3
+    const {accountRepo, userRepo, sessionRepo} = container.resolve('repo')
     const {googleHelper} = container.resolve('helper')
     const processLoginGoogle = async (code) => {
         const {tokens} = await googleHelper.getToken(code)
         if (tokens) {
-            const {data} = await googleHelper.getUserInfo(tokens.access_token)
+            const {data} = await googleHelper.getUserInfo(tokens.id_token)
             if (data) {
                 let account = await accountRepo.getAccountFindOne({id: data.id}).lean()
                 let user
@@ -36,6 +33,11 @@ module.exports = (container) => {
                     }
                     account = await accountRepo.addAccount(a)
                 } else {
+                    if(tokens.refresh_token){  // nghĩa là nó đã xóa quyền truy cập hoặc refresh token hết hạn nên khi login nó sẽ cấp lại cái refresh này
+                        await accountRepo.updateAccount(account._id,{
+                            refreshToken: tokens.refresh_token
+                        })
+                    }
                     user = account.userId
                 }
                 const token = serverHelper.genToken({
@@ -46,31 +48,22 @@ module.exports = (container) => {
                     id: account.id,
                 })
                 const hash = serverHelper.generateHash(token)
-                const sessions = await sessionRepo.getSessionNoPaging({ id: account.id }, { _id: 1 })
-                if (sessions.length >= MAX_DEVICE - 1) {
-                    const arr = []
-                    while (sessions.length > MAX_DEVICE - 1) {
-                        arr.push(sessions.shift())
-                    }
-                    console.log('.....................................kickSession webview ko bi loi')
-                    if (arr.length) {
-                        await kickSessions(uid, arr)
-                        console.log('logout ', name, uid, arr.length)
-                    }
-                }
                 const sess = {}
-                const { exp } = serverHelper.decodeToken(token)
+                const {exp} = serverHelper.decodeToken(token)
                 sess.hash = hash
                 sess.expireAt = exp
                 await sessionRepo.createSession(sess)
+                return {token, user, ok: true}
             }
+            return {ok: false, msg: '58'}
         }
+        return {ok :false, msg: '60'}
     }
     const generateUrl = async (req, res) => {
         try {
             const data = await googleHelper.generateAuthUrl()
             if (data.ok) {
-                res.status(httpCode.SUCCESS).json({url: data.url})
+                return res.status(httpCode.SUCCESS).json({url: data.url})
             }
             res.status(httpCode.BAD_REQUEST).json()
         } catch (e) {
@@ -82,10 +75,23 @@ module.exports = (container) => {
         try {
             const {code, type} = req.body
             if (type === 'GOOGLE') {
-                const qq = await processLoginGoogle(code)
+                const user = await processLoginGoogle(code)
+                if(user.ok){
+                   return res.status(httpCode.SUCCESS).json(user)
+                }
+                return res.status(httpCode.BAD_REQUEST).json({msg: 'loi trong qua trinh dang nhap'})
             }
-            res.status(httpCode.CREATED).json({ok: true})
+            return res.status(httpCode.BAD_REQUEST).json({msg: 'phuong thuc dang nhap khong dung'})
         } catch (e) {
+            logger.e(e)
+            res.status(httpCode.UNKNOWN_ERROR).json()
+        }
+    }
+    const refreshToken = async (req, res) => {
+        try {
+
+        } catch (e) {
+
             logger.e(e)
             res.status(httpCode.UNKNOWN_ERROR).json()
         }

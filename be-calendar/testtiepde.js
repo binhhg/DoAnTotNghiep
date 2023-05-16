@@ -9,14 +9,14 @@ const getRefreshToken = async (accessToken) => {
     grant_type: 'refresh_token'
   }
   try {
-    const response = await axios.post(
-      `https://securetoken.googleapis.com/v1/token?key=AIzaSyBS9wmuSJ6zPs3QIsFSbZueRLNkj-Nk918`,
-      qs.stringify(data)
+    const {data: qq} = await axios.post(
+      'https://oauth2.googleapis.com/token',
+      data
     )
-    console.log(response)
-    return response.data.refresh_token
+    console.log(qq)
+    return qq
   } catch (e) {
     console.log(e)
   }
 }
-getRefreshToken('ya29.a0AWY7Cklg7KDpbRLquANT0LEJMvWSsLS2ovooxK0sk_hF2e7Fb1xTjMA8NU_3WmAryxpjkkAZzKuo5z6WQ97wbaFLhbC2xFEElV0oWnfQWoUn_V3p4UvmkaHGa1VjENXhXykqyBx5Ews-_7nTRUnZmYwTkrLwaCgYKATwSAQ4SFQG1tDrpC58m-qnEQ7IwhkqpW5MllA0163').then()
+getRefreshToken('ya29.a0AWY7Cknyl-2koclDwe7sJA-IdxIFfBnAaaLvmyHRWGGAy9GuBJreWHf0UT-TGCp5uSPrzSnTw_eXaWaQLqumkDKb5a2fsRjUF3jP0JD6urOeg2xvfxPf7gugI1kOml8H92oWMln2LoRm3_X1TpRX2Kx_i4AfaCgYKAc8SARESFQG1tDrpaeW_9_ta7JJj0TPIpBnj8g0163').then()

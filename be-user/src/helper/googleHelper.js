@@ -40,22 +40,16 @@ module.exports = (container) => {
                 clientId: web.client_id,
                 clientSecret: web.client_secret
             })
-            oauth2Client.setCredentials({access_token: token})
-            const people = google.people({
-                version: 'v1',
-                auth: oauth2Client
-            })
-            const data = await people.people.get({
-                resourceName: 'people/me',
-                personFields: 'names,emailAddresses,photos,phoneNumbers,birthdays,genders'
-            })
+            const {payload} = await oauth2Client.verifyIdToken({idToken: token})
             return {
                 data: {
-                    id: data.resourceName,
-                    name: data.names[0].displayName,
-                    photo: data.photos[0].url,
-                    email: data.emailAddresses[0].value
-                }, ok: true
+                    id: payload.sub,
+                    name: payload.name,
+                    photo: payload.picture,
+                    email: payload.email,
+                    locale: payload.locale
+                },
+                ok: true
             }
         } catch (e) {
             console.log(e)
