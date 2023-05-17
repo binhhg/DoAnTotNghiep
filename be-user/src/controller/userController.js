@@ -89,9 +89,13 @@ module.exports = (container) => {
     }
     const refreshToken = async (req, res) => {
         try {
+            const token = req.headers['x-access-token']
+            if(token){
 
+            }
+
+            res.status(httpCode.UNAUTHORIZED).json({ ok: false })
         } catch (e) {
-
             logger.e(e)
             res.status(httpCode.UNKNOWN_ERROR).json()
         }
@@ -111,6 +115,7 @@ module.exports = (container) => {
     return {
         loginOrRegister,
         firebaseCallback,
-        generateUrl
+        generateUrl,
+        refreshToken
     }
 }
