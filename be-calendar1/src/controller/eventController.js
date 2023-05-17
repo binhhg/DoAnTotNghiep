@@ -8,8 +8,22 @@ module.exports = (container) => {
     }
   } = container.resolve('models')
   const { httpCode, eventConfig, actionConfig } = container.resolve('config')
+  const { googleHelper, userHelper } = container.resolve('helper')
   const mediator = container.resolve('mediator')
   const { eventRepo, bookingRepo } = container.resolve('repo')
+
+  function formatData (data) {
+    const qq = {
+      summary: data.summary,
+      location: data?.location,
+      description: data?.description || '',
+      start: data?.start,
+      end: data?.end,
+      attendees: data?.attendees
+    }
+    return qq
+  }
+
   const addEvent = async (req, res) => {
     try {
       const body = req.body
@@ -22,16 +36,25 @@ module.exports = (container) => {
       }
       const event = await eventRepo.addEvent(value)
       if (value.isBooking) {
-        value.eventId = event._id
-        const { error: er, value: vl } = await schemaValidator(value, 'Booking')
-        const booking = await bookingRepo.addBooking(vl)
-        event.booking = booking
-        setTimeout(() => {
-          mediator.emit(eventConfig.GOOGLE_CALENDAR, {
-            action: actionConfig.CREATE,
-            data: event
-          })
-        }, 1)
+        const send = formatData(body)
+        const { statusCode, data } = await userHelper.getAccountById(body.userId)
+        if (statusCode !== httpCode.SUCCESS) {
+          return res.status(httpCode.BAD_REQUEST).json({ msg: 'co loi xay ra' })
+        }
+        const { ok, data: dd } = await googleHelper.addCalendar(data.refreshToken, send)
+        if (!ok) {
+          return res.status(httpCode.BAD_REQUEST).json({ msg: 'co loi trong qua trinh dong bo calendar' })
+        }
+        body.calendarId = dd.id
+        const {
+          error: e,
+          value: v
+        } = await schemaValidator(body, 'Account')
+        if (e) {
+          return res.status(httpCode.BAD_REQUEST).json({ msg: error.message })
+        }
+        const book = await bookingRepo.addBooking(v)
+        event.booking = book
       }
       res.status(httpCode.CREATED).json(event)
     } catch (e) {

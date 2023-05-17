@@ -15,16 +15,18 @@ const url = oauth2Client.generateAuthUrl({
   prompt: 'consent'
 })
 console.log(url)
+
 async function getToken (token) {
   try {
-    const data= await oauth2Client.getToken(token)
+    const data = await oauth2Client.getToken(token)
     console.log('zzz', data)
     return data
-  }catch (e) {
+  } catch (e) {
     console.log(e)
   }
 
 }
+
 getToken('4/0AbUR2VOP_9ZitdeyU0wqDuCwe4q3YE13u0Irx18XpvnRFd2jyBYCyrjNeD_7IXDwrNZE1g').then()
 // oauth2Client.setCredentials({ refresh_token: 'APZUo0R8s7P_SJ_PHex1YBZA4nKob-wYuv85qXfqQnXBqQLUT-o6gUIXBor_5dwNdZUhsnrx1ACPOYPo5YUP2y0mZs8CN-YlHr48PWOuOZXpv1bytyvT4E6P0cQyXxaXAUxuAUvemsmYNHO3n7EiHPK0yDgPj2Qokuo1ARfXdgOYDfTHa7HkXddDqyGyx3briTtEH0A_Cxzv-3Ls9gA50MNeEG3I-wjNAM1eMd8G0ea_jWnuipicxYzVua38R7qDvpb2uPyaCVKmUbdWuMJVijFdzjUTqRtGnvS5vm1NCmbCYsv84pO3nVl1kpDTMMonRuE9Ewy17DFJFOolNu3oamUnGMPLopJB8to7xrXc96xFyWfv8jAJ9nM7enY7-aKTEuPViQWLW1OOA3lpzGJWVTWYnucvVmipP-lS5Js3AEVimcDcUfuw9xI' })
 // const event = {

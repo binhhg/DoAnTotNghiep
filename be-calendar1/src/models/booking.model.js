@@ -10,6 +10,7 @@ module.exports = (joi, mongoose, { joi2MongoSchema, schemas }) => {
     ACCEPTED: 3
   }
   const eventJoi = joi.object({
+    calendarId: joi.string().required(),
     eventId: joi.string().required(),
     type: joi.number().valid(...Object.values(accountType)).default(1),
     userId: joi.string().required(),
