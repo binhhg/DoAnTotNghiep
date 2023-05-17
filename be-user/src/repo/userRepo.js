@@ -35,6 +35,9 @@ module.exports = container => {
   const removeUser = (pipe) => {
     return User.deleteMany(pipe)
   }
+  const findOne = (pipe = {}) => {
+    return User.findOne(pipe)
+  }
   return {
     getUserNoPaging,
     removeUser,
@@ -45,6 +48,7 @@ module.exports = container => {
     updateUser,
     checkIdExist,
     getCount,
-    getUser
+    getUser,
+    findOne
   }
 }

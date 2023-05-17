@@ -34,7 +34,11 @@ const serverHelper = function () {
   function decodeToken (token) {
     return jwt.decode(token)
   }
-
+  function canRefreshToken (expDate) {
+    const now = (Date.now()) / 1000
+    const maxExp = ms(process.env.MAX_EXP_REFESH_TOKEN || '30d') / 1000
+    return now - expDate < maxExp
+  }
   function genToken (obj) {
     return jwt.sign(obj, secretKey, { expiresIn: '1d' })
   }
@@ -53,6 +57,6 @@ const serverHelper = function () {
     return crypto.createHash('sha256').update(password, 'binary').digest('base64')
   }
 
-  return { decodeToken, encryptPassword, verifyToken, genToken, generateHash }
+  return { decodeToken, encryptPassword, verifyToken, genToken, generateHash, canRefreshToken }
 }
 module.exports = { dbSettings, serverHelper: serverHelper(), serverSettings, httpCode, firebaseConfig }

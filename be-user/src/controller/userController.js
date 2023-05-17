@@ -33,8 +33,8 @@ module.exports = (container) => {
                     }
                     account = await accountRepo.addAccount(a)
                 } else {
-                    if(tokens.refresh_token){  // nghĩa là nó đã xóa quyền truy cập hoặc refresh token hết hạn nên khi login nó sẽ cấp lại cái refresh này
-                        await accountRepo.updateAccount(account._id,{
+                    if (tokens.refresh_token) {  // nghĩa là nó đã xóa quyền truy cập hoặc refresh token hết hạn nên khi login nó sẽ cấp lại cái refresh này
+                        await accountRepo.updateAccount(account._id, {
                             refreshToken: tokens.refresh_token
                         })
                     }
@@ -42,13 +42,16 @@ module.exports = (container) => {
                 }
                 const token = serverHelper.genToken({
                     name: user.name,
-                    email: account.email,
                     avatar: user.avatar,
                     loginType: 1,
                     id: account.id,
+                    userId: user._id.toString()
                 })
                 const hash = serverHelper.generateHash(token)
-                const sess = {}
+                const sess = {
+                    id: account.id,
+                    userId: user._id.toString()
+                }
                 const {exp} = serverHelper.decodeToken(token)
                 sess.hash = hash
                 sess.expireAt = exp
@@ -57,7 +60,7 @@ module.exports = (container) => {
             }
             return {ok: false, msg: '58'}
         }
-        return {ok :false, msg: '60'}
+        return {ok: false, msg: '60'}
     }
     const generateUrl = async (req, res) => {
         try {
@@ -76,8 +79,8 @@ module.exports = (container) => {
             const {code, type} = req.body
             if (type === 'GOOGLE') {
                 const user = await processLoginGoogle(code)
-                if(user.ok){
-                   return res.status(httpCode.SUCCESS).json(user)
+                if (user.ok) {
+                    return res.status(httpCode.SUCCESS).json(user)
                 }
                 return res.status(httpCode.BAD_REQUEST).json({msg: 'loi trong qua trinh dang nhap'})
             }
@@ -90,32 +93,66 @@ module.exports = (container) => {
     const refreshToken = async (req, res) => {
         try {
             const token = req.headers['x-access-token']
-            if(token){
-
+            if (token) {
+                const user = serverHelper.decodeToken(token)
+                if (!user) {
+                    return res.status(httpCode.UNAUTHORIZED).json({ok: false})
+                }
+                const hash = serverHelper.generateHash(token)
+                const sess = await sessionRepo.findOne({hash})
+                if (sess) {
+                    const {expireAt, userId, id} = sess
+                    if (serverHelper.canRefreshToken(expireAt)) {
+                        const u = await userRepo.getUserById(userId)
+                        if (u) {
+                            const token = serverHelper.genToken({
+                                name: user.name,
+                                avatar: user.avatar,
+                                loginType: 1,
+                                id,
+                                userId
+                            })
+                            await sessionRepo.deleteOne({hash})
+                            const hash1 = serverHelper.generateHash(token)
+                            const {exp} = serverHelper.decodeToken(token)
+                            sess.hash = hash1
+                            sess.expireAt = exp
+                            sess.updateAt = Math.floor(Date.now() / 1000)
+                            sess.save()
+                            await sessionRepo.createSession(sess)
+                            return res.status(httpCode.SUCCESS).json({ok: true, token})
+                        }
+                    }
+                }
             }
-
-            res.status(httpCode.UNAUTHORIZED).json({ ok: false })
+            res.status(httpCode.UNAUTHORIZED).json({ok: false})
         } catch (e) {
             logger.e(e)
             res.status(httpCode.UNKNOWN_ERROR).json()
         }
     }
-    const firebaseCallback = async (req, res) => {
+    const logout = async (req, res) => {
         try {
-            const cc = req.query
-            const dd = req.body
-            console.log(cc, dd)
+            const token = req.headers['x-access-token']
+            const user = serverHelper.decodeToken(token)
+            if (user) {
+                const hash = serverHelper.generateHash(token)
+                await sessionRepo.removeSession({
+                    userId: user.userId,
+                    hash
+                })
+            }
             res.status(httpCode.SUCCESS).json({ok: true})
         } catch (e) {
             logger.e(e)
-            res.status(httpCode.UNKNOWN_ERROR).end()
+            res.status(httpCode.UNKNOWN_ERROR).json()
         }
     }
 
     return {
         loginOrRegister,
-        firebaseCallback,
         generateUrl,
-        refreshToken
+        refreshToken,
+        logout
     }
 }
