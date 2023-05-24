@@ -4,31 +4,58 @@ const admin = require('firebase-admin')
 const moment = require('moment')
 const serviceAccount = require('./dulcet-coast-383615-firebase-adminsdk-xo3cc-678bd16117.json')
 
-const oauth2Client = new google.auth.OAuth2(web.client_id, web.client_secret, 'http://localhost:3000/signIn')
-const url = oauth2Client.generateAuthUrl({
-  access_type: 'offline',
-  scope: [
-    'email',
-    'profile',
-    'https://www.googleapis.com/auth/calendar'
-  ],
-  prompt: 'consent'
-})
-console.log(url)
+const oauth2Client = new google.auth.OAuth2(web.client_id, web.client_secret, 'http://localhost:3000/api/auth/callback/google')
+// const url = oauth2Client.generateAuthUrl({
+//   access_type: 'offline',
+//   scope: [
+//     'email',
+//     'profile',
+//     'https://www.googleapis.com/auth/calendar'
+//   ],
+//   prompt: 'consent'
+// })
+// console.log(url)
+//
+// async function getToken (token) {
+//   try {
+//     const data = await oauth2Client.getToken(token)
+//     console.log('zzz', data)
+//     return data
+//   } catch (e) {
+//     console.log(e)
+//   }
+//
+// }
 
-async function getToken (token) {
+// getToken('4/0AbUR2VOP_9ZitdeyU0wqDuCwe4q3YE13u0Irx18XpvnRFd2jyBYCyrjNeD_7IXDwrNZE1g').then()
+oauth2Client.setCredentials({ refresh_token: '1//0e-74PN8ULWs7CgYIARAAGA4SNwF-L9Irq0ZQoKrswz3jiauKZAqfciOH-olzmrNKLO4_FMyE2DrK-AidtSRt3ZtSf7bJ7_-nDXg' })
+
+async function listCalendars () {
+  // Tạo client cho Google Calendar API
+  const calendar = google.calendar({ version: 'v3', auth: oauth2Client })
+
   try {
-    const data = await oauth2Client.getToken(token)
-    console.log('zzz', data)
-    return data
-  } catch (e) {
-    console.log(e)
+    // Lấy danh sách calendar
+    const response = await calendar.events.list({
+      calendarId: 'primary', // Để lấy lịch của người dùng chính (primary calendar)
+      timeMin: new Date().toISOString(), // Lấy sự kiện từ ngày hiện tại
+      maxResults: 10, // Số lượng sự kiện tối đa
+      singleEvents: true,
+      orderBy: 'startTime'
+    })
+    const calendars = response.data.items
+    console.log(response.data.items)
+    // In ra danh sách calendar
+    calendars.forEach((calendar) => {
+      console.log(`${calendar.summary} (${calendar.id})`)
+    })
+  } catch (error) {
+    console.error('Lỗi khi lấy danh sách calendar:', error)
   }
-
 }
 
-getToken('4/0AbUR2VOP_9ZitdeyU0wqDuCwe4q3YE13u0Irx18XpvnRFd2jyBYCyrjNeD_7IXDwrNZE1g').then()
-// oauth2Client.setCredentials({ refresh_token: 'APZUo0R8s7P_SJ_PHex1YBZA4nKob-wYuv85qXfqQnXBqQLUT-o6gUIXBor_5dwNdZUhsnrx1ACPOYPo5YUP2y0mZs8CN-YlHr48PWOuOZXpv1bytyvT4E6P0cQyXxaXAUxuAUvemsmYNHO3n7EiHPK0yDgPj2Qokuo1ARfXdgOYDfTHa7HkXddDqyGyx3briTtEH0A_Cxzv-3Ls9gA50MNeEG3I-wjNAM1eMd8G0ea_jWnuipicxYzVua38R7qDvpb2uPyaCVKmUbdWuMJVijFdzjUTqRtGnvS5vm1NCmbCYsv84pO3nVl1kpDTMMonRuE9Ewy17DFJFOolNu3oamUnGMPLopJB8to7xrXc96xFyWfv8jAJ9nM7enY7-aKTEuPViQWLW1OOA3lpzGJWVTWYnucvVmipP-lS5Js3AEVimcDcUfuw9xI' })
+// Thực thi lấy danh sách calendar
+listCalendars().then()
 // const event = {
 //   summary: 'Ttest cai de ne',
 //   location: 'Địa điểm',

@@ -148,11 +148,23 @@ module.exports = (container) => {
             res.status(httpCode.UNKNOWN_ERROR).json()
         }
     }
-
+    const testcai = async (req, res) => {
+        try {
+            const body = req.body
+            if (body) {
+                console.log(body)
+                res.status(httpCode.SUCCESS).json({ok: true})
+            }
+        } catch (e) {
+            logger.e(e)
+            res.status(httpCode.UNKNOWN_ERROR).json()
+        }
+    }
     return {
         loginOrRegister,
         generateUrl,
         refreshToken,
-        logout
+        logout,
+        testcai
     }
 }
