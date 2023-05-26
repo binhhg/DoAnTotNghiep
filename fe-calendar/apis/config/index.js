@@ -1,5 +1,5 @@
-const user = process.env.USER_URL || 'http://localhost:8000'
-const calendar = process.env.USER_URL || 'http://localhost:8001'
+const user = process.env.USER_URL || 'http://localhost:8501'
+const calendar = process.env.CALENDAR_URL || 'http://localhost:8502'
 
 const ApiConfig = {
     user,

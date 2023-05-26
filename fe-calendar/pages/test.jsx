@@ -1,15 +1,113 @@
 import React, {useEffect} from 'react'
 import {useRouter} from "next/router";
 
-export default function Test () {
-  const router = useRouter()
-  useEffect(() => {
-    const qq = new URLSearchParams(window.location.search)
-    console.log('qqqq', qq)
-    const cc = qq.get('q')
-    const vl = JSON.parse(cc)
-    console.log('zz',vl)
-    console.log(router)
-  }, [])
-  return <div className=" pt-4">he so lo</div>
+import {AuthenApi} from "../apis/authen"
+import eventEmitter from '../utils/eventEmitter'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faSpinner} from '@fortawesome/free-solid-svg-icons'
+import {toast} from "react-toastify";
+
+export default function Test() {
+
+
+    async function login(data) {
+        try {
+            const {token, user} = await AuthenApi.login(data)
+            if (token) {
+                toast.success(`Bạn đã đăng nhập thành công với tài khoản: ${user.name || ''}`, {
+                    position: "top-center",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: false,
+                    draggable: false,
+                    progress: undefined,
+                    theme: "colored",
+                });
+                console.log('login oke')
+                localStorage.setItem('isLoggedIn', true)
+                localStorage.setItem('token', token)
+                eventEmitter.emit('loggedIn', {token})
+                return true
+            } else {
+                toast.error(`Đăng nhập thất bại, vui lòng thử lại`, {
+                    position: "top-center",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: false,
+                    draggable: false,
+                    progress: undefined,
+                    theme: "colored",
+                });
+                console.log('login fail')
+                return false
+            }
+        } catch (e) {
+            toast.error(`Đăng nhập thất bại, vui lòng thử lại`, {
+                position: "top-center",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: false,
+                progress: undefined,
+                theme: "colored",
+            });
+            return false
+        }
+    }
+
+    const router = useRouter()
+    useEffect(() => {
+        const isLoggedIn = localStorage.getItem('isLoggedIn')
+        if (isLoggedIn) {
+            console.log('vao day chua')
+            console.log(router)
+            router.push('/')
+
+        } else {
+            (async () => {
+                console.log('vao day chua')
+                console.log(router)
+                const qq = new URLSearchParams(window.location.search)
+                // const sub = qq.get('sub')
+                // const email = qq.get('email')
+                // const name = qq.get('name')
+                // const picture = qq.get('picture')
+                // const loginType = qq.get('loginType')
+                // const refresh_token = qq.get('refresh_token')
+                // const scope = qq.get('scope')
+                // const provider = qq.get('provider')
+                // const providerAccountId = qq.get('providerAccountId')
+                const res = qq.get('res')
+                const cc = decodeURI(res)
+                const zz = JSON.parse(cc)
+                console.log(zz)
+                // const vl = {
+                //     account: {
+                //         refresh_token, scope, provider, providerAccountId
+                //     },
+                //     loginType,
+                //     profile: {
+                //         sub, email, name, picture
+                //
+                //     }
+                // }
+                const check = await login(zz)
+                console.log(check)
+                if (check) {
+                    return router.push('/signIn')
+                }
+                return router.push('/login')
+            })()
+
+        }
+
+    }, [])
+    return (
+        <div className={'h-[250px] flex justify-center items-center'}>
+            <FontAwesomeIcon icon={faSpinner} spin={true}/>
+        </div>
+    )
 }

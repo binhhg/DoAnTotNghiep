@@ -1,20 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0676ba62-9312-4423-93f5-8ece01f8eed6" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/apis/authen/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/apis/axios.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/apis/config/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/apis/user/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/next.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/next.config.js" afterDir="false" />
+    <list default="true" id="0676ba62-9312-4423-93f5-8ece01f8eed6" name="Changes" comment="login">
+      <change afterPath="$PROJECT_DIR$/pages/home.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/utils/eventEmitter.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/utils/moment.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../be-user/src/api/userApi.js" beforeDir="false" afterPath="$PROJECT_DIR$/../be-user/src/api/userApi.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../be-user/src/config/config.js" beforeDir="false" afterPath="$PROJECT_DIR$/../be-user/src/config/config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../be-user/src/controller/userController.js" beforeDir="false" afterPath="$PROJECT_DIR$/../be-user/src/controller/userController.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../be-user/src/repo/accountRepo.js" beforeDir="false" afterPath="$PROJECT_DIR$/../be-user/src/repo/accountRepo.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/axios.js" beforeDir="false" afterPath="$PROJECT_DIR$/apis/axios.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apis/config/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/apis/config/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/_app.js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/_app.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/api/auth/[...nextauth].js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/auth/[...nextauth].js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/api/hello.js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/hello.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/login.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/login.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/test.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/test.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/styles/globals.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles/globals.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,12 +52,17 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "/home/binhhg/Public/xenforo-code/carpla-forums",
+    "last_opened_file_path": "/home/binhhg/Public/DoAnTotNghiep/be-user",
     "nodejs_package_manager_path": "yarn",
     "ts.external.directory.path": "/home/binhhg/Public/DoAnTotNghiep/fe-calendar/node_modules/typescript/lib",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/utils" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="dev" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
@@ -79,8 +89,16 @@
       <option name="presentableId" value="Default" />
       <updated>1684983762437</updated>
       <workItem from="1684983765906" duration="5000" />
-      <workItem from="1684985282056" duration="14097000" />
+      <workItem from="1684985282056" duration="28748000" />
     </task>
+    <task id="LOCAL-00001" summary="login">
+      <created>1685011654501</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1685011654501</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -96,5 +114,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="login" />
+    <option name="LAST_COMMIT_MESSAGE" value="login" />
   </component>
 </project>
