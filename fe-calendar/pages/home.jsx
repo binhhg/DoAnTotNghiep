@@ -1,5 +1,10 @@
 import React from 'react'
-
+import 'bootstrap/dist/css/bootstrap.min.css'
 export default function Home(){
-    return <div>xin chao cac ban</div>
+    return (
+        <>
+            <div>ccccc</div>
+        </>
+
+    )
 }
