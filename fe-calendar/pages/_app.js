@@ -3,7 +3,6 @@ import 'react-toastify/dist/ReactToastify.css'
 import {ToastContainer} from "react-toastify"
 import {useEffect} from "react";
 import {useRouter} from "next/router";
-
 export default function App ({ Component, pageProps }) {
   const router = useRouter()
   {/*useEffect(() => {*/}

@@ -2,20 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0676ba62-9312-4423-93f5-8ece01f8eed6" name="Changes" comment="login">
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/components/calendar.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pages/lich.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utils/orderModifiers.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/_app.js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/_app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/api/auth/[...nextauth].js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/auth/[...nextauth].js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/calendar.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/home.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/home.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles/globals.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles/globals.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/lich.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/lich.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,17 +33,16 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="node.js.detected.package.eslint" value="true" />
-    <property name="node.js.selected.package.eslint" value="(autodetect)" />
-    <property name="nodejs_package_manager_path" value="yarn" />
-    <property name="ts.external.directory.path" value="D:\datn\fe-calendar\node_modules\typescript\lib" />
-    <property name="vue.rearranger.settings.migration" value="true" />
-  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/binhhg/Public/DoAnTotNghiep/fe-calendar&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/utils" />
@@ -64,13 +52,24 @@
     </key>
   </component>
   <component name="RunManager">
+    <configuration default="true" type="NodeJSConfigurationType" path-to-node="/usr/bin/node">
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="js.build_tools.npm">
+      <command value="run" />
+      <scripts />
+      <node-interpreter value="/usr/bin/node" />
+      <envs />
+      <method v="2" />
+    </configuration>
     <configuration name="dev" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
       <scripts>
         <script value="dev" />
       </scripts>
-      <node-interpreter value="project" />
+      <node-interpreter value="/usr/bin/node" />
+      <package-manager value="yarn" />
       <envs />
       <method v="2" />
     </configuration>
@@ -92,6 +91,9 @@
       <workItem from="1684985282056" duration="30502000" />
       <workItem from="1685188822475" duration="30687000" />
       <workItem from="1685285154246" duration="1848000" />
+      <workItem from="1685326726662" duration="295000" />
+      <workItem from="1685327077619" duration="181000" />
+      <workItem from="1685328091209" duration="324000" />
     </task>
     <task id="LOCAL-00001" summary="login">
       <created>1685011654501</created>
@@ -116,7 +118,6 @@
         </entry>
       </map>
     </option>
-    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="login" />

@@ -1,36 +1,81 @@
-import React, {Fragment, useEffect, useState} from 'react'
+import React, {Fragment, useEffect, useState, useRef, forwardRef} from 'react'
 import FullCalendar from '@fullcalendar/react' // must go before plugins
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import rrulePlugin from '@fullcalendar/rrule'
 import interactionPlugin from '@fullcalendar/interaction'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import {datetime, RRule, RRuleSet, rrulestr} from 'rrule'
-import {useRef} from "react/index";
-
-export default function Calendar() {
-    const test = useRef(null)
+import 'bootstrap-icons/font/bootstrap-icons.css';
+import bootstrap5Plugin from '@fullcalendar/bootstrap5';
+import eventEmitter from "../utils/eventEmitter";
+const Calendar = forwardRef((props, ref) => {
     const [isClient, setIsClient] = useState(false)
+    const [temporaryEvent, setTemporaryEvent] = useState(null);
+
+    const handleSelect = (arg) => {
+        if (temporaryEvent) {
+            setTemporaryEvent(null);
+        }
+
+        const event = {
+            title: 'Tạo sự kiện',
+            start: arg.startStr,
+            end: arg.endStr,
+            allDay: arg.allDay
+        };
+
+        setTemporaryEvent((value) => value = event);
+        console.log('event ne', temporaryEvent)
+    };
     useEffect(() => {
         if (typeof window !== "undefined") {
             setIsClient(true)
         }
     }, [])
+
     return (
         <Fragment>
-            <button onClick={()=> {
-                let calendar = test.current.getApi()
-                calendar.gotoDate('2023-06-14')
-            }}>hehehe</button>
             {isClient && <FullCalendar
-                plugins={[rrulePlugin, dayGridPlugin, timeGridPlugin, interactionPlugin]}
-                initialView="dayGridMonth"
+                plugins={[rrulePlugin, bootstrap5Plugin, dayGridPlugin, timeGridPlugin, interactionPlugin]}
+                // themeSystem={'bootstrap5'}
+                initialView="timeGridWeek"
                 headerToolbar={{
                     start: "today prev,next",
                     center: 'title',
-                    end: 'dayGridMonth,timeGridWeek,timeGridDay'
+                    end: 'timeGridDay,timeGridWeek,dayGridMonth'
                 }}
-                ref={test}
+                customButtons={
+                    {
+                        today: {
+                            text: 'Hôm nay',
+                            bootstrapFontAwesome: false,
+                            themeIcon: 'red',
+                            click: () => {
+                                ref.current.getApi().today()
+                                eventEmitter.emit('clickToday',{})
+                            }
+                        },
+                        timeGridDay: {
+                            text: 'Ngày',
+                            click: () => {
+                                ref.current.getApi().changeView('timeGridDay')
+                            }
+                        },
+                        timeGridWeek: {
+                            text: 'Tuần',
+                            click: () => {
+                                ref.current.getApi().changeView('timeGridWeek')
+                            }
+                        },
+                        dayGridMonth: {
+                            text: 'Tháng',
+                            click: () => {
+                                ref.current.getApi().changeView('dayGridMonth')
+                            }
+                        }
+                    }
+                }
+                ref={ref}
                 events={[
                     {
                         id: "adasbhdgashbdhasd",
@@ -88,18 +133,11 @@ export default function Calendar() {
                 // select={() => {
                 //     console.log('oke')
                 // }}
-                // select={(time) => {
-                //     // return new Popover(time,{
-                //     //     title: 'heehe',
-                //     //     placement: 'auto',
-                //     //     trigger: 'click',
-                //     //     content: "<p>he so lo</p>",
-                //     //     html:true
-                //     // })
-                //     console.log('oke ne')
-                // }}
-                // eventClick={(info) => console.log('hehe thu cai, ', info.event)}
+                select={handleSelect}
+                eventClick={(info) => console.log('hehe thu cai, ', info.event)}
             />}
         </Fragment>
     )
-}
+})
+
+export default Calendar

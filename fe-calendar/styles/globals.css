@@ -2,11 +2,34 @@
 @tailwind components;
 @tailwind utilities;
 
+
 /*:root {*/
 /*  --foreground-rgb: 0, 0, 0;*/
 /*  --background-start-rgb: 214, 219, 220;*/
 /*  --background-end-rgb: 255, 255, 255;*/
 /*}*/
+.modal-backdrop {
+    background-color: rgba(255, 255, 255, 0.7) !important;
+}
+.fc-today-button {
+    background-color: #F4F4F5 !important; /* Màu nền của nút Today */
+    color: black !important;
+    border: none !important;
+}
+.fc .fc-toolbar.fc-header-toolbar {
+    margin-bottom: 1em !important;
+    /* color: red; */
+    font-family: "Google Sans",Roboto,Arial,sans-serif;
+}
+.fc-daygrid-day-bg {
+    background-color: #F4F4F5 !important;
+}
+.fc-highlight-current-time {
+    background-color: red !important;
+}
+.fc .fc-timegrid-slot-minor {
+    border-top-style: none !important;
+}
 .popverStyle {
     z-index: 99999 !important;
 }
