@@ -12,6 +12,7 @@ module.exports.start = function (container) {
   const jobs = []
   const EVENT_NAME = 'nextjob'
   const actionConfig = {
+    INIT: 'init',
     CREATE: 'create',
     UPDATE: 'updated',
     DELETE: 'deleted',
@@ -32,7 +33,15 @@ module.exports.start = function (container) {
     }
   })
 
-  const formatData = async (action, type, payload) => {
+  const formatPull = async (action, type, payload) => {
+    console.log('ua alo cai action', action)
+    if (action === actionConfig.CREATE || action === actionConfig.UPDATE) {
+        return 5
+    } else {
+      return payload
+    }
+  }
+  const formatPush = async (action, type, payload) => {
     console.log('ua alo cai action', action)
     if (action === actionConfig.CREATE || action === actionConfig.UPDATE) {
         return 5
@@ -44,13 +53,17 @@ module.exports.start = function (container) {
 
   async function sync (action, data) {
     switch (action) {
-      case actionConfig.CREATE: {
+      case actionConfig.INIT: {
 
+        return true
+      }
+      case actionConfig.CREATE: {
+          break
       }
       case actionConfig.UPDATE: {
+        break
       }
       case actionConfig.DELETE: {
-        logger.d('Success delete ', carId)
         return true
       }
     }

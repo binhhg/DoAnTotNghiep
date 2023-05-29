@@ -2,9 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0676ba62-9312-4423-93f5-8ece01f8eed6" name="Changes" comment="login">
+      <change beforePath="$PROJECT_DIR$/../be-calendar1/src/models/event.model.js" beforeDir="false" afterPath="$PROJECT_DIR$/../be-calendar1/src/models/event.model.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/lich.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/lich.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../worker-push-google/helper/googleHelper.js" beforeDir="false" afterPath="$PROJECT_DIR$/../worker-push-google/helper/googleHelper.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../worker-push-google/listener/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../worker-push-google/listener/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,16 +34,9 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/binhhg/Public/DoAnTotNghiep/fe-calendar&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
-  }
-}</component>
+  <component name="PropertiesComponent">
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../be-calendar1" />
+  </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/utils" />
@@ -68,7 +62,7 @@
       <scripts>
         <script value="dev" />
       </scripts>
-      <node-interpreter value="/usr/bin/node" />
+      <node-interpreter value="project" />
       <package-manager value="yarn" />
       <envs />
       <method v="2" />
@@ -118,6 +112,7 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="login" />

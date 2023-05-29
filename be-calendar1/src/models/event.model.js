@@ -11,6 +11,8 @@ module.exports = (joi, mongoose, { joi2MongoSchema, schemas }) => {
     summary: joi.string.allow(''),
     start: joi.number(),
     end: joi.number(),
+    rrule: joi.object(),
+    exdate: joi.string().allow(''),
     location: joi.string().allow(''),
     state: joi.number().valid(...Object.values(stateConfig)).default(1),
     recurrence: joi.array().items(joi.string().allow('')).default([]),
