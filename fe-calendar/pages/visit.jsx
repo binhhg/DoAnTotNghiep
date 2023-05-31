@@ -22,7 +22,9 @@ export default function Visit() {
                 Launch demo modal
             </Button>
 
-            <Modal show={showModal} onHide={handleCloseModal}>
+            <Modal show={showModal} onHide={handleCloseModal}  size="lg"
+                   aria-labelledby="contained-modal-title-vcenter"
+                   centered>
                 <Modal.Header closeButton>
                 </Modal.Header>
                 <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>

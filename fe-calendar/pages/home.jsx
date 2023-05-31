@@ -1,23 +1,43 @@
-import React from 'react'
+import React, {useEffect,useRef} from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import { Modal, Button } from 'react-bootstrap';
 export default function Home(){
-    const windowWidth = window.innerWidth;
-    const windowHeight = window.innerHeight;
-    const modalWidth = 400; // Kích thước modal (chiều rộng)
-    const modalHeight = 300; // Kích thước modal (chiều cao)
+    const modalRef = useRef(null);
 
-    const modalX = (windowWidth - modalWidth) / 2;
-    const modalY = (windowHeight - modalHeight) / 2;
+    const closeModal = () => {
+        const modal = modalRef.current;
+        if (modal) {
+            modal.classList.remove('exampleModal');
+            modal.style.display = 'none';
+            document.body.classList.remove('modal-open');
+        }
+    };
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (modalRef.current && !modalRef.current.contains(event.target)) {
+                closeModal();
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
+    function handelModal(){
+        const modal = document.getElementById('exampleModal')
+        modal.classList.add('show')
+        modal.style.display = 'block'
+        document.body.classList.add('modal-open')
+    }
     return (
         <>
-            <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            <button type="button" className="btn btn-primary" onClick={() =>handelModal()}>
                 Launch demo modal
             </button>
-            <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style={{
-                top: '600px',
-                left: '500px',
-                transform: 'translate(-50%, -50%)',
-            }}>
+            <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
                 <div className="modal-dialog">
                     <div className="modal-content">
                         <div className="modal-header">

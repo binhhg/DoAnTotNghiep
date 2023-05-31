@@ -9,7 +9,7 @@
 /*  --background-end-rgb: 255, 255, 255;*/
 /*}*/
 .modal-backdrop {
-    background-color: rgba(255, 255, 255, 0.7) !important;
+    background-color: rgba(255, 255, 255, 0) !important;
 }
 .fc-today-button {
     background-color: #F4F4F5 !important; /* Màu nền của nút Today */
@@ -32,6 +32,10 @@
 }
 .popverStyle {
     z-index: 99999 !important;
+}
+.inputModal {
+    background-color: transparent;
+    height: 30px;
 }
 @media (prefers-color-scheme: dark) {
   :root {

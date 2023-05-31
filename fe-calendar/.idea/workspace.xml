@@ -2,10 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0676ba62-9312-4423-93f5-8ece01f8eed6" name="Changes" comment="login">
-      <change beforePath="$PROJECT_DIR$/../be-calendar1/src/models/event.model.js" beforeDir="false" afterPath="$PROJECT_DIR$/../be-calendar1/src/models/event.model.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/modalNew.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../worker-push-google/helper/googleHelper.js" beforeDir="false" afterPath="$PROJECT_DIR$/../worker-push-google/helper/googleHelper.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../worker-push-google/listener/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../worker-push-google/listener/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/calendar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/calendar.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/home.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/home.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/lich.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/lich.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/visit.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/visit.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/styles/globals.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles/globals.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,9 +37,16 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../be-calendar1" />
-  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "/home/binhhg/Public/DoAnTotNghiep",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "nodejs_package_manager_path": "yarn",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/utils" />
@@ -88,6 +98,7 @@
       <workItem from="1685326726662" duration="295000" />
       <workItem from="1685327077619" duration="181000" />
       <workItem from="1685328091209" duration="324000" />
+      <workItem from="1685516173472" duration="6737000" />
     </task>
     <task id="LOCAL-00001" summary="login">
       <created>1685011654501</created>
@@ -112,7 +123,6 @@
         </entry>
       </map>
     </option>
-    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="login" />

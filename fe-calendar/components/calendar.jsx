@@ -8,31 +8,21 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import bootstrap5Plugin from '@fullcalendar/bootstrap5';
 import eventEmitter from "../utils/eventEmitter";
+
 const Calendar = forwardRef((props, ref) => {
     const [isClient, setIsClient] = useState(false)
-    const [temporaryEvent, setTemporaryEvent] = useState(null);
+    const {showModal} = props
 
-    const handleSelect = (arg) => {
-        if (temporaryEvent) {
-            setTemporaryEvent(null);
-        }
+    function handelClick(info) {
+        eventEmitter.emit('showModalNew',info.event)
+        showModal()
+    }
 
-        const event = {
-            title: 'Tạo sự kiện',
-            start: arg.startStr,
-            end: arg.endStr,
-            allDay: arg.allDay
-        };
-
-        setTemporaryEvent((value) => value = event);
-        console.log('event ne', temporaryEvent)
-    };
     useEffect(() => {
         if (typeof window !== "undefined") {
             setIsClient(true)
         }
     }, [])
-
     return (
         <Fragment>
             {isClient && <FullCalendar
@@ -52,7 +42,7 @@ const Calendar = forwardRef((props, ref) => {
                             themeIcon: 'red',
                             click: () => {
                                 ref.current.getApi().today()
-                                eventEmitter.emit('clickToday',{})
+                                eventEmitter.emit('clickToday', {})
                             }
                         },
                         timeGridDay: {
@@ -133,8 +123,14 @@ const Calendar = forwardRef((props, ref) => {
                 // select={() => {
                 //     console.log('oke')
                 // }}
-                select={handleSelect}
-                eventClick={(info) => console.log('hehe thu cai, ', info.event)}
+                select={(info) => {
+                    console.log(info)
+                    showModal()
+                }}
+                eventClick={(info) => {
+                    console.log(info.event)
+                    handelClick(info)
+                }}
             />}
         </Fragment>
     )
