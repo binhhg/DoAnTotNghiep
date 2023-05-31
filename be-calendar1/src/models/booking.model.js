@@ -5,9 +5,10 @@ module.exports = (joi, mongoose, { joi2MongoSchema, schemas }) => {
     MICROSOFT: 2
   }
   const responseStatusConfig = {
-    TENTATIVE: 1,
-    NOT_ACCEPTED: 2,
-    ACCEPTED: 3
+    NEEDSACTION: 1, // chua lam gi
+    TENTATIVE: 1, // co the
+    DECLINED: 2, // tu choi
+    ACCEPTED: 3 // dong y
   }
   const eventJoi = joi.object({
     calendarId: joi.string().required(),
@@ -20,8 +21,9 @@ module.exports = (joi, mongoose, { joi2MongoSchema, schemas }) => {
       responseStatus: joi.number().valid(...Object.values(responseStatusConfig)).default('')
     }),
     attachments: joi.array().items(joi.string().allow('')).default([]),
-    linkMeeting: joi.string().allow(''),
-    createdBy: joi.string().allow('')
+    hangoutLink: joi.string().allow(''),
+    createdBy: joi.string().allow(''),
+    sequence: joi.number().default(0) // dùng khi update cần truyền lên để tránh conflict
   })
   const eventSchema = joi2MongoSchema(eventJoi, {
     userId: {
@@ -36,7 +38,7 @@ module.exports = (joi, mongoose, { joi2MongoSchema, schemas }) => {
     }
   }, {
     createdAt: {
-      event: Number,
+      type: Number,
       default: () => Math.floor(Date.now() / 1000)
     }
   })

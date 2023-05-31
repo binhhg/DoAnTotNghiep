@@ -3,7 +3,6 @@ import CalendarA from "../components/calendar";// a plugin!
 import ModalNew from "../components/modalNew";// a plugin!
 import CalendarB from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-import {isSameMonth, isSameDay, startOfMonth} from 'date-fns';
 import eventEmitter from "../utils/eventEmitter";
 export default function Lich() {
     const calen = useRef(null)

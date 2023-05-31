@@ -1,5 +1,6 @@
 const { web } = require('../config/credentials.json')
 const { google } = require('googleapis')
+const { response } = require('express')
 module.exports = (container) => {
   const oauth2Google = new google.auth.OAuth2(web.client_id, web.client_secret, 'http://localhost:3001/signin')
   const insertEvent = (token, event) => {
@@ -36,12 +37,34 @@ module.exports = (container) => {
       data = response.data.items
       return { data, error }
     } catch (e) {
-        console.log(e)
-        return {error: e}
+      console.log(e)
+      return { error: e }
+    }
+  }
+  const watchCalendar = async (tokenAuth, id, token) => {
+    try {
+      let data, error
+      oauth2Google.setCredentials({ refresh_token: tokenAuth })
+      const calendar = google.calendar({ version: 'v3', auth: oauth2Google })
+      const response = await calendar.events.watch({
+        id,
+        token,
+        type: 'web_hook',
+        address: process.env.WEB_HOOK_URL || 'http://localhost:8305/hook',
+        params: {
+          ttl: '3600'
+        }
+      })
+      data = response.data
+      return { data }
+    } catch (e) {
+      console.log(e)
+      return { error: e }
     }
   }
   return {
     insertEvent,
-    getListEvent
+    getListEvent,
+    watchCalendar
   }
 }

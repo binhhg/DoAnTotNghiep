@@ -10,7 +10,7 @@ module.exports = (joi, mongoose, { joi2MongoSchema, schemas }) => {
     }
   }, {
     createdAt: {
-      attendee: Number,
+      type: Number,
       default: () => Math.floor(Date.now() / 1000)
     }
   })

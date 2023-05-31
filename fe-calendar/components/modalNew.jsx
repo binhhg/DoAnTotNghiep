@@ -67,12 +67,12 @@ export default function ModalNew({show, handel}) {
             </Form>
         )
     }
-    useEffect(() => {
-        eventEmitter.on('showModalNew', result => {
-            console.log('vao day dc ne')
-            setData(result)
-        })
-    }, [])
+
+    eventEmitter.on('showModalNew', result => {
+        console.log('vao day dc ne')
+        setData(result)
+    })
+
     return (
         <>
             <Modal show={show} onHide={handleCloseModal}

@@ -17,10 +17,10 @@ const connect = (container, mediator) => {
   const connectionString = getMongoURL(dbSettings)
   MongoClient.connect(connectionString, {
     useNewUrlParser: true,
-    keepAlive: 1,
+    keepAlive: true,
     useUnifiedTopology: true,
-    authSource: 'admin',
-    useCreateIndex: true
+    authSource: 'admin'
+    // useCreateIndex: true
   })
   const db = MongoClient.connection
   db.on('error', console.error.bind(console, 'connection error:'))

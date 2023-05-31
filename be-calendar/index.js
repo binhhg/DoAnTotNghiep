@@ -38,14 +38,14 @@ async function listCalendars () {
     // Lấy danh sách calendar
     const response = await calendar.events.list({
       calendarId: 'primary', // Để lấy lịch của người dùng chính (primary calendar)
-      timeMin: new Date().toISOString(), // Lấy sự kiện từ ngày hiện tại
-      maxResults: 10, // Số lượng sự kiện tối đa
-      singleEvents: true,
-      orderBy: 'startTime'
+      timeMin: new Date().toISOString(), // Lấy sự kiện từ ngày hiện tạilượng sự kiện tối đa
+      singleEvents: false
+      // orderBy: 'created'
     })
     const calendars = response.data.items
     console.log(response.data.items)
     // In ra danh sách calendar
+    console.log(calendars.length, 'leng ne')
     calendars.forEach((calendar) => {
       console.log(`${calendar.summary} (${calendar.id})`)
     })
@@ -53,9 +53,33 @@ async function listCalendars () {
     console.error('Lỗi khi lấy danh sách calendar:', error)
   }
 }
+async function watchCalendar () {
+  // Tạo client cho Google Calendar API
+  const calendar = google.calendar({ version: 'v3', auth: oauth2Client })
+
+  try {
+    // Lấy danh sách calendar
+    const response = await calendar.events.watch({
+      calendarId: 'primary',
+      resource: {
+        id: '123456789',
+        token: 'asbhdgasdasdbvdhasvdh',
+        type: 'web_hook',
+        address: process.env.WEB_HOOK_URL || 'http://localhost:8501/hookTest',
+        params: {
+          ttl: '3600'
+        }
+      }
+    })
+    const aa = response.data
+    const qq = 4
+  } catch (error) {
+    console.error('Lỗi khi lấy danh sách calendar:', error)
+  }
+}
 
 // Thực thi lấy danh sách calendar
-listCalendars().then()
+watchCalendar().then()
 // const event = {
 //   summary: 'Ttest cai de ne',
 //   location: 'Địa điểm',

@@ -8,12 +8,14 @@ module.exports = (joi, mongoose, { joi2MongoSchema, schemas }) => {
   const eventJoi = joi.object({
     title: joi.string().required(),
     userId: joi.string().required,
-    summary: joi.string.allow(''),
+    summary: joi.string().allow(''),
     start: joi.number(),
     end: joi.number(),
-    rrule: joi.object(),
+    rrule: joi.object().unknown(),
+    extendedProps: joi.object().unknown(),
     exdate: joi.string().allow(''),
     location: joi.string().allow(''),
+    duration: joi.string().allow(''),
     state: joi.number().valid(...Object.values(stateConfig)).default(1),
     recurrence: joi.array().items(joi.string().allow('')).default([]),
     isBooking: joi.number().valid(0, 1).default(0)
@@ -24,7 +26,7 @@ module.exports = (joi, mongoose, { joi2MongoSchema, schemas }) => {
     }
   }, {
     createdAt: {
-      event: Number,
+      type: Number,
       default: () => Math.floor(Date.now() / 1000)
     }
   })
