@@ -1,42 +1,22 @@
 import React, { useState } from 'react';
-import { Modal, Button } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import {Menu, MenuItem, MenuButton,SubMenu, MenuDivider} from '@szhsin/react-menu'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faArrowRight, faUserCircle} from '@fortawesome/free-solid-svg-icons'
 
 export default function Visit() {
-  const [showModal, setShowModal] = useState(false);
-  const [modalPosition, setModalPosition] = useState({ x: 0, y: 0 });
-
-  const handleOpenModal = (e) => {
-    const { clientX, clientY } = e;
-    setModalPosition({ x: clientX, y: clientY });
-    setShowModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
 
     return (
         <>
-            <Button variant="primary" onClick={handleOpenModal}>
-                Launch demo modal
-            </Button>
-
-            <Modal show={showModal} onHide={handleCloseModal}  size="lg"
-                   aria-labelledby="contained-modal-title-vcenter"
-                   centered>
-                <Modal.Header closeButton>
-                </Modal.Header>
-                <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleCloseModal}>
-                        Close
-                    </Button>
-                    <Button variant="primary" onClick={handleCloseModal}>
-                        Save Changes
-                    </Button>
-                </Modal.Footer>
-            </Modal>
+            <Menu menuButton={<MenuButton>Open menu</MenuButton>}>
+                <MenuItem>New File</MenuItem>
+                <MenuItem>Save</MenuItem>
+                <SubMenu label="Edit">
+                    <MenuItem>Cut</MenuItem>
+                    <MenuItem>Copy</MenuItem>
+                    <MenuItem>Paste</MenuItem>
+                </SubMenu>
+                <MenuItem>Print...</MenuItem>
+            </Menu>
         </>
     );
 }

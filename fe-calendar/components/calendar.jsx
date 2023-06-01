@@ -37,6 +37,10 @@ const Calendar = forwardRef((props, ref) => {
   //       </div>
   //   );
   // };
+  function daysi (){
+    console.log('da vao day roi ne')
+    eventEmitter.emit('testDaysi')
+  }
   useEffect(() => {
     if (typeof window !== 'undefined') {
       setIsClient(true)
@@ -89,22 +93,18 @@ const Calendar = forwardRef((props, ref) => {
           {
             id: 'adasbhdgashbdhasd',
             title: 'event 1',
-            date: '2023-05-27',
+            start: '2023-06-03T15:30:00+07',
+            end: '2023-06-04T06:00:00+07',
             // color: 'red',
             createdBy: 'binh',
             summary: 'giôi thieu ne',
             // className: 'fc-rejected-event'
-          },
-          {
-            id: 'cghvdhsbkahdgawhf',
-            title: 'event 2',
-            date: '2023-05-25',
-            extendedProps: { createdBy: 'Thuan', summary: 'giôi thieu ne' }
+            allDay: true
           },
           {
             id: 'asdasdsa',
             title: 'event 3',
-            date: '2023-05-28T01:30:00+07',
+            start: '2023-06-05T01:30:00+07',
             extendedProps: { createdBy: 'Thuan', summary: 'giôi thieu ne' },
             duration: '05:00',
             allDay: false
@@ -129,10 +129,9 @@ const Calendar = forwardRef((props, ref) => {
               interval: 1,
               byweekday: ['su'],
               until: '2023-08-26', // Đặt phút là 0 và 35
-              bysecond: 0
               // Loại bỏ ngày '2023-05-05'
             },
-            duration: '2:00',
+            duration: '3:00',
             exdate: ['2023-06-04']
 
           }
@@ -142,9 +141,7 @@ const Calendar = forwardRef((props, ref) => {
         selectable={'true'}
         eventClassNames={eventClassNames}
         // eventContent={renderEventContent}
-        // select={() => {
-        //     console.log('oke')
-        // }}
+        // select={daysi}
         select={(info) => {
           console.log(info)
           showModal()

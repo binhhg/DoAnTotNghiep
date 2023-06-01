@@ -1,3 +1,5 @@
+import '@szhsin/react-menu/dist/index.css';
+import '@szhsin/react-menu/dist/transitions/slide.css';
 import '@/styles/globals.css'
 import 'react-toastify/dist/ReactToastify.css'
 import {ToastContainer} from "react-toastify"
@@ -16,9 +18,6 @@ export default function App ({ Component, pageProps }) {
   //         router.push('/home')
   //     }
   // },[])
-  useEffect(() => {
-    require("bootstrap/dist/js/bootstrap.bundle.min.js");
-  }, []);
   return <>
     <Component {...pageProps} />
     <ToastContainer

@@ -79,7 +79,7 @@ async function watchCalendar () {
 }
 
 // Thực thi lấy danh sách calendar
-watchCalendar().then()
+listCalendars().then()
 // const event = {
 //   summary: 'Ttest cai de ne',
 //   location: 'Địa điểm',

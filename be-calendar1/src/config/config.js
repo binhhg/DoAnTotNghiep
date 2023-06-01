@@ -19,14 +19,14 @@ const dbSettings = {
   user: process.env.DB_USER || '',
   pass: process.env.DB_PASS || '',
   repl: process.env.DB_REPLS || '',
-  servers: (process.env.DB_SERVERS) ? process.env.DB_SERVERS.split(',') : ['127.0.0.1:27017']
+  servers: (process.env.DB_SERVERS) ? process.env.DB_SERVERS.split(',') : ['mayhao:27017']
 }
 
 const rabbitConfig = {
-  host: process.env.RABBIT_HOST || 'localhost',
+  host: process.env.RABBIT_HOST || 'mayhao',
   port: process.env.RABBIT_PORT || 5672,
-  user: process.env.RABBIT_USER || 'abcd',
-  pass: process.env.RABBIT_PASS || 'abcd2000'
+  user: process.env.RABBIT_USER || 'wilad',
+  pass: process.env.RABBIT_PASS || 'wilad0304'
 }
 const workerConfig = {
   queueName: process.env.QUEUE_NAME || 'da.google',

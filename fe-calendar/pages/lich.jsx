@@ -1,6 +1,7 @@
 import React, {useRef, useState} from 'react'
 import CalendarA from "../components/calendar";// a plugin!
 import ModalNew from "../components/modalNew";// a plugin!
+import ModalDaysiui from "../components/modalDaysiui";// a plugin!
 import CalendarB from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import eventEmitter from "../utils/eventEmitter";
