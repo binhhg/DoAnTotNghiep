@@ -39,7 +39,8 @@ async function listCalendars () {
     const response = await calendar.events.list({
       calendarId: 'primary', // Để lấy lịch của người dùng chính (primary calendar)
       timeMin: new Date().toISOString(), // Lấy sự kiện từ ngày hiện tạilượng sự kiện tối đa
-      singleEvents: false
+      singleEvents: false,
+      showDeleted: false
       // orderBy: 'created'
     })
     const calendars = response.data.items
@@ -53,6 +54,7 @@ async function listCalendars () {
     console.error('Lỗi khi lấy danh sách calendar:', error)
   }
 }
+
 async function watchCalendar () {
   // Tạo client cho Google Calendar API
   const calendar = google.calendar({ version: 'v3', auth: oauth2Client })
@@ -78,47 +80,159 @@ async function watchCalendar () {
   }
 }
 
-// Thực thi lấy danh sách calendar
-listCalendars().then()
-// const event = {
-//   summary: 'Ttest cai de ne',
-//   location: 'Địa điểm',
-//   description: 'Mô tả sự kiện',
-//   start: {
-//     dateTime: '2023-04-27T09:00:00-07:00',
-//     timeZone: 'Asia/Ho_Chi_Minh'
-//   },
-//   end: {
-//     dateTime: '2023-04-27T17:00:00-07:00',
-//     timeZone: 'Asia/Ho_Chi_Minh'
-//   },
-//   conferenceData: {
-//     createRequest: {
-//       requestId: 'heg-qemy-uvx',
-//       conferenceSolutionKey: {
-//         type: 'hangoutsMeet'
-//       }
-//     }
-//   },
-//   reminders: {
-//     useDefault: true
-//   },
-//   attendees: [
-//     { email: 'binhvxhg789@gmail.com' }
-//   ],
-//   sendNotifications: true
-// }
-// const calendar = google.calendar({ version: 'v3' })
-// calendar.events.insert({
-//   auth: oauth2Client,
-//   calendarId: 'primary',
-//   resource: event
-// }, (err, res) => {
-//   if (err) return console.log(`Lỗi: ${err}`)
-//   console.log(`Đã tạo sự kiện: ${res.data.htmlLink}`)
-//   console.log('res ne ', res)
-// })
+async function addCalendar () {
+  const event = {
+    summary: 'Ttest cai de ne',
+    location: 'Địa điểm',
+    description: 'Mô tả sự kiện',
+    start: {
+      dateTime: '2023-06-05T09:00:00+07:00',
+      timeZone: 'Asia/Ho_Chi_Minh'
+    },
+    end: {
+      dateTime: '2023-06-05T17:00:00+07:00',
+      timeZone: 'Asia/Ho_Chi_Minh'
+    },
+    recurrence: ['RRULE:FREQ=DAILY'],
+    // conferenceData: {
+    //   createRequest: {
+    //     requestId: 'heg-qemy-uvx',
+    //     conferenceSolutionKey: {
+    //       type: 'hangoutsMeet'
+    //     }
+    //   }
+    // },
+    // reminders: {
+    //   useDefault: true
+    // },
+    // attendees: [
+    //   { email: 'binhvxhg789@gmail.com' }
+    // ],
+    // sendNotifications: true
+  }
+  const calendar = google.calendar({ version: 'v3' })
+  calendar.events.insert({
+    auth: oauth2Client,
+    calendarId: 'primary',
+    resource: event,
+  }, (err, res) => {
+    if (err) return console.log(`Lỗi: ${err}`)
+    console.log(`Đã tạo sự kiện: ${res.data.htmlLink}`)
+    console.log('res ne ', res.data)
+  })
+}
 
+async function update1EventOfRecurringEvent (id) {
+  const event = {
+    summary: 'aduma',
+    start: {
+      dateTime: '2023-06-07T09:00:00+07:00',
+      timeZone: 'Asia/Ho_Chi_Minh'
+    },
+    end: {
+      dateTime: '2023-06-07T11:00:00+07:00',
+      timeZone: 'Asia/Ho_Chi_Minh'
+    },
+    recurringEventId: id,
+    originalStartTime: {
+      dateTime: '2023-06-07T09:00:00+07:00',
+      timeZone: 'Asia/Ho_Chi_Minh'
+    }
+  }
+  const calendar = google.calendar({ version: 'v3' })
+  calendar.events.insert({
+    auth: oauth2Client,
+    calendarId: 'primary',
+    resource: event
+  }, (err, res) => {
+    if (err) return console.log(`Lỗi: ${err}`)
+    console.log(`Đã tạo sự kiện: ${res.data.htmlLink}`)
+    console.log('res ne ', res.data)
+  })
+}
+
+async function addNewRecurringFromCurrentRecurring (id) {
+  const event = {
+    id: '(p802ndklpimeq8plhc1f1mju2c_R20230607T020000',
+    etag: '"3371747834136000"',
+    summary: 'Ttest cai de ne',
+    location: 'Địa điểm',
+    description: 'Mô tả sự kiện',
+    start: {
+      dateTime: '2023-06-07T09:00:00+07:00',
+      timeZone: 'Asia/Ho_Chi_Minh'
+    },
+    end: {
+      dateTime: '2023-06-07T14:00:00+07:00',
+      timeZone: 'Asia/Ho_Chi_Minh'
+    },
+    recurrence: ['RRULE:FREQ=DAILY']
+  }
+  const calendar = google.calendar({ version: 'v3' })
+  const { data } = await calendar.events.get({
+    auth: oauth2Client,
+    calendarId: 'primary',
+    eventId: id
+  })
+  await calendar.events.update({
+    auth: oauth2Client,
+    calendarId: 'primary',
+    eventId: id,
+    resource: { ...data, recurrence: ['RRULE:FREQ=DAILY;UNTIL=20230606T165959Z'] }
+
+  })
+  delete data.id
+  await calendar.events.insert({
+    auth: oauth2Client,
+    calendarId: 'primary',
+    resource: event
+  })
+}
+
+async function deleteCalendar (id) {
+  const calendar = google.calendar({ version: 'v3' })
+  calendar.events.delete({
+    auth: oauth2Client,
+    calendarId: 'primary',
+    eventId: id
+  }, (err, res) => {
+    if (err) return console.log(`Lỗi: ${err}`)
+    console.log(`Đã tạo sự kiện: ${res.data.htmlLink}`)
+    console.log('res ne ', res.data)
+  })
+}
+
+async function getInstences (id) {
+  // Tạo client cho Google Calendar API
+  const calendar = google.calendar({ version: 'v3', auth: oauth2Client })
+
+  try {
+    // Lấy danh sách calendar
+    const response = await calendar.events.instances({
+      calendarId: 'primary', // Để lấy lịch của người dùng chính (primary calendar)
+      // orderBy: 'created'
+      eventId: id,
+      // timeMin: '2023-06-07'
+      originalStart: '2023-06-07T09:00:00+07:00'
+    })
+    const calendars = response.data.items
+    console.log(response.data.items)
+    // In ra danh sách calendar
+    console.log(calendars.length, 'leng ne')
+    calendars.forEach((calendar) => {
+      console.log(`${calendar.summary} (${calendar.id})`)
+    })
+  } catch (error) {
+    console.error('Lỗi khi lấy danh sách calendar:', error)
+  }
+}
+
+// deleteCalendar('i7h4bae9cp3nu5qdmldg4veus8').then()
+// update1EventOfRecurringEvent('0u3tu99c86h75jr455dqh1auac').then()
+// addNewRecurringFromCurrentRecurring('oln8rmgncjq4leouusbsftvt88').then()
+listCalendars().then()
+// addCalendar().then()
+// getInstences('q8hhrtk3cqtv7tfnjclhpe9r80').then()
 // admin.initializeApp({
 //   credential: admin.credential.cert(serviceAccount)
 // })
@@ -142,5 +256,3 @@ listCalendars().then()
 //
 // verifyIdToken(token).then()
 // User ID of the user to get the refresh token
-
-
