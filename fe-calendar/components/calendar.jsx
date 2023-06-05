@@ -127,14 +127,13 @@ const Calendar = forwardRef((props, ref) => {
             title: 'Sự kiện hàng ngàyaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
             // Hiển thị từ thứ 2 đến thứ 6
             // daysOfWeek: [1, 2, 3, 4, 5],
-            rdate: ['2023-05-29T19:00:00'],
             // startTime: '2023-05-28T19:00:00',
             rrule: {
-              freq: 'WEEKLY',
+              freq: 'MONTHLY',
               dtstart: '2023-05-29',
-              interval: 1,
-              // byweekday: ['su'],
-              until: '2023-08-28' // Đặt phút là 0 và 35
+              byweekday: ['MO'],
+              until: '2023-08-28', // Đặt phút là 0 và 35
+              bysetpos: 1
               // Loại bỏ ngày '2023-05-05'
             },
             // allDay: true,
