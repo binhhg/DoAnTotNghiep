@@ -5,13 +5,18 @@ import ModalDaysiui from "../components/modalDaysiui";// a plugin!
 import CalendarB from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import eventEmitter from "../utils/eventEmitter";
+import PopoverA from "../components/popover";
 export default function Lich() {
     const calen = useRef(null)
     const [value, setValue] = useState(new Date());
     const [showModal, setShowModal] = useState(false);
+    const [popoverPosition, setPopoverPosition] = useState({ left: 0, top: 0 });
 
-    function handelShowModal() {
+    function handelShowModal(info) {
+        const { pageX, pageY } = info.jsEvent;
+        console.log(pageX,pageY)
         setShowModal(true)
+        // setPopoverPosition({ left: pageX, top: pageY });
     }
 
     function onChange(vc) {
@@ -31,6 +36,7 @@ export default function Lich() {
             <div className={'col-span-4 '}>
                 <CalendarA showModal={handelShowModal} ref={calen}/>
                 <ModalNew show={showModal} handel={setShowModal}/>
+                {/*<PopoverA position={popoverPosition} show={showModal} handel={setShowModal} ref={calen}/>*/}
             </div>
         </div>
     )

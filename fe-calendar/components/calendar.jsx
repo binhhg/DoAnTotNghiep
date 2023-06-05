@@ -15,8 +15,8 @@ const Calendar = forwardRef((props, ref) => {
   const { showModal } = props
 
   function handelClick (info) {
-    eventEmitter.emit('showModalNew', info.event)
-    showModal()
+    eventEmitter.emit('showModalNew', info)
+    showModal(info)
   }
 
   function eventClassNames (eventInfo) {
@@ -151,12 +151,12 @@ const Calendar = forwardRef((props, ref) => {
         // select={daysi}
         select={(info) => {
           console.log(info)
-          showModal()
-        }}
-        eventClick={(info) => {
-          console.log(info.event)
           handelClick(info)
         }}
+        // eventClick={(info) => {
+        //   // console.log(info.event)
+        //   handelClick(info)
+        // }}
       />
       }
     </Fragment>

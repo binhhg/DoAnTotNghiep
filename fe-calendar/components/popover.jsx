@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {forwardRef, useEffect, useState} from 'react'
 import {Modal, Button, Form, Row, Col, FormSelect, Popover, OverlayTrigger, Overlay} from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import eventEmitter from '../utils/eventEmitter'
@@ -6,7 +6,9 @@ import DatePicker from 'react-datepicker'
 import Select from 'react-select';
 import 'react-datepicker/dist/react-datepicker.css'
 
-export default function ModalNew({show, handel}) {
+
+const PopoverA = forwardRef((props, ref) => {
+    const {show, handel,popoverPosition} = props
     const option = [
         {value: '1', label: 'Không lặp lại'},
         {value: '2', label: 'Hàng tuần vào thứ  21111111111111111'},
@@ -130,30 +132,31 @@ export default function ModalNew({show, handel}) {
 
     return (
         <>
-            <Modal
-                show={show} onHide={handleCloseModal}
-                style={{display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh'}}
-                scrollable
-            >
-                <Modal.Header closeButton/>
-                <Modal.Body>{qq()}</Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleCloseModal}>
-                        Close
-                    </Button>
-                    <Button variant="primary" onClick={handleCloseModal}>
-                        {data.title ? 'save' : 'edit'}
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-            {/*<Overlay show={show} placement={'auto'}>*/}
-            {/*    <Popover id="popover-contained">*/}
-            {/*        <Popover.Title as="h3">Popover Title</Popover.Title>*/}
-            {/*        <Popover.Content>*/}
-            {/*            This is the content of the popover.*/}
-            {/*        </Popover.Content>*/}
-            {/*    </Popover>*/}
-            {/*</Overlay>*/}
+            <Overlay show={show} placement={'bottom'} >
+                {({ arrowProps, show: _show, popper, ...props }) => (
+                    <div
+                        {...props}
+                        style={{
+                            position: 'absolute',
+                            zIndex: 9999,
+                            backgroundColor: 'white',
+                            padding: '10px',
+                            borderRadius: '5px',
+                            boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.15)',
+                            ...popoverPosition,
+                        }}
+                    >
+                        <Popover id="popover-example">
+                            <Popover.Title as="h3">Popover Title</Popover.Title>
+                            <Popover.Content>
+                                This is the content of the popover.
+                            </Popover.Content>
+                        </Popover>
+                    </div>
+                )}
+            </Overlay>
         </>
     )
-}
+})
+
+export default PopoverA
