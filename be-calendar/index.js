@@ -86,11 +86,11 @@ async function addCalendar () {
     location: 'Địa điểm',
     description: 'Mô tả sự kiện',
     start: {
-      dateTime: '2023-06-05T09:00:00+07:00',
+      dateTime: '2023-06-05T09:00:00',
       timeZone: 'Asia/Ho_Chi_Minh'
     },
     end: {
-      dateTime: '2023-06-05T17:00:00+07:00',
+      dateTime: '2023-06-05T17:00:00',
       timeZone: 'Asia/Ho_Chi_Minh'
     },
     recurrence: ['RRULE:FREQ=DAILY'],
@@ -230,8 +230,8 @@ async function getInstences (id) {
 // deleteCalendar('i7h4bae9cp3nu5qdmldg4veus8').then()
 // update1EventOfRecurringEvent('0u3tu99c86h75jr455dqh1auac').then()
 // addNewRecurringFromCurrentRecurring('oln8rmgncjq4leouusbsftvt88').then()
-listCalendars().then()
-// addCalendar().then()
+// listCalendars().then()
+addCalendar().then()
 // getInstences('q8hhrtk3cqtv7tfnjclhpe9r80').then()
 // admin.initializeApp({
 //   credential: admin.credential.cert(serviceAccount)

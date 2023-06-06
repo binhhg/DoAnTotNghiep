@@ -35,7 +35,7 @@ export default function Lich() {
             <div className={'col-span-1 '}><CalendarB onChange={onChange} value={value}/></div>
             <div className={'col-span-4 '}>
                 <CalendarA showModal={handelShowModal} ref={calen}/>
-                <ModalNew show={showModal} handel={setShowModal}/>
+                <ModalNew show={showModal} handle={setShowModal}/>
                 {/*<PopoverA position={popoverPosition} show={showModal} handel={setShowModal} ref={calen}/>*/}
             </div>
         </div>

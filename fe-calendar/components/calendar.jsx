@@ -18,7 +18,10 @@ const Calendar = forwardRef((props, ref) => {
     eventEmitter.emit('showModalNew', info)
     showModal(info)
   }
-
+  eventEmitter.on('addEvent', data => {
+    const add = ref.current.getApi()
+    add.addEvent(data)
+  })
   function eventClassNames (eventInfo) {
     const { event } = eventInfo
     if (event.title === 'event 4') return 'fc-rejected-event special-event'
@@ -109,7 +112,7 @@ const Calendar = forwardRef((props, ref) => {
           {
             id: 'asdasdsa',
             title: 'event 3',
-            start: '2023-06-05T01:30:00+07',
+            start: '2023-06-05T05:30:00',
             extendedProps: { createdBy: 'Thuan', summary: 'giôi thieu ne' },
             duration: '05:00',
             allDay: false
@@ -128,6 +131,19 @@ const Calendar = forwardRef((props, ref) => {
             // Hiển thị từ thứ 2 đến thứ 6
             // daysOfWeek: [1, 2, 3, 4, 5],
             // startTime: '2023-05-28T19:00:00',
+            extendedProps: {
+              rrule: {
+                freq: 'MONTHLY',
+                dtstart: '2023-05-29',
+                byweekday: ['MO'],
+                until: '2023-08-28', // Đặt phút là 0 và 35
+                bysetpos: 1
+                // Loại bỏ ngày '2023-05-05'
+              },
+              // allDay: true,
+              duration: '24:00',
+              exdate: ['2023-06-11']
+            },
             rrule: {
               freq: 'MONTHLY',
               dtstart: '2023-05-29',
@@ -152,10 +168,10 @@ const Calendar = forwardRef((props, ref) => {
           console.log(info)
           handelClick(info)
         }}
-        // eventClick={(info) => {
-        //   // console.log(info.event)
-        //   handelClick(info)
-        // }}
+        eventClick={(info) => {
+          console.log(info)
+          // handelClick(info)
+        }}
       />
       }
     </Fragment>
