@@ -2,7 +2,7 @@ import React, { Fragment, useEffect, useState, useRef, forwardRef } from 'react'
 import FullCalendar from '@fullcalendar/react' // must go before plugins
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
-import listPlugin from '@fullcalendar/list';
+import listPlugin from '@fullcalendar/list'
 import rrulePlugin from '@fullcalendar/rrule'
 import interactionPlugin from '@fullcalendar/interaction'
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -18,10 +18,12 @@ const Calendar = forwardRef((props, ref) => {
     eventEmitter.emit('showModalNew', info)
     showModal(info)
   }
+
   eventEmitter.on('addEvent', data => {
     const add = ref.current.getApi()
     add.addEvent(data)
   })
+
   function eventClassNames (eventInfo) {
     const { event } = eventInfo
     if (event.title === 'event 4') return 'fc-rejected-event special-event'
@@ -57,7 +59,7 @@ const Calendar = forwardRef((props, ref) => {
   return (
     <Fragment>
       {isClient && <FullCalendar
-        plugins={[rrulePlugin, bootstrap5Plugin, dayGridPlugin, timeGridPlugin, interactionPlugin,listPlugin]}
+        plugins={[rrulePlugin, bootstrap5Plugin, dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin]}
         // themeSystem={'bootstrap5'}
         initialView={'timeGridWeek'}
         headerToolbar={{
@@ -172,6 +174,20 @@ const Calendar = forwardRef((props, ref) => {
           console.log(info)
           // handelClick(info)
         }}
+        eventDidMount={(info) => {
+          console.log(info)
+          if (info.event.allDay && (info.view.type !== 'listMonth')) {
+            info.el.style.backgroundColor = 'red'
+          } else if (info.event.allDay && (info.view.type === 'listMonth' || info.view.type === 'dayGridMonth')) {
+            console.log('here')
+            const dotEl = info.el.getElementsByClassName('fc-list-event-dot')[0]
+            if (dotEl) {
+              console.log('hereee ', dotEl)
+              dotEl.style.borderColor = 'red'
+            }
+          }
+        }
+        }
       />
       }
     </Fragment>

@@ -82,18 +82,18 @@ async function watchCalendar () {
 
 async function addCalendar () {
   const event = {
-    summary: 'Ttest cai de ne',
+    summary: 'Ttest cai de ne 2',
     location: 'Địa điểm',
     description: 'Mô tả sự kiện',
     start: {
-      dateTime: '2023-06-05T09:00:00',
+      date: '2023-06-05',
       timeZone: 'Asia/Ho_Chi_Minh'
     },
     end: {
-      dateTime: '2023-06-05T17:00:00',
+      date: '2023-06-07',
       timeZone: 'Asia/Ho_Chi_Minh'
-    },
-    recurrence: ['RRULE:FREQ=DAILY'],
+    }
+    // recurrence: ['RRULE:FREQ=DAILY'],
     // conferenceData: {
     //   createRequest: {
     //     requestId: 'heg-qemy-uvx',
