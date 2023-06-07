@@ -22,6 +22,7 @@ module.exports = (joi, mongoose, { joi2MongoSchema, schemas }) => {
     }),
     attachments: joi.array().items(joi.string().allow('')).default([]),
     hangoutLink: joi.string().allow(''),
+    recurrence: joi.array().items(joi.string().allow('')).default([]),
     createdBy: joi.string().allow(''),
     sequence: joi.number().default(0) // dùng khi update cần truyền lên để tránh conflict
   })

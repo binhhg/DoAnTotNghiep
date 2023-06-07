@@ -82,39 +82,40 @@ async function watchCalendar () {
 
 async function addCalendar () {
   const event = {
-    summary: 'Ttest cai de ne 2',
-    location: 'Địa điểm',
+    summary: 'Ttest cai de ne 3',
     description: 'Mô tả sự kiện',
     start: {
-      date: '2023-06-05',
+      dateTime: '2023-06-09T06:30:00+07:00',
       timeZone: 'Asia/Ho_Chi_Minh'
     },
     end: {
-      date: '2023-06-07',
+      dateTime: '2023-06-10T08:30:00+07:00',
       timeZone: 'Asia/Ho_Chi_Minh'
-    }
+    },
     // recurrence: ['RRULE:FREQ=DAILY'],
-    // conferenceData: {
-    //   createRequest: {
-    //     requestId: 'heg-qemy-uvx',
-    //     conferenceSolutionKey: {
-    //       type: 'hangoutsMeet'
-    //     }
-    //   }
-    // },
-    // reminders: {
-    //   useDefault: true
-    // },
-    // attendees: [
-    //   { email: 'binhvxhg789@gmail.com' }
-    // ],
-    // sendNotifications: true
+    conferenceData: {
+      createRequest: {
+        requestId: '7qxalsvy0e',
+        conferenceSolutionKey: {
+          type: 'hangoutsMeet'
+        }
+      }
+    },
+    location: 'p604 thu vien ne',
+    reminders: {
+      useDefault: true
+    },
+    attendees: [
+      { email: 'binhpt@carpla.vn' }
+    ],
   }
   const calendar = google.calendar({ version: 'v3' })
   calendar.events.insert({
     auth: oauth2Client,
     calendarId: 'primary',
     resource: event,
+    conferenceDataVersion: 1,
+    sendUpdates: 'all'
   }, (err, res) => {
     if (err) return console.log(`Lỗi: ${err}`)
     console.log(`Đã tạo sự kiện: ${res.data.htmlLink}`)

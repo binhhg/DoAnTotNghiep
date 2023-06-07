@@ -99,6 +99,7 @@ const Calendar = forwardRef((props, ref) => {
           }
         }
         ref={ref}
+        event
         events={[
           {
             id: 'adasbhdgashbdhasd',
@@ -114,6 +115,14 @@ const Calendar = forwardRef((props, ref) => {
           {
             id: 'asdasdsa',
             title: 'event 3',
+            start: '2023-06-05T05:30:00',
+            extendedProps: { createdBy: 'Thuan', summary: 'giôi thieu ne' },
+            duration: '05:00',
+            allDay: false
+          },
+          {
+            id: 'asdasdsaaaaaa',
+            title: 'event 3 1',
             start: '2023-06-05T05:30:00',
             extendedProps: { createdBy: 'Thuan', summary: 'giôi thieu ne' },
             duration: '05:00',
@@ -171,18 +180,20 @@ const Calendar = forwardRef((props, ref) => {
           handelClick(info)
         }}
         eventClick={(info) => {
-          console.log(info)
-          // handelClick(info)
-        }}
+              info.el.popover({
+                container: 'body',
+                content: '<p>he so lo </p>',
+                html: true,
+                trigger: 'click'
+              })
+          info.el.popover('show')
+          }}
         eventDidMount={(info) => {
-          console.log(info)
           if (info.event.allDay && (info.view.type !== 'listMonth')) {
             info.el.style.backgroundColor = 'red'
           } else if (info.event.allDay && (info.view.type === 'listMonth' || info.view.type === 'dayGridMonth')) {
-            console.log('here')
             const dotEl = info.el.getElementsByClassName('fc-list-event-dot')[0]
             if (dotEl) {
-              console.log('hereee ', dotEl)
               dotEl.style.borderColor = 'red'
             }
           }
