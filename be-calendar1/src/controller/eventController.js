@@ -116,7 +116,7 @@ module.exports = (container) => {
                         value: v
                     } = await schemaValidator(bodyAcc, 'Booking')
                     if (e) {
-                        return res.status(httpCode.BAD_REQUEST).json({msg: error.message})
+                        return res.status(httpCode.BAD_REQUEST).json({msg: e})
                     }
                     const book = await bookingRepo.addBooking(v)
                     event.booking = book

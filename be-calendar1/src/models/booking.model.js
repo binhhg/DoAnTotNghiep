@@ -16,8 +16,7 @@ module.exports = (joi, mongoose, { joi2MongoSchema, schemas }) => {
     type: joi.number().valid(...Object.values(accountType)).default(1),
     userId: joi.string().required(),
     accountId: joi.string().required(),
-    attendees: joi.object({
-    }).unknown(),
+    attendees: joi.array().items(joi.object().unknown()).default([]),
     attachments: joi.array().items(joi.string().allow('')).default([]),
     hangoutLink: joi.string().allow(''),
     recurrence: joi.array().items(joi.string().allow('')).default([]),
