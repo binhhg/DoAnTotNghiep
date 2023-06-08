@@ -21,7 +21,6 @@ export default function Lich() {
 
     function onChange(vc) {
         setValue(vc)
-        console.log(value)
         let calend = calen.current.getApi()
         calend.gotoDate(vc)
     }

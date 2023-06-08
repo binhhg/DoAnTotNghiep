@@ -85,29 +85,29 @@ async function addCalendar () {
     summary: 'Ttest cai de ne 3',
     description: 'Mô tả sự kiện',
     start: {
-      dateTime: '2023-06-09T06:30:00+07:00',
+      dateTime: '2023-06-10T06:30:00+07:00',
       timeZone: 'Asia/Ho_Chi_Minh'
     },
     end: {
       dateTime: '2023-06-10T08:30:00+07:00',
       timeZone: 'Asia/Ho_Chi_Minh'
     },
-    // recurrence: ['RRULE:FREQ=DAILY'],
-    conferenceData: {
-      createRequest: {
-        requestId: '7qxalsvy0e',
-        conferenceSolutionKey: {
-          type: 'hangoutsMeet'
-        }
-      }
-    },
+    recurrence: ['RRULE:FREQ=DAILY;BYDAY=MO,TU,WE,TH,FR'],
+    // conferenceData: {
+    //   createRequest: {
+    //     requestId: '7qxalsvy0e',
+    //     conferenceSolutionKey: {
+    //       type: 'hangoutsMeet'
+    //     }
+    //   }
+    // },
     location: 'p604 thu vien ne',
     reminders: {
       useDefault: true
     },
-    attendees: [
-      { email: 'binhpt@carpla.vn' }
-    ],
+    // attendees: [
+    //   { email: 'binhpt@carpla.vn' }
+    // ],
   }
   const calendar = google.calendar({ version: 'v3' })
   calendar.events.insert({
@@ -231,8 +231,8 @@ async function getInstences (id) {
 // deleteCalendar('i7h4bae9cp3nu5qdmldg4veus8').then()
 // update1EventOfRecurringEvent('0u3tu99c86h75jr455dqh1auac').then()
 // addNewRecurringFromCurrentRecurring('oln8rmgncjq4leouusbsftvt88').then()
-// listCalendars().then()
-addCalendar().then()
+listCalendars().then()
+// addCalendar().then()
 // getInstences('q8hhrtk3cqtv7tfnjclhpe9r80').then()
 // admin.initializeApp({
 //   credential: admin.credential.cert(serviceAccount)

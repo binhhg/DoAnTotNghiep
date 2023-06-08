@@ -17,20 +17,19 @@ module.exports = (joi, mongoose, { joi2MongoSchema, schemas }) => {
     userId: joi.string().required(),
     accountId: joi.string().required(),
     attendees: joi.object({
-      email: joi.string().required(),
-      responseStatus: joi.number().valid(...Object.values(responseStatusConfig)).default('')
-    }),
+    }).unknown(),
     attachments: joi.array().items(joi.string().allow('')).default([]),
     hangoutLink: joi.string().allow(''),
     recurrence: joi.array().items(joi.string().allow('')).default([]),
-    createdBy: joi.string().allow(''),
+    createdBy: joi.object().default('').unknown(),
+    organizer: joi.object().default('').unknown(),
     sequence: joi.number().default(0) // dùng khi update cần truyền lên để tránh conflict
   })
   const eventSchema = joi2MongoSchema(eventJoi, {
     userId: {
       type: ObjectId
     },
-    account: {
+    accountId: {
       type: ObjectId
     },
     eventId: {

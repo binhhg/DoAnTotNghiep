@@ -1,5 +1,5 @@
 const serverSettings = {
-  port: process.env.PORT || 8305,
+  port: process.env.PORT || 8503,
   basePath: process.env.BASE_PATH || ''
 }
 
@@ -19,7 +19,7 @@ const dbSettings = {
   user: process.env.DB_USER || '',
   pass: process.env.DB_PASS || '',
   repl: process.env.DB_REPLS || '',
-  servers: (process.env.DB_SERVERS) ? process.env.DB_SERVERS.split(',') : ['127.0.0.1:27017']
+  servers: (process.env.DB_SERVERS) ? process.env.DB_SERVERS.split(',') : ['mayhao:27017']
 }
 
 const rabbitConfig = {
@@ -42,7 +42,7 @@ const actionConfig = {
   DELETE: 'deleted'
 }
 const urlConfig = {
-  user: process.env.USER_URL || 'http://localhost:8003'
+  user: process.env.USER_URL || 'http://localhost:8501'
 }
 const serverHelper = function () {
   const jwt = require('jsonwebtoken')

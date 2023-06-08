@@ -7,11 +7,11 @@ module.exports = container => {
     try {
       const options = {
         headers: { 'x-access-token': accessToken },
-        uri: `${user}/internal/user/${id}`,
+        url: `${user}/internal/account/${id}`,
         json: true,
         method: 'GET'
       }
-      const data = await axios(options)
+      const {data} = await axios(options)
       return { statusCode: httpCode.SUCCESS, data }
     } catch (e) {
       logger.e(e?.response?.data)

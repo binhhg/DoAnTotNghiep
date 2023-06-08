@@ -12,6 +12,7 @@ import eventEmitter from '../utils/eventEmitter'
 
 const Calendar = forwardRef((props, ref) => {
   const [isClient, setIsClient] = useState(false)
+  const [data,setData] = useState(null)
   const { showModal } = props
 
   function handelClick (info) {
@@ -112,22 +113,22 @@ const Calendar = forwardRef((props, ref) => {
             // className: 'fc-rejected-event'
             // allDay: true
           },
-          {
-            id: 'asdasdsa',
-            title: 'event 3',
-            start: '2023-06-05T05:30:00',
-            extendedProps: { createdBy: 'Thuan', summary: 'giôi thieu ne' },
-            duration: '05:00',
-            allDay: false
-          },
-          {
-            id: 'asdasdsaaaaaa',
-            title: 'event 3 1',
-            start: '2023-06-05T05:30:00',
-            extendedProps: { createdBy: 'Thuan', summary: 'giôi thieu ne' },
-            duration: '05:00',
-            allDay: false
-          },
+          // {
+          //   id: 'asdasdsa',
+          //   title: 'event 3',
+          //   start: '2023-06-05T05:30:00',
+          //   extendedProps: { createdBy: 'Thuan', summary: 'giôi thieu ne' },
+          //   duration: '05:00',
+          //   allDay: false
+          // },
+          // {
+          //   id: 'asdasdsaaaaaa',
+          //   title: 'event 3 1',
+          //   start: '2023-06-05T05:30:00',
+          //   extendedProps: { createdBy: 'Thuan', summary: 'giôi thieu ne' },
+          //   duration: '05:00',
+          //   allDay: 1
+          // },
           {
             id: 'aaaa',
             title: 'event 4',
@@ -136,6 +137,20 @@ const Calendar = forwardRef((props, ref) => {
             extendedProps: { createdBy: 'Thuan', summary: 'giôi thieu ne' },
             duration: '05:00',
             allDay: false,
+          },
+          {
+            id: 'cnbxasjsad',
+            title: 'event dac biet',
+            // start: '2023-06-10',
+            // end: '2023-06-10T09:30:00+07',
+            // allDay: true,
+            rrule: {
+              freq: 'WEEKLY',
+              dtstart: '2023-06-10T00:30:00Z',
+              byweekday: ['MO','TU','WE','TH','FR'],
+              // Loại bỏ ngày '2023-05-05'
+            },
+            duration: '04:00'
           },
           {
             title: 'Sự kiện hàng ngàyaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
@@ -179,15 +194,15 @@ const Calendar = forwardRef((props, ref) => {
           console.log(info)
           handelClick(info)
         }}
-        eventClick={(info) => {
-          info.el.popover({
-            container: 'body',
-            content: '<p>he so lo </p>',
-            html: true,
-            trigger: 'click'
-          })
-          info.el.popover('show')
-        }}
+        // eventClick={(info) => {
+        //   info.el.popover({
+        //     container: 'body',
+        //     content: '<p>he so lo </p>',
+        //     html: true,
+        //     trigger: 'click'
+        //   })
+        //   info.el.popover('show')
+        // }}
         eventDidMount={(info) => {
           if (info.event.allDay && (info.view.type !== 'listMonth')) {
             info.el.style.backgroundColor = '#73BBAB'

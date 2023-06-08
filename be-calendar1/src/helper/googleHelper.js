@@ -4,7 +4,7 @@ const {web} = require('../config/credentials.json')
 module.exports = (container) => {
     async function addCalendar(token, dataSend) {
         try {
-            const oauth2Client = new google.auth.OAuth2(web.client_id, web.client_secret, process.env.REDIRECT_URI || 'http://localhost:3000/signIn')
+            const oauth2Client = new google.auth.OAuth2(web.client_id, web.client_secret, process.env.REDIRECT_URI || 'http://localhost:3000/login')
             oauth2Client.setCredentials({refresh_token: token})
             const calendar = google.calendar({version: 'v3'})
             const {data} = await calendar.events.insert({
@@ -12,6 +12,7 @@ module.exports = (container) => {
                 calendarId: 'primary',
                 resource: dataSend,
                 sendUpdates: 'all',
+                conferenceDataVersion: 1,
                 supportsAttachments: true
             })
             return {ok: true, data}
