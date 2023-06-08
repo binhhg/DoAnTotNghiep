@@ -38,6 +38,9 @@ module.exports = container => {
   const removeAccount = (pipe) => {
     return Account.deleteMany(pipe)
   }
+  const getAccountSortProvider = (pipe) => {
+    return Account.find(pipe).sort({ provider: 1 })
+  }
   return {
     getAccountNoPaging,
     removeAccount,
@@ -49,6 +52,7 @@ module.exports = container => {
     checkIdExist,
     getCount,
     getAccount,
-    getAccountFindOne
+    getAccountFindOne,
+    getAccountSortProvider
   }
 }

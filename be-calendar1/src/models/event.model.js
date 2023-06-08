@@ -6,16 +6,16 @@ module.exports = (joi, mongoose, { joi2MongoSchema, schemas }) => {
     IMPORTANT: 3
   }
   const eventJoi = joi.object({
-    title: joi.string().required(),
     userId: joi.string().required(),
-    summary: joi.string().allow(''),
+    title: joi.string().required(),
+    description: joi.string().allow(''),
+    location: joi.string().allow(''),
     start: joi.number(),
     end: joi.number(),
     rrule: joi.object().unknown(),
     exdate: joi.string().allow(''),
-    location: joi.string().allow(''),
     duration: joi.string().allow(''),
-    state: joi.number().valid(...Object.values(stateConfig)).default(1),
+    state: joi.number().valid(...Object.values(stateConfig)).default(1)
   })
   const eventSchema = joi2MongoSchema(eventJoi, {
     userId: {

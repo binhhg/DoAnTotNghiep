@@ -7,8 +7,7 @@ module.exports = (container) => {
       Booking
     }
   } = container.resolve('models')
-  const { httpCode, eventConfig, actionConfig } = container.resolve('config')
-  const mediator = container.resolve('mediator')
+  const { httpCode } = container.resolve('config')
   const { eventRepo, bookingRepo } = container.resolve('repo')
   const addBooking = async (req, res) => {
     try {
@@ -21,14 +20,6 @@ module.exports = (container) => {
         return res.status(httpCode.BAD_REQUEST).json({ msg: error.message })
       }
       const booking = await bookingRepo.addBooking(value)
-      setTimeout(async () => {
-        const event = await eventRepo.getEventById(value.eventId.toString()).lean()
-        event.booking = booking
-        mediator.emit(eventConfig.GOOGLE_CALENDAR, {
-          action: actionConfig.CREATE,
-          payload: event
-        })
-      }, 1)
       res.status(httpCode.CREATED).json(booking)
     } catch (e) {
       if (e.code === 11000) {

@@ -180,21 +180,21 @@ const Calendar = forwardRef((props, ref) => {
           handelClick(info)
         }}
         eventClick={(info) => {
-              info.el.popover({
-                container: 'body',
-                content: '<p>he so lo </p>',
-                html: true,
-                trigger: 'click'
-              })
+          info.el.popover({
+            container: 'body',
+            content: '<p>he so lo </p>',
+            html: true,
+            trigger: 'click'
+          })
           info.el.popover('show')
-          }}
+        }}
         eventDidMount={(info) => {
           if (info.event.allDay && (info.view.type !== 'listMonth')) {
-            info.el.style.backgroundColor = 'red'
+            info.el.style.backgroundColor = '#73BBAB'
           } else if (info.event.allDay && (info.view.type === 'listMonth' || info.view.type === 'dayGridMonth')) {
             const dotEl = info.el.getElementsByClassName('fc-list-event-dot')[0]
             if (dotEl) {
-              dotEl.style.borderColor = 'red'
+              dotEl.style.borderColor = '#ADA'
             }
           }
         }

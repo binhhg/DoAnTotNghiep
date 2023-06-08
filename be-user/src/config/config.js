@@ -31,6 +31,7 @@ const serverHelper = function () {
   const crypto = require('crypto')
   const secretKey = process.env.SECRET_B2_KEY || '112customer#$!@!'
 
+
   function decodeToken (token) {
     return jwt.decode(token)
   }
@@ -44,11 +45,12 @@ const serverHelper = function () {
   }
 
   function verifyToken (token) {
-    return new Promise((resolve, reject) => {
-      jwt.verify(token, secretKey, (err, decoded) => {
-        err ? reject(new Error(err)) : resolve(decoded)
-      })
-    })
+    try {
+      const data = jwt.verify(token, secretKey)
+      return data
+    } catch (e) {
+      return e
+    }
   }
   function generateHash (str) {
     return crypto.createHash('md5').update(str).digest('hex')

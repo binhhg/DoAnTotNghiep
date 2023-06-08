@@ -8,56 +8,64 @@ module.exports = (container) => {
     }
   } = container.resolve('models')
   const { httpCode, serverHelper } = container.resolve('config')
-  const { accountRepo } = container.resolve('repo')
-  const addAccount = async (req, res) => {
+  const { accountRepo, userRepo, configRepo } = container.resolve('repo')
+  const processLoginGoogle2 = async (account, profile, userId) => {
     try {
-      const body = req.body
-      const {
-        error,
-        value
-      } = await schemaValidator(body, 'Account')
-      if (error) {
-        return res.status(httpCode.BAD_REQUEST).json({ msg: error.message })
+      const { sub } = profile
+      const acc = await accountRepo.getAccountFindOne({ id: sub }).lean()
+      if (acc) {
+        return { ok: false, msg: 'Tài khoản đã được sử dụng' }
       }
-      const account = await accountRepo.addAccount(value)
-      res.status(httpCode.CREATED).json(account)
+      const acco = await accountRepo.addAccount({
+        id: profile.sub,
+        provider: 1,
+        userId: userId,
+        photo: profile.picture || '',
+        refreshToken: account.refresh_token,
+        email: profile.email
+      })
+      await configRepo.updateOne({ userId: userId }, {
+        $push: {
+          accountColor: {
+            $each: [{
+              provider: 1,
+              email: acco.email,
+              accountId: acco._id,
+              color: '#F4511E'
+            }],
+            $sort: { provider: 1 }
+          }
+        }
+      })
+      return { ok: true }
     } catch (e) {
-      if (e.code === 11000) {
-        return res.status(httpCode.BAD_REQUEST).json({ msg: 'Vị trí này đã tồn tại.' })
-      }
-      logger.e(e)
-      res.status(httpCode.UNKNOWN_ERROR).end()
+      console.log(e)
+      return { ok: false, msg: 'Lỗi rồi ' }
     }
   }
-  const deleteAccount = async (req, res) => {
+  const addAccount = async (req, res) => {
+    try {
+      const { userId } = req.user
+      const { account, profile, loginType } = req.body
+      if (loginType === 1) {
+        const user = await processLoginGoogle2(account, profile, userId)
+        if (user.ok) {
+          return res.status(httpCode.SUCCESS).json({ ok: true })
+        }
+        return res.status(httpCode.BAD_REQUEST).json({ ok: false, msg: 'tài khoản đã được liên kết' })
+      }
+      res.status(httpCode.SUCCESS).json({ ok: true })
+    } catch (e) {
+      logger.e(e)
+      res.status(httpCode.UNKNOWN_ERROR).json({ ok: false })
+    }
+  }
+  const deleteAccountById = async (req, res) => {
     try {
       const { id } = req.params
       if (id) {
         await accountRepo.deleteAccount(id)
-        //TODO: check xem cos quang cao nao laoi nay k roi hay xoa
         res.status(httpCode.SUCCESS).send({ ok: true })
-      } else {
-        res.status(httpCode.BAD_REQUEST).end()
-      }
-    } catch (e) {
-      logger.e(e)
-      res.status(httpCode.UNKNOWN_ERROR).send({ ok: false })
-    }
-  }
-  const updateAccount = async (req, res) => {
-    try {
-      const { id } = req.params
-      const account = req.body
-      const {
-        error,
-        value
-      } = await schemaValidator(account, 'Account')
-      if (error) {
-        return res.status(httpCode.BAD_REQUEST).send({ msg: error.message })
-      }
-      if (id && account) {
-        const item = await accountRepo.updateAccount(id, value)
-        res.status(httpCode.SUCCESS).json(item)
       } else {
         res.status(httpCode.BAD_REQUEST).end()
       }
@@ -82,52 +90,9 @@ module.exports = (container) => {
   }
   const getAccount = async (req, res) => {
     try {
-      let {
-        page,
-        perPage,
-        sort,
-        ids
-      } = req.query
-      page = +page || 1
-      perPage = +perPage || 10
-      sort = +sort === 0 ? { _id: 1 } : +sort || { _id: -1 }
-      const skip = (page - 1) * perPage
-      const search = { ...req.query }
-      if (ids) {
-        if (ids.constructor === Array) {
-          search.id = { $in: ids }
-        } else if (ids.constructor === String) {
-          search.id = { $in: ids.split(',') }
-        }
-      }
-      delete search.ids
-      delete search.page
-      delete search.perPage
-      delete search.sort
-      const pipe = {}
-      Object.keys(search).forEach(i => {
-        const vl = search[i]
-        const pathAccount = (Account.schema.path(i) || {}).instance || ''
-        if (pathAccount.toLowerCase() === 'objectid') {
-          pipe[i] = ObjectId(vl)
-        } else if (pathAccount === 'Number') {
-          pipe[i] = +vl
-        } else if (pathAccount === 'String' && vl.constructor === String) {
-          pipe[i] = new RegExp(vl, 'gi')
-        } else {
-          pipe[i] = vl
-        }
-      })
-      const data = await accountRepo.getAccount(pipe, perPage, skip, sort)
-      const total = await accountRepo.getCount(pipe)
-      res.status(httpCode.SUCCESS).send({
-        perPage,
-        skip,
-        sort,
-        data,
-        total,
-        page
-      })
+      const { userId } = req.body
+      const data = await accountRepo.getAccountNoPaging({ userId: ObjectId(userId) })
+      res.status(httpCode.SUCCESS).json(data)
     } catch (e) {
       logger.e(e)
       res.status(httpCode.UNKNOWN_ERROR).send({ ok: false })
@@ -136,8 +101,7 @@ module.exports = (container) => {
   return {
     addAccount,
     getAccount,
-    getAccountById,
-    updateAccount,
-    deleteAccount
+    deleteAccountById,
+    getAccountById
   }
 }

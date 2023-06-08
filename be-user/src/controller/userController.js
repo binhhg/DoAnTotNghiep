@@ -8,7 +8,7 @@ module.exports = (container) => {
     }
   } = container.resolve('models')
   const { httpCode, serverHelper } = container.resolve('config')
-  const { accountRepo, userRepo, sessionRepo } = container.resolve('repo')
+  const { accountRepo, userRepo, sessionRepo, configRepo } = container.resolve('repo')
   const { googleHelper } = container.resolve('helper')
   const processLoginGoogle = async (code) => {
     const { tokens } = await googleHelper.getToken(code)
@@ -80,6 +80,16 @@ module.exports = (container) => {
           refreshToken: account.refresh_token,
           email: profile.email
         })
+        const qq = {
+          userId: (user._id).toString(),
+          defaultColor: '#73BBAB',
+          accountColor: [{ provider: 1, email: acc.email, accountId: (acc._id).toString(), color: '#F4511E' }]
+        }
+        const { value, error } = await schemaValidator(qq, 'Config')
+        if (error) {
+          return { ok: false, msg: 'valid' }
+        }
+        await configRepo.addConfig(value)
       } else {
         if (account.refresh_token !== acc.refreshToken) {
           await accountRepo.updateAccount(acc._id, {
