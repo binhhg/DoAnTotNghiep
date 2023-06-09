@@ -37,11 +37,11 @@ const serverHelper = function () {
   }
   function canRefreshToken (expDate) {
     const now = (Date.now()) / 1000
-    const maxExp = ms(process.env.MAX_EXP_REFESH_TOKEN || '30d') / 1000
+    const maxExp = (process.env.MAX_EXP_REFESH_TOKEN || '30d') / 1000
     return now - expDate < maxExp
   }
   function genToken (obj) {
-    return jwt.sign(obj, secretKey, { expiresIn: '1d' })
+    return jwt.sign(obj, secretKey, { expiresIn: '30d' })
   }
 
   function verifyToken (token) {
