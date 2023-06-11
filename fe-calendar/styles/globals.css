@@ -12,7 +12,9 @@
 .special-event {
     position: relative;
 }
-
+.custom-popover .popover {
+    transform: none !important;
+}
 .special-event::before {
     content: "*";
     position: page;

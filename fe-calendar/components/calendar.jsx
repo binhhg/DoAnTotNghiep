@@ -12,7 +12,7 @@ import eventEmitter from '../utils/eventEmitter'
 
 const Calendar = forwardRef((props, ref) => {
   const [isClient, setIsClient] = useState(false)
-  const [data,setData] = useState(null)
+  const [data, setData] = useState(null)
   const { showModal } = props
 
   function handelClick (info) {
@@ -136,7 +136,7 @@ const Calendar = forwardRef((props, ref) => {
             end: '2023-05-28T09:30:00+07',
             extendedProps: { createdBy: 'Thuan', summary: 'giôi thieu ne' },
             duration: '05:00',
-            allDay: false,
+            allDay: false
           },
           {
             id: 'cnbxasjsad',
@@ -147,7 +147,7 @@ const Calendar = forwardRef((props, ref) => {
             rrule: {
               freq: 'WEEKLY',
               dtstart: '2023-06-10T00:30:00Z',
-              byweekday: ['MO','TU','WE','TH','FR'],
+              byweekday: ['MO', 'TU', 'WE', 'TH', 'FR']
               // Loại bỏ ngày '2023-05-05'
             },
             duration: '04:00'
