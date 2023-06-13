@@ -8,17 +8,17 @@ import { useRouter } from 'next/router'
 
 export default function App ({ Component, pageProps }) {
   const router = useRouter()
-  // useEffect(() => {
-  //   const token = localStorage.getItem('token')
-  //   console.log('token ne ', token)
-  //   const path = router.pathname
-  //   if (!token && (path !== '/' && path !== '/login' && path !== '/test')) {
-  //     console.log('zo day')
-  //     router.push('/')
-  //   } else if (token && path === '/') {
-  //     router.push('/home')
-  //   }
-  // })
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+    console.log('token ne ', token)
+    const path = router.pathname
+    if (!token && (path !== '/' && path !== '/login' && path !== '/test')) {
+      console.log('zo day')
+      router.push('/')
+    } else if (token && path === '/') {
+      router.push('/home')
+    }
+  })
   return <>
     <Component {...pageProps} />
     <ToastContainer

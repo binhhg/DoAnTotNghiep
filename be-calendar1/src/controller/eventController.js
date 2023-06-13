@@ -85,10 +85,12 @@ module.exports = (container) => {
             }
             const result = []
             if (body.accounts && body.accounts.length) {
+                console.log('vay day')
                 const accounts = body.accounts
                 const send = formatData(body)
                 for (const va of accounts) {
-                    const event = await eventRepo.addEvent(value)
+                    let event = await eventRepo.addEvent(value)
+                    event = event.toObject()
                     const {statusCode, data} = await userHelper.getAccountById(va.value)
                     if (statusCode !== httpCode.SUCCESS) {
                         return res.status(httpCode.BAD_REQUEST).json({msg: 'co loi xay ra'})
@@ -120,6 +122,8 @@ module.exports = (container) => {
                     }
                     const book = await bookingRepo.addBooking(v)
                     event.booking = book
+                    console.log('booo', book)
+                    console.log('event', event)
                     result.push(event)
                 }
             } else {
@@ -199,13 +203,13 @@ module.exports = (container) => {
                         from: 'bookings',
                         localField: '_id',
                         foreignField: 'eventId',
-                        as:'booking'
+                        as: 'booking'
                     }
                 },
                 {
-                    $addFields:{
-                        booking:{
-                            $arrayElemAt:["$booking",0]
+                    $addFields: {
+                        booking: {
+                            $arrayElemAt: ["$booking", 0]
                         }
                     }
                 }
