@@ -10,29 +10,91 @@ import 'bootstrap-icons/font/bootstrap-icons.css'
 import bootstrap5Plugin from '@fullcalendar/bootstrap5'
 import eventEmitter from '../utils/eventEmitter'
 import {CalendarApi} from '../apis/calendar'
+import Overlay from "react-bootstrap/Overlay";
+import Popover from "react-bootstrap/Popover";
+import {Button} from "react-bootstrap";
 
 const Calendar = forwardRef((props, ref) => {
     const [isClient, setIsClient] = useState(false)
     const [events, setEvents] = useState([])
     const {showModal, colorConfig} = props
+
+    const [show, setShow] = useState(false)
+    const [target, setTarget] = useState(null)
+    const [offset, setOffset] = useState([])
     const color = {
-        default: '#73BBAB'
+        default: "#73BBAB"
     }
 
-    if (colorConfig && Object.keys(colorConfig).length > 0) {
-        console.log('thay doi ', colorConfig)
-        color.default = colorConfig.defaultColor
-
-        const aa = colorConfig.accountColor
-        aa.forEach(va => {
-            color[`${va.accountId}`] = va.color
-        })
-
-        console.log('ccc', color)
+    const ShowPopover = () => {
+        console.log('vao daay ne ua alo')
+        if (!show) {
+            console.log('vcd')
+            return null
+        }
+        console.log('vao daay ne')
+        return (
+            <Overlay popperConfig={{
+                modifiers: [
+                    {
+                        name: 'offset',
+                        options: {
+                            offset: offset,
+                        }
+                    }
+                ]
+            }} target={target} show={show} placement="left" rootClose onHide={() => {
+                setShow(false)
+            }}>
+                <Popover className={'custom-popover min-w-[300px] shadow-lg !border-none'}>
+                    {/*<Popover.Header as="h3" style={{ display: "flex", justifyContent: "space-between" }}>*/}
+                    {/*    */}
+                    {/*</Popover.Header>*/}
+                    <Popover.Body>
+                        <div style={{
+                            display: "flex",
+                            justifyContent: "flex-end",
+                            alignItems: "flex-end",
+                            width: '100%',
+                        }}>
+                            <div className={'cursor-pointer'}><i class="bi bi-pencil-fill"></i></div>
+                            <div className={'cursor-pointer mx-3 '}><i class="bi bi-trash3-fill"></i></div>
+                            <div className={'cursor-pointer hover:text-red-500'}><i class="bi bi-x-circle"></i></div>
+                        </div>
+                        <div className={'flex flex-row justify-start space-x-4'}>
+                            <div className={'bg-red-400 w-4 h-4 rounded-md'}></div>
+                            <div>
+                                <div>DDaya la text</div>
+                                <div>DDaya la text</div>
+                                <div>DDaya la text</div>
+                                <div>DDaya la text</div>
+                                <div>DDaya la text</div>
+                            </div>
+                        </div>
+                        <div className={'flex flex-row justify-start space-x-4'}>
+                            <div className={'bg-red-400 w-4 h-4 rounded-md'}></div>
+                            <div>DDaya la text</div>
+                        </div>
+                    </Popover.Body>
+                </Popover>
+            </Overlay>
+        )
     }
-
     useEffect(() => {
+        if (colorConfig && Object.keys(colorConfig).length > 0) {
+            color.default = colorConfig.defaultColor
 
+            const aa = colorConfig.accountColor
+            for (const va of aa) {
+                color[`${va.accountId}`] = va.color
+            }
+            console.log(color)
+            const zz = ref.current.getApi()
+            zz.render()
+            return () => {
+                zz.destroy();
+            };
+        }
     }, [colorConfig])
 
     function handelClick(info) {
@@ -61,7 +123,6 @@ const Calendar = forwardRef((props, ref) => {
             setIsClient(true)
         }
         eventEmitter.on('addEvent', event => {
-            console.log('vcllll ', event)
             const add = ref.current.getApi()
             for (const va of event) {
                 va.extendedProps = {...va}
@@ -75,7 +136,7 @@ const Calendar = forwardRef((props, ref) => {
         <Fragment>
             {isClient && <FullCalendar
                 plugins={[rrulePlugin, bootstrap5Plugin, dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin]}
-                // themeSystem={'bootstrap5'}
+                themeSystem={'bootstrap5'}
                 initialView={'timeGridWeek'}
                 headerToolbar={{
                     start: 'today prev,next',
@@ -199,60 +260,59 @@ const Calendar = forwardRef((props, ref) => {
                 //   }
                 // ]}
                 editable={'true'}
-                height={'100vh'}
+                height={'100%'}
                 selectable={'true'}
                 eventClassNames={eventClassNames}
                 // eventContent={renderEventContent}
                 // select={daysi}
                 select={(info) => {
-                    handelClick(info)
+                    if (show) {
+                        setShow(!show)
+                    } else {
+                        handelClick(info)
+                    }
                 }}
-                // eventClick={(info) => {
-                //   info.el.popover({
-                //     container: 'body',
-                //     content: '<p>he so lo </p>',
-                //     html: true,
-                //     trigger: 'click'
-                //   })
-                //   info.el.popover('show')
-                // }}
+                eventClick={(info) => {
+                    // return (<Popup target={info.el} />)
+                    console.log(info.jsEvent)
+                    setShow(!show)
+                    // setTarget(info.el)
+                    if (info.view.type === 'listMonth' || info.view.type === 'timeGridDay' || info.event?.extendedProps?.rrule) {
+                        console.log('vao day')
+                        // setOffset([`${info.jsEvent.screenX}px`, `${info.jsEvent.screenY}px`])
+                        setTarget(null)
+                        setOffset([info.jsEvent.screenY / 2, -info.jsEvent.screenX])
+                    } else {
+                        setOffset([])
+                        setTarget(info.el)
+                    }
+                    // ReactDOM.render((<ShowPopover target={info.el} />), info.el)
+                }}
                 eventDidMount={(info) => {
-                    console.log(info)
                     const {extendedProps: cc} = info.event
-                    // if (cc?.booking?.accountId) {
-                    //     const a = cc.booking.accountId
-                    //     info.el.style.backgroundColor = color[a] ? color[a] : color['default']
-                    //     const dotEl = info.el.getElementsByClassName('fc-list-event-dot')[0]
-                    //     if (dotEl) {
-                    //         dotEl.style.borderColor = color[a] ? color[a] : color['default']
-                    //     }
-                    // } else {
-                    //     info.el.style.backgroundColor =color['default']
-                    //     const dotEl = info.el.getElementsByClassName('fc-list-event-dot')[0]
-                    //     if (dotEl) {
-                    //         dotEl.style.borderColor = color['default']
-                    //     }
-                    // }
+                    console.log('aloo', color)
+                    const colorInfo = (colorConfig?.accountColor || []).find(item => item.accountId === cc?.booking?.accountId)
+                    const ll = cc?.booking?.accountId
+                    const co = color[`${ll}`]
+                    const vcd = co ? co : (colorInfo?.color || colorConfig?.defaultColor || color['default'])
                     if (info.view.type !== 'listMonth' && info.view.type !== 'dayGridMonth') {
-                        console.log('vao day ne', cc, color)
-                        const colorInfo = colorConfig.accountColor.find(item => item.accountId === cc?.booking?.accountId)
-                        info.el.style.backgroundColor = color[cc?.booking?.accountId] ? color[cc?.booking?.accountId] : (colorInfo.color || color['default'])
+                        info.el.style.backgroundColor = vcd
+                        info.el.style.border = 'none'
                     } else {
                         const dotEl = info.el.getElementsByClassName('fc-list-event-dot')[0]
                         if (dotEl) {
-                            const colorInfo = colorConfig.accountColor.find(item => item.accountId === cc?.booking?.accountId)
-                            dotEl.style.borderColor = color[cc?.booking?.accountId] ? color[cc?.booking?.accountId] : (colorInfo.color || color['default'])
+                            dotEl.style.borderColor = vcd
                         }
                         const dotEl1 = info.el.getElementsByClassName('fc-daygrid-event-dot')[0]
                         if (dotEl1) {
-                            const colorInfo = colorConfig.accountColor.find(item => item.accountId === cc?.booking?.accountId)
-                            dotEl1.style.borderColor = color[cc?.booking?.accountId] ? color[cc?.booking?.accountId] : (colorInfo.color || color['default'])
+                            dotEl1.style.borderColor = vcd
                         }
                     }
                 }
                 }
             />
             }
+            <div ref={ref}><ShowPopover/></div>
         </Fragment>
     )
 })

@@ -286,8 +286,9 @@ export default function ModalNew({show, handle}) {
             <Form className="space-y-4" onSubmit={e => e.preventDefault()}>
                 <Form.Group controlId="formInput">
                     <Form.Control
+                        className={'input-new-calendar'}
                         type="text" placeholder="tieu de" defaultValue={data?.title}
-                        style={{border: 'none', borderBottom: '2px solid blue'}}
+                        style={{border: 'none', borderBottom: '2px solid blue', borderRadius: '0px'}}
                         value={title}
                         onChange={changeTitle}
                     />
@@ -366,7 +367,6 @@ export default function ModalNew({show, handle}) {
                 // centered
                 // fullscreen={'xl-down'}
             >
-                <Modal.Header/>
                 <div className={'min-h-[450px] h-fit px-3 py-3 overflow-auto'}>
                     {qq()}
                 </div>

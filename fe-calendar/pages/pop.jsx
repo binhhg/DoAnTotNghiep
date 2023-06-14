@@ -21,9 +21,10 @@ function Example() {
     const [eventTitle, setEventTitle] = useState('')
     const [popoverTarget, setPopoverTarget] = useState(null)
 
-    const [show, setShow] = useState(false)
     const [event, setEvent] = useState(null)
+    const [show, setShow] = useState(false)
     const [target, setTarget] = useState(null)
+    const [offset, setOffset] = useState([])
     const handleEventClick = (info) => {
         setEventTitle(info.event.title)
         setShow(true)
@@ -35,12 +36,21 @@ function Example() {
     // const target = useRef(null)
     const ShowPopover = () => {
         console.log('vao daay ne ua alo')
-        if (!target || !show) {
+        if (!show) {
             return null
         }
         console.log('vao daay ne')
         return (
-            <Overlay container={ref} target={target} show={show} placement="left" rootClose onHide={() => {
+            <Overlay container={ref} popperConfig={{
+                modifiers: [
+                    {
+                        name: 'offset',
+                        options: {
+                            offset: offset,
+                        }
+                    }
+                ]
+            }}  target={target} show={show} placement="left" rootClose onHide={() => {
                 setShow(false)
             }}>
                 <Popover className={'custom-popover'}>
@@ -64,7 +74,7 @@ function Example() {
         }
         console.log('heeee')
         return (
-            <UncontrolledPopover show={`${target ?  'true' : 'false'}`} placement="auto" target={target} rootClose
+            <UncontrolledPopover show={`${target ? 'true' : 'false'}`} placement="right" target={target} rootClose
                                  onHide={() => setTarget(null)}>
                 <PopoverHeader> hesola</PopoverHeader>
                 <PopoverBody>
@@ -79,7 +89,7 @@ function Example() {
         <>
             <div>
                 <div
-                    style={{ position: "relative" }}></div>
+                    style={{position: "relative"}}></div>
             </div>
             <FullCalendar
                 plugins={[rrulePlugin, bootstrap5Plugin, dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin]}
@@ -110,34 +120,50 @@ function Example() {
                         duration: '05:00',
                         allDay: false
                     },
-                      {
+                    {
                         id: 'cnbxasjsad',
                         title: 'event dac biet',
                         // start: '2023-06-10',
                         // end: '2023-06-10T09:30:00+07',
                         // allDay: true,
+                        extendedProps: {
+                            rrule: {
+                                freq: 'WEEKLY',
+                                dtstart: '2023-06-10T00:30:00Z',
+                                byweekday: ['MO', 'TU', 'WE', 'TH', 'FR']
+                                // Loại bỏ ngày '2023-05-05'
+                            }
+                        },
                         rrule: {
-                          freq: 'WEEKLY',
-                          dtstart: '2023-06-10T00:30:00Z',
-                          byweekday: ['MO', 'TU', 'WE', 'TH', 'FR']
-                          // Loại bỏ ngày '2023-05-05'
+                            freq: 'WEEKLY',
+                            dtstart: '2023-06-10T08:30:00Z',
+                            byweekday: ['MO', 'TU', 'WE', 'TH', 'FR', 'SA']
+                            // Loại bỏ ngày '2023-05-05'
                         },
                         duration: '04:00'
-                      },
+                    },
                 ]}
                 editable={'true'}
                 height={'100vh'}
                 selectable={'true'}
                 eventClick={(info) => {
                     // return (<Popup target={info.el} />)
-                    console.log(info.el)
                     console.log(info.jsEvent)
                     setShow(!show)
-                    setTarget(info.el)
+                    if (info.view.type === 'listMonth' || info.view.type === 'timeGridDay' || info.event?.extendedProps?.rrule) {
+                        console.log('vao day')
+                        // setOffset([`${info.jsEvent.screenX}px`, `${info.jsEvent.screenY}px`])
+                        setTarget(null)
+                        // setOffset([info.jsEvent.screenX,info.jsEvent.screenY /2 ])
+                        setOffset([info.jsEvent.screenY /2, -info.jsEvent.screenX ])
+                    } else {
+                        setOffset([])
+                        setTarget(info.el)
+                    }
                     // ReactDOM.render((<ShowPopover target={info.el} />), info.el)
                 }}
             />
-            <div style={{zIndex: 9999}} ref={ref}><ShowPopover/> </div>
+            <div style={{zIndex: 9999}} ref={ref}><ShowPopover/></div>
         </>
     )
 }
