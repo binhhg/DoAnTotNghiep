@@ -22,17 +22,17 @@ const Calendar = forwardRef((props, ref) => {
     const [show, setShow] = useState(false)
     const [target, setTarget] = useState(null)
     const [offset, setOffset] = useState([])
+    const [data, setData] = useState({})
     const color = {
         default: "#73BBAB"
     }
+    const rruleToText = (start, end, duration, rrule) => {
 
+    }
     const ShowPopover = () => {
-        console.log('vao daay ne ua alo')
         if (!show) {
-            console.log('vcd')
             return null
         }
-        console.log('vao daay ne')
         return (
             <Overlay popperConfig={{
                 modifiers: [
@@ -44,9 +44,10 @@ const Calendar = forwardRef((props, ref) => {
                     }
                 ]
             }} target={target} show={show} placement="left" rootClose onHide={() => {
+                setData({})
                 setShow(false)
             }}>
-                <Popover className={'custom-popover min-w-[300px] shadow-lg !border-none'}>
+                <Popover className={'custom-popover min-w-[400px] shadow-lg !border-none'}>
                     {/*<Popover.Header as="h3" style={{ display: "flex", justifyContent: "space-between" }}>*/}
                     {/*    */}
                     {/*</Popover.Header>*/}
@@ -61,18 +62,25 @@ const Calendar = forwardRef((props, ref) => {
                             <div className={'cursor-pointer mx-3 '}><i class="bi bi-trash3-fill"></i></div>
                             <div className={'cursor-pointer hover:text-red-500'}><i class="bi bi-x-circle"></i></div>
                         </div>
-                        <div className={'flex flex-row justify-start space-x-4'}>
+                        <div className={'flex flex-col justify-start space-x-4'}>
                             <div className={'bg-red-400 w-4 h-4 rounded-md'}></div>
                             <div>
-                                <div>DDaya la text</div>
-                                <div>DDaya la text</div>
-                                <div>DDaya la text</div>
-                                <div>DDaya la text</div>
-                                <div>DDaya la text</div>
+                                <div>{data?.title}</div>
+                                <div>{data.start + ' - ' + data.end}</div>
+                                {/*<a href={data.extendedProps.}>link google</a>*/}
                             </div>
                         </div>
-                        <div className={'flex flex-row justify-start space-x-4'}>
+                        <div className={'flex flex-col justify-start space-x-4'}>
                             <div className={'bg-red-400 w-4 h-4 rounded-md'}></div>
+                            <div>DDaya la text</div>
+                            <div>DDaya la text</div>
+                            <div>DDaya la text</div>
+                            <div>DDaya la text</div>
+                            <div>DDaya la text</div>
+                            <div>DDaya la text</div>
+                            <div>DDaya la text</div>
+                            <div>DDaya la text</div>
+                            <div>DDaya la text</div>
                             <div>DDaya la text</div>
                         </div>
                     </Popover.Body>
@@ -89,11 +97,13 @@ const Calendar = forwardRef((props, ref) => {
                 color[`${va.accountId}`] = va.color
             }
             console.log(color)
-            const zz = ref.current.getApi()
-            zz.render()
-            return () => {
-                zz.destroy();
-            };
+            if (ref.current) {
+                const zz = ref.current.getApi()
+                zz.render()
+                return () => {
+                    zz.destroy();
+                };
+            }
         }
     }, [colorConfig])
 
@@ -268,14 +278,16 @@ const Calendar = forwardRef((props, ref) => {
                 select={(info) => {
                     if (show) {
                         setShow(!show)
+                        setData({})
                     } else {
                         handelClick(info)
                     }
                 }}
                 eventClick={(info) => {
                     // return (<Popup target={info.el} />)
-                    console.log(info.jsEvent)
+                    console.log(info)
                     setShow(!show)
+                    setData(info.event)
                     // setTarget(info.el)
                     if (info.view.type === 'listMonth' || info.view.type === 'timeGridDay' || info.event?.extendedProps?.rrule) {
                         console.log('vao day')
@@ -290,7 +302,6 @@ const Calendar = forwardRef((props, ref) => {
                 }}
                 eventDidMount={(info) => {
                     const {extendedProps: cc} = info.event
-                    console.log('aloo', color)
                     const colorInfo = (colorConfig?.accountColor || []).find(item => item.accountId === cc?.booking?.accountId)
                     const ll = cc?.booking?.accountId
                     const co = color[`${ll}`]
@@ -312,7 +323,7 @@ const Calendar = forwardRef((props, ref) => {
                 }
             />
             }
-            <div ref={ref}><ShowPopover/></div>
+            <div><ShowPopover/></div>
         </Fragment>
     )
 })

@@ -125,22 +125,22 @@ function Example() {
                         title: 'event dac biet',
                         // start: '2023-06-10',
                         // end: '2023-06-10T09:30:00+07',
-                        // allDay: true,
-                        extendedProps: {
+                        allDay: true,
+                        extendedPropss: {
                             rrule: {
                                 freq: 'WEEKLY',
-                                dtstart: '2023-06-10T00:30:00Z',
+                                dtstart: '2023-06-10T05:00:00Z',
                                 byweekday: ['MO', 'TU', 'WE', 'TH', 'FR']
                                 // Loại bỏ ngày '2023-05-05'
                             }
                         },
                         rrule: {
-                            freq: 'WEEKLY',
-                            dtstart: '2023-06-10T08:30:00Z',
-                            byweekday: ['MO', 'TU', 'WE', 'TH', 'FR', 'SA']
+                            freq: 'DAILY',
+                            dtstart: '2023-06-10T17:00:00Z',
+                            // byweekday: ['MO', 'TU', 'WE', 'TH', 'FR', 'SA']
                             // Loại bỏ ngày '2023-05-05'
                         },
-                        duration: '04:00'
+                        duration: '24:00'
                     },
                 ]}
                 editable={'true'}

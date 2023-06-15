@@ -108,7 +108,7 @@ body {
 }
 
 
-.fc-prev-button:hover, .fc-next-button:hover {
+.fc-prev-button:hover, .fc-next-button:hover, .fc-today-button:hover {
     background: #e5e7eb !important;
 }
 
