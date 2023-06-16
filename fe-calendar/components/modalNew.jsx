@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {Modal, Button, Form, Row, ListGroup} from 'react-bootstrap'
+import {Modal, Button, Form, Row, ListGroup, Inpu} from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import eventEmitter from '../utils/eventEmitter'
 import DatePicker from 'react-datepicker'
@@ -385,7 +385,14 @@ export default function ModalNew({show, handle}) {
                    fullscreen={'xl-down'}
             >
                 <Modal.Header closeButton/>
-                <div>hesolo</div>
+                <Modal.Body>
+                    <div><b>Lặp lại tùy chỉnh</b></div>
+                    <div>
+                        <div>Lặp lại mỗi</div>
+                        <input type={'number'}/>
+                    </div>
+
+                </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleCloseModal}>
                         Đóng

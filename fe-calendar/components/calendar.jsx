@@ -58,9 +58,9 @@ const Calendar = forwardRef((props, ref) => {
                             alignItems: "flex-end",
                             width: '100%',
                         }}>
-                            <div className={'cursor-pointer'}><i class="bi bi-pencil-fill"></i></div>
-                            <div className={'cursor-pointer mx-3 '}><i class="bi bi-trash3-fill"></i></div>
-                            <div className={'cursor-pointer hover:text-red-500'}><i class="bi bi-x-circle"></i></div>
+                            <div className={'cursor-pointer'}><i className="bi bi-pencil-fill"></i></div>
+                            <div className={'cursor-pointer mx-3 '}><i className="bi bi-trash3-fill"></i></div>
+                            <div className={'cursor-pointer hover:text-red-500'}><i className="bi bi-x-circle"></i></div>
                         </div>
                         <div className={'flex flex-col justify-start space-x-4'}>
                             <div className={'bg-red-400 w-4 h-4 rounded-md'}></div>
@@ -293,7 +293,11 @@ const Calendar = forwardRef((props, ref) => {
                         console.log('vao day')
                         // setOffset([`${info.jsEvent.screenX}px`, `${info.jsEvent.screenY}px`])
                         setTarget(null)
-                        setOffset([info.jsEvent.screenY / 2, -info.jsEvent.screenX])
+                        if(info.event.allDay) {
+                            setOffset([-info.jsEvent.screenY, -info.jsEvent.screenX])
+                        } else {
+                            setOffset([info.jsEvent.screenY / 2, -info.jsEvent.screenX])
+                        }
                     } else {
                         setOffset([])
                         setTarget(info.el)

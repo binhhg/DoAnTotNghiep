@@ -1,3 +1,4 @@
+const moment = require('moment')
 module.exports = (container) => {
     const logger = container.resolve('logger')
     const ObjectId = container.resolve('ObjectId')
@@ -11,6 +12,21 @@ module.exports = (container) => {
     const {googleHelper, userHelper} = container.resolve('helper')
     const mediator = container.resolve('mediator')
     const {eventRepo, bookingRepo} = container.resolve('repo')
+
+    function getDuration(start, end) {
+        if (!start || !end) {
+            return '00:00'
+        }
+        const startMoment = moment(start);
+        const endMoment = moment(end);
+        const duration = moment.duration(endMoment.diff(startMoment))
+        const days = duration.days();
+        const hours = duration.hours();
+        const minutes = duration.minutes();
+        const durationFormatted = `${hours + days * 24}:${minutes.toString().padStart(2, '0')}`;
+        return durationFormatted
+
+    }
 
     function formatData(data) {
         const qq = {
@@ -35,12 +51,14 @@ module.exports = (container) => {
             })
         }
         if (data.allDay) {
+            const formatStart = moment(data.start);
+            const formatEnd = moment(data.end);
             qq.start = {
-                date: data.start.split('T')[0],
+                date: formatStart.format('YYYY-MM-DD'),
                 timeZone: 'Asia/Ho_Chi_Minh'
             }
             qq.end = {
-                date: data.end.split('T')[0],
+                date: formatEnd.format('YYYY-MM-DD'),
                 timeZone: 'Asia/Ho_Chi_Minh'
             }
         } else {
@@ -75,6 +93,9 @@ module.exports = (container) => {
             }
             if (!body.title) {
                 body.title = '(Không có tiêu đề)'
+            }
+            if (body.rrule) {
+                body.duration = getDuration(body.start, body.end)
             }
             const {
                 error,
