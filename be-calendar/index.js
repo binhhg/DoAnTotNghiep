@@ -125,18 +125,18 @@ async function addCalendar () {
 
 async function update1EventOfRecurringEvent (id) {
   const event = {
-    summary: 'aduma',
-    start: {
-      dateTime: '2023-06-07T09:00:00+07:00',
-      timeZone: 'Asia/Ho_Chi_Minh'
-    },
-    end: {
-      dateTime: '2023-06-07T11:00:00+07:00',
-      timeZone: 'Asia/Ho_Chi_Minh'
-    },
+    // start: {
+    //   dateTime: '2023-06-07T09:00:00+07:00',
+    //   timeZone: 'Asia/Ho_Chi_Minh'
+    // },
+    // end: {
+    //   dateTime: '2023-06-07T11:00:00+07:00',
+    //   timeZone: 'Asia/Ho_Chi_Minh'
+    // },
     recurringEventId: id,
+    status: 'cancelled',
     originalStartTime: {
-      dateTime: '2023-06-07T09:00:00+07:00',
+      dateTime: '2023-06-22T20:30:00+07:00',
       timeZone: 'Asia/Ho_Chi_Minh'
     }
   }
@@ -202,7 +202,22 @@ async function deleteCalendar (id) {
     console.log('res ne ', res.data)
   })
 }
-
+async function deleteCalendar2 (id) {
+  const calendar = google.calendar({ version: 'v3' })
+  calendar.events.delete({
+    auth: oauth2Client,
+    calendarId: 'primary',
+    eventId: id,
+    originalStartTime: {
+      dateTime: '2023-06-22T20:30:00+07:00',
+      timeZone: 'Asia/Ho_Chi_Minh'
+    }
+  }, (err, res) => {
+    if (err) return console.log(`Lỗi: ${err}`)
+    console.log(`Đã tạo sự kiện: ${res.data.htmlLink}`)
+    console.log('res ne ', res.data)
+  })
+}
 async function getInstences (id) {
   // Tạo client cho Google Calendar API
   const calendar = google.calendar({ version: 'v3', auth: oauth2Client })
@@ -214,7 +229,7 @@ async function getInstences (id) {
       // orderBy: 'created'
       eventId: id,
       // timeMin: '2023-06-07'
-      originalStart: '2023-06-07T09:00:00+07:00'
+      originalStart: '2023-06-22T09:00:00+07:00'
     })
     const calendars = response.data.items
     console.log(response.data.items)
@@ -228,12 +243,13 @@ async function getInstences (id) {
   }
 }
 
-// deleteCalendar('i7h4bae9cp3nu5qdmldg4veus8').then()
-// update1EventOfRecurringEvent('0u3tu99c86h75jr455dqh1auac').then()
+// deleteCalendar('0pl8un75t77hrophqk6ng9u7a9_20230622T020000Z').then()
+// update1EventOfRecurringEvent('7lf1hc0bs3qgjvgikm4cikdiai').then()
 // addNewRecurringFromCurrentRecurring('oln8rmgncjq4leouusbsftvt88').then()
 listCalendars().then()
+// deleteCalendar2('7lf1hc0bs3qgjvgikm4cikdiai').then()
 // addCalendar().then()
-// getInstences('q8hhrtk3cqtv7tfnjclhpe9r80').then()
+// getInstences('0pl8un75t77hrophqk6ng9u7a9').then()
 // admin.initializeApp({
 //   credential: admin.credential.cert(serviceAccount)
 // })

@@ -6,7 +6,7 @@ export default function ColorCard({colorConfig, setColorConfig}) {
     const [accounts, setAccounts] = useState([])
 
     useEffect(() => {
-        const arr = (colorConfig.accountColor || []).map(item => {
+        const arr = (colorConfig?.accountColor || []).map(item => {
             return {
                 ...item,
                 showPicker: false
@@ -15,7 +15,7 @@ export default function ColorCard({colorConfig, setColorConfig}) {
         arr.unshift({
             _id: 'defaultId',
             email: 'Mặc định',
-            color: colorConfig.defaultColor
+            color: colorConfig?.defaultColor || 'red'
         })
         setAccounts(arr)
     }, [colorConfig])

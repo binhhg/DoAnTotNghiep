@@ -138,3 +138,21 @@ body {
     padding: 5px !important;
 }
 
+.input-container {
+    position: relative;
+    display: inline-block;
+}
+
+.input-container.active {
+    margin-left: 10px;
+}
+
+.input-container .form-control {
+    width: 200px;
+}
+
+.c-modal {
+    z-index: 100000 !important;
+
+}
+

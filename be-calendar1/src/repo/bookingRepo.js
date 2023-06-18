@@ -35,6 +35,9 @@ module.exports = container => {
   const removeBooking = (pipe) => {
     return Booking.deleteMany(pipe)
   }
+  const findOneBooking = (pipe) => {
+    return Booking.findOne(pipe)
+  }
   return {
     getBookingNoPaging,
     removeBooking,
@@ -45,6 +48,7 @@ module.exports = container => {
     updateBooking,
     checkIdExist,
     getCount,
-    getBooking
+    getBooking,
+    findOneBooking
   }
 }
