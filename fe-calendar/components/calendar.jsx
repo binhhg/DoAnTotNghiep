@@ -53,6 +53,7 @@ const Calendar = forwardRef((props, ref) => {
     try {
       const zz = await CalendarApi.getEvent()
       for (const va of zz) {
+        va.id = va._id
         va.extendedProps = { ...va }
       }
       setEvents(zz)
@@ -90,8 +91,8 @@ const Calendar = forwardRef((props, ref) => {
   const rruleToText = (start, end, rrule) => {
     const st = moment(start)
     const ed = moment(end)
-    const stTime = st.format('YYYY-MM-DD HH:mm')
     const edTime = ed.format('YYYY-MM-DD HH:mm')
+    const stTime = st.format('YYYY-MM-DD HH:mm')
     let tt = ''
     if (rrule) {
       if (!rrule.interval) {
@@ -102,9 +103,9 @@ const Calendar = forwardRef((props, ref) => {
       if (rrule.byweekday) {
         let thu = ''
         for (const va of rrule.byweekday) {
-          thu = thu + ` ${dayConfig[va]} `
+          thu = thu + ` ${dayConfig[va]},`
         }
-        tt = `${tt} vào ngày${thu}`
+        tt = `${tt} vào ngày${thu.slice(0,-1)}`
       }
       if (rrule.bysetpos) {
         tt = `${tt} lần ${rrule.bysetpos} của ${freqText[rrule.freq]} `
@@ -192,24 +193,30 @@ const Calendar = forwardRef((props, ref) => {
       if (!isRecurring) {
         const del = ref.current.getApi()
         const ev = del.getEventById(data.id)
-        await CalendarApi.deleteEvent(data.id, { type: 1 })
+        // await CalendarApi.deleteEvent(data.id, { type: 1 })
         ev.remove()
       } else {
-        const zz = await CalendarApi.deleteEvent(data.id, {
-          start: data.start,
-          end: data.end,
-          type: 2,
-          delete: checkDelete
-        })
+        // const zz = await CalendarApi.deleteEvent(data.id, {
+        //   start: data.start,
+        //   end: data.end,
+        //   type: 2,
+        //   delete: checkDelete
+        // })
       }
       setShowDelete(!showDelete)
+      setShow(!show)
     } catch (e) {
       console.log(e)
       setShowDelete(!showDelete)
+      setShow(!show)
     }
   }
   const ShowDelete = (props) => {
-    console.log('vao day roi')
+    if (!showDelete) {
+      return null
+    }
+
+    console.log('dddd',data)
     return (
       <Modal
         {...props}
