@@ -199,11 +199,27 @@ export default function ModalNew ({ show, handle }) {
     const value = op.value
     if (value === 3) {
       const a = moment(start).set({ hour: 0, minute: 0, second: 0 }).add(3, 'months')
+      const s = new Date(start)
+
       const opts = [
-        { id: 20, value: `Hàng tháng vào ngày ${(new Date(start).getDate())}`, rrule: {
-          freq: 'MONTHLY'
-          } }
+        {
+          id: 20,
+          value: `Hàng tháng vào ngày ${(s.getDate())}`,
+          rrule: {
+            freq: 'MONTHLY'
+          }
+        },
+        {
+          id: 21,
+          value: `Hàng tháng vào ${thuConfig[s.getDay()].label} lần ${appearance(s).text}`,
+          rrule: {
+            freq: 'MONTHLY',
+            byweekday: [thuConfig[s.getDay()].key],
+            bysetpos: appearance(s).number
+          }
+        }
       ]
+      setRepeatMonth(opts)
       setEndTime(a.toDate())
       setRepeatDay([(new Date(start)).getDay()])
       setEndCheck(1)
