@@ -106,9 +106,18 @@ const Calendar = forwardRef((props, ref) => {
           thu = thu + ` ${dayConfig[va]},`
         }
         tt = `${tt} vào ngày${thu.slice(0,-1)}`
+        if (rrule.bysetpos) {
+          tt = `${tt} lần ${rrule.bysetpos} của ${freqText[rrule.freq]} `
+        }
+      } else if(rrule.freq === 'MONTHLY'){
+          tt = tt + ` vào ngày ${st.date()}`
       }
-      if (rrule.bysetpos) {
-        tt = `${tt} lần ${rrule.bysetpos} của ${freqText[rrule.freq]} `
+      if(rrule.until){
+        const ut = moment(rrule.until).format('YYYY-MM-DD HH:mm')
+        tt = tt + ` cho tới ${ut}`
+      }
+      if(rrule.count){
+        tt = tt + ` lặp lại ${rrule.count}`
       }
     }
     return (

@@ -11,6 +11,7 @@ export default function Lich() {
     const calen = useRef(null)
     const [value, setValue] = useState(new Date());
     const [showModal, setShowModal] = useState(false);
+    const [showModalEdit, setShowModalEdit] = useState(false);
     const [colorConfig, setColorConfig] = useState({})
     const [isClient, setIsClient] = useState(false)
 
@@ -24,12 +25,11 @@ export default function Lich() {
     useEffect(() => {
         setIsClient(true)
     }, [])
-
-    function handelShowModal(info) {
-        const {pageX, pageY} = info.jsEvent;
-        console.log(pageX, pageY)
+    function handleShowModalEdit() {
+        setShowModalEdit(true)
+    }
+    function handelShowModal() {
         setShowModal(true)
-        // setPopoverPosition({ left: pageX, top: pageY });
     }
 
     function onChange(vc) {
@@ -53,8 +53,7 @@ export default function Lich() {
             </div>
             <div className={'col-span-6'} style={{ height: 'calc(100vh - 24px)' }}>
                 <CalendarA showModal={handelShowModal} colorConfig={colorConfig} ref={calen}/>
-                <ModalNew show={showModal} handle={setShowModal}/>
-                {/*<PopoverA position={popoverPosition} show={showModal} handel={setShowModal} ref={calen}/>*/}
+                <ModalNew show={showModal} handle={setShowModal} showEdit={showModalEdit} handleEdit={setShowModalEdit}/>
             </div>
         </div>
     )
