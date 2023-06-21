@@ -153,10 +153,10 @@ const Calendar = forwardRef((props, ref) => {
               display: 'flex',
               justifyContent: 'flex-end',
               alignItems: 'flex-end',
-              width: '100%'
+              width: '100%',
             }}>
               {(!data?.extendedProps?.booking || data?.extendedProps?.booking?.organizer?.self) &&
-              <div className={'cursor-pointer hover:text-red-500'}><i className="bi bi-pencil-fill"></i></div>}
+              <div className={'cursor-pointer hover:text-red-500'} onClick={handelClickShowEdit}><i className="bi bi-pencil-fill text-lg"></i></div>}
               <div className={'cursor-pointer mx-3 hover:text-red-500'} onClick={() => {
                 if (data?.extendedProps?.rrule) {
                   setIsRecurring(true)
@@ -165,33 +165,37 @@ const Calendar = forwardRef((props, ref) => {
                   setIsRecurring(false)
                 }
                 setShowDelete(!showDelete)
-              }}><i className="bi bi-trash3-fill"></i></div>
-              <div className={'cursor-pointer hover:text-red-500'} onClick={() => setShow(!show)}><i
+              }}><i className="bi bi-trash3-fill text-lg"></i></div>
+              <div className={'cursor-pointer text-lg hover:text-red-500'} onClick={() => setShow(!show)}><i
                 className="bi bi-x-circle"></i></div>
             </div>
-            <div>{data?.title}</div>
-            <div>{rruleToText(data.start, data.end, data?.extendedProps?.rrule)}</div>
-            {data?.extendedProps?.location && <div><i className="bi bi-geo-alt"></i> heeelo</div>}
-            {data?.extendedProps?.description && <div><i className="bi bi-text-paragraph"></i> aaaaa</div>}
+            <h3 className={'ml-9'}>{data?.title}</h3>
+            <div className={'mb-2 ml-9 text-gray-500'}>{rruleToText(data.start, data.end, data?.extendedProps?.rrule)}</div>
+            {data?.extendedProps?.location && <div><i className="bi bi-geo-alt text-lg mr-3"></i> heeelo</div>}
+            {data?.extendedProps?.description && <div><i className="bi bi-text-paragraph text-lg mr-3"></i> aaaaa</div>}
             {data?.extendedProps?.booking?.hangoutLink && (
               <>
-                <Button onClick={() => window.open(data.extendedProps.booking.hangoutLink, '_blank')}>Tham gia bằng
-                  Google Meet </Button>
-                <div>{(data.extendedProps.booking.hangoutLink).replace('https://', '')}</div>
+                <div className={'flex gap-3 items-center pt-2'}>
+                  <img src="./meet.svg" alt="" className={'!w-[20px] !h-[20px]'}/>
+                  <Button onClick={() => window.open(data.extendedProps.booking.hangoutLink, '_blank')}>Tham gia bằng
+                    Google Meet </Button>
+                </div>
+                <div className={'pb-2 ml-9 text-gray-400'}>{(data.extendedProps.booking.hangoutLink).replace('https://', '')}</div>
               </>
             )}
             {(data?.extendedProps?.booking?.attendees && (data.extendedProps.booking.attendees).length > 0) &&
-            <div><i className="bi bi-people"></i> {(data.extendedProps.booking.attendees).length + ' khách'}
+            <div><i className="bi bi-people text-lg mr-3"></i> {(data.extendedProps.booking.attendees).length + ' khách'}
               <div>
                 {(data.extendedProps.booking.attendees).map(value => {
                   return (
-                    <div> {value.email}</div>
+                    <div><i className={'bi bi-person text-lg ml-7'}></i> {value.email}</div>
                   )
                 })}
               </div>
             </div>}
             {data?.extendedProps?.booking &&
-            <div><i className="bi bi-calendar2-event"></i> {data.extendedProps.booking.organizer.email}</div>}
+            <div><i className="bi bi-calendar2-event text-lg mr-3"></i> {data.extendedProps.booking.organizer.email}</div>}
+            <div className={'mb-3'}></div>
           </Popover.Body>
         </Popover>
       </Overlay>
@@ -278,9 +282,13 @@ const Calendar = forwardRef((props, ref) => {
 
   function handelClick (info) {
     eventEmitter.emit('showModalNew', info)
-    showModal(info)
+    showModal()
   }
-
+  function handelClickShowEdit () {
+    eventEmitter.emit('showModalEdit', data)
+    setShow(!show)
+    showModal()
+  }
   function eventClassNames (eventInfo) {
     const { event } = eventInfo
     if (event.title === 'event 4') return 'fc-rejected-event special-event'

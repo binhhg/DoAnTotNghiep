@@ -100,7 +100,7 @@ export default function ModalNew({show, handle}) {
     const [optionSelected, setOptionSelected] = useState(option[0])
     const [showModal2, setShowModal2] = useState(false)
     const [errMsg, setErrMsg] = useState('')
-
+    const [disableAccount, setDisableAccount] = useState(false)
     // modal 2
     const timeTypeConfig = {
         11: {
@@ -173,9 +173,13 @@ export default function ModalNew({show, handle}) {
     }
     const handleSave = async () => {
         try {
+            let st = start
+            if (allDay) {
+                st = moment(st).format('YYYY-MM-DD')
+            }
             const body = {
                 allDay,
-                start,
+                st,
                 end,
                 title,
                 location,
@@ -183,10 +187,9 @@ export default function ModalNew({show, handle}) {
                 accounts,
                 attendees
             }
-            console.log(optionSelected, 'zzz')
             if (optionSelected?.rrule) {
                 body.rrule = optionSelected.rrule
-                body.rrule.dtstart = start
+                body.rrule.dtstart = st
             }
             handle(false)
             const {data: zz} = await CalendarApi.addCalendar(body)
@@ -239,8 +242,17 @@ export default function ModalNew({show, handle}) {
         setAllDay(!allDay)
     }
     const handleChangeMail = (option) => {
-        setAccounts(option)
-        if (option.length !== 1) {
+        if (!option) {
+            setAccounts([])
+        } else {
+            if (Array.isArray(option)) {
+                setAccounts(option)
+            } else {
+                setAccounts([option])
+            }
+        }
+
+        if (option && option.length !== 1) {
             setAttendees([])
         }
     }
@@ -275,7 +287,7 @@ export default function ModalNew({show, handle}) {
         }
     }
     useEffect(() => {
-        getAccount()
+        getAccount().then()
     }, [])
     const appearances = {
         1: 'đầu tiên',
@@ -288,6 +300,20 @@ export default function ModalNew({show, handle}) {
         const dayOfMonth = date.getDate()
         const ordinalDayOfWeek = Math.ceil(dayOfMonth / 7)
         return {number: ordinalDayOfWeek, text: appearances[ordinalDayOfWeek]}
+    }
+    const freqText = {
+        DAILY: 'ngày',
+        WEEKLY: 'tuần',
+        MONTHLY: 'tháng'
+    }
+    const dayConfig = {
+        MO: 'thứ 2',
+        TU: 'thứ 3',
+        WE: 'thứ 4',
+        TH: 'thứ 5',
+        FR: 'thứ 6',
+        SA: 'thứ 7',
+        SU: 'chủ nhật'
     }
     useEffect(() => {
         eventEmitter.on('showModalNew', result => {
@@ -327,6 +353,12 @@ export default function ModalNew({show, handle}) {
                     }
                 }
             ]
+            setAccounts([])
+            setDisableAccount(false)
+            setAttendees([])
+            setTitle('')
+            setLocation('')
+            setDescription('')
             setData(result)
             setStart(result.start)
             setEnd(result.end)
@@ -334,6 +366,7 @@ export default function ModalNew({show, handle}) {
             setOptionSelect([...op, ...op2, cuoi])
         })
         eventEmitter.on('showModalEdit', result => {
+            console.log('vao day roi,', result)
             setCreate(false)
             const cc = result.start.getDay()
             const app = appearance(result.start)
@@ -370,6 +403,72 @@ export default function ModalNew({show, handle}) {
                     }
                 }
             ]
+            if (result?.extendedProps?.rrule) {
+                const {rrule} = result?.extendedProps
+                let label = ''
+                if (!rrule.interval) {
+                    label = 'Hàng ' + freqText[rrule.freq]
+                } else {
+                    label = `${rrule.interval} ${freqText[rrule.freq]} 1 lần`
+                }
+                if (rrule.byweekday) {
+                    let thu = ''
+                    for (const va of rrule.byweekday) {
+                        thu = thu + ` ${dayConfig[va]},`
+                    }
+                    label = `${label} vào ngày${thu.slice(0, -1)}`
+                    if (rrule.bysetpos) {
+                        label = `${label} lần ${rrule.bysetpos} của ${freqText[rrule.freq]} `
+                    }
+                } else if (rrule.freq === 'MONTHLY') {
+                    label = label + ` vào ngày ${label.date()}`
+                }
+                if (rrule.until) {
+                    const ut = moment(rrule.until).format('YYYY-MM-DD HH:mm')
+                    label = label + ` cho tới ${ut}`
+                }
+                if (rrule.count) {
+                    label = label + ` lặp lại ${rrule.count}`
+                }
+                const a = [...op, ...op2, cuoi]
+                let check = false
+                for (const va of a) {
+                    if (va.label === label) {
+                        check = true
+                        break
+                    }
+                }
+                if (!check) {
+                    console.log('here')
+                    op2.push({
+                        value: 7,
+                        label,
+                        rrule
+                    })
+                    setOptionSelected(op2[op2.length - 1])
+                }
+            } else {
+                setOptionSelected(op[0])
+            }
+            if (result?.extendedProps?.booking) {
+                const acc = result.extendedProps.booking.accountId
+                const cc = {
+                    value: acc,
+                    _id: acc,
+                    email: result.extendedProps.booking.organizer.email,
+                    label: result.extendedProps.booking.organizer.email
+                }
+                setAccounts([cc])
+                setDisableAccount(true)
+                setAttendees((result?.extendedProps?.booking?.attendees || []).map(qq => qq?.email))
+            } else {
+                setAccounts([])
+                setDisableAccount(false)
+                setAttendees([])
+            }
+            setTitle(result?.extendedProps?.title)
+            setLocation(result?.extendedProps?.location)
+            setDescription(result?.extendedProps?.description)
             setData(result)
             setStart(result.start)
             setEnd(result.end)
@@ -406,6 +505,8 @@ export default function ModalNew({show, handle}) {
                         timeInputFormat="HH:mm"
                         className={'w-[90%]'}
                         minDate={start}
+                        minTime={moment(start).add(30, 'minutes').toDate()}
+                        maxTime={moment(start).set({hour: 23, minute: 30}).toDate()}
                     />
                 </div>
             </div>
@@ -446,10 +547,13 @@ export default function ModalNew({show, handle}) {
                 <Form.Group>
                     <Select
                         // defaultValue={[mailOption[0]]}
-                        isMulti
+                        isMulti={create}
+                        isClearable={!create}
                         isSearchable
+                        isDisabled={disableAccount}
                         placeholder={'chọn tài khoản đồng bộ'}
                         name="colors"
+                        defaultValue={accounts[0]}
                         options={mailOption}
                         closeMenuOnSelect={false}
                         className="basic-multi-select"
@@ -458,7 +562,8 @@ export default function ModalNew({show, handle}) {
                     />
                 </Form.Group>
                 <Form.Group controlId="exampleForm.ControlInput1">
-                    <Form.Control hidden={accounts.length !== 1} type="email" placeholder="Thêm khách" value={inputText}
+                    <Form.Control hidden={accounts?.length !== 1} type="email" placeholder="Thêm khách"
+                                  value={inputText}
                                   onChange={handleInputChange}
                                   onKeyPress={handleKeyPress}/>
                     {
@@ -615,7 +720,7 @@ export default function ModalNew({show, handle}) {
                             />
                         </Form.Group>
                     )}
-                    <Form.Label className={'mt-1'}>Kết thúc</Form.Label>
+                    <Form.Label className={'mt-3'}>Kết thúc</Form.Label>
                     <Form>
                         <div>
                             <Form.Check type="radio"
@@ -627,7 +732,7 @@ export default function ModalNew({show, handle}) {
                                         className={'mb-2'}
                             />
                             <Form.Check type="radio"
-                                        style={{height: 'center', alignItems: 'center', display: 'flex'}}
+                                        style={{alignItems: 'center', display: 'flex'}}
                                         onChange={() => setEndCheck(2)}
                                         value={2}
                                         name={'group1'}
@@ -640,8 +745,6 @@ export default function ModalNew({show, handle}) {
                                                             <DatePicker
                                                                 disabled={endCheck !== 2}
                                                                 selected={endTime}
-                                                                showTimeSelect={false}
-                                                                shouldCloseOnSelect={true}
                                                                 onChange={(date) => setEndTime(date)}
                                                                 dateFormat={'dd/MM/yyyy'}
                                                                 className={'w-[70%]'}
@@ -657,16 +760,16 @@ export default function ModalNew({show, handle}) {
                                         value={3}
                                         name={'group1'}
                                         onChange={() => setEndCheck(3)}
-                                        className={'mb-2'}
+                                        className={'form-binh'}
                                         label={
                                             (<>
-                                                <div>
-                                                    <InputGroup className="mb-3 flex items-center w-full">
-                                                        <span
+                                                <div className={'flex space-x-2 items-center'}>
+                                                    <InputGroup className="w-full flex items-center">
+                                                        <div
                                                             className={'h-[38px] flex items-center justify-center mr-2'}>
                                                             Lặp lại mỗi
-                                                        </span>
-                                                        <div className={'w-[20%]'}>
+                                                        </div>
+                                                        <div className={'w-[20%] mr-2'}>
                                                             <Form.Control
                                                                 disabled={endCheck !== 3}
                                                                 type={'number'}
@@ -681,10 +784,10 @@ export default function ModalNew({show, handle}) {
                                                                 }}
                                                             />
                                                         </div>
-                                                        <span
+                                                        <div
                                                             className={'h-[38px] flex items-center justify-center mr-2'}>
                                                              Lần xuất hiện
-                                                            </span>
+                                                            </div>
                                                     </InputGroup>
                                                 </div>
                                             </>)

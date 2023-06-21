@@ -6,6 +6,7 @@ import 'react-calendar/dist/Calendar.css';
 import eventEmitter from "../utils/eventEmitter";
 import {ColorConfig} from '../apis/colorConfig'
 import ColorCard from "../components/colorCard";
+import {Dropdown} from "react-bootstrap";
 
 export default function Lich() {
     const calen = useRef(null)
@@ -42,9 +43,27 @@ export default function Lich() {
         const today = new Date();
         setValue(today)
     })
+
+    const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
+        <div className={'flex items-center justify-between gap-1 cursor-pointer'}>
+            <img onClick={onClick} src="https://upload.wikimedia.org/wikipedia/commons/9/90/Spiderman.JPG" alt="" className={'w-[36px] h-[36px] rounded-full'} />
+                {children}
+        </div>
+    ));
+
     return (
         <div className="grid grid-cols-7 h-screen w-full p-3 gap-3">
             <div className={'col-span-1'}>
+                <Dropdown className={'mb-3'}>
+                    <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
+                        <div className={'w-[36px] h-[36px] rounded-lg bg-gray-100 flex justify-center items-center'}><i className={'bi bi-plus text-lg'}></i></div>
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu className={'!border-none'} style={{ boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px;' }}>
+                        <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
+                        <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
+                    </Dropdown.Menu>
+                </Dropdown>
                 {
                     isClient ?
                         <CalendarB onChange={onChange} value={value}/> : <></>

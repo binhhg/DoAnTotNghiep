@@ -20,10 +20,18 @@ const moment = require('moment')
 // console.log('Start:', startFormatted)
 // console.log('Duration:', durationFormatted)
 
-// Tạo đối tượng Moment từ đối tượng Date hiện tại
-const currentTime = moment(new Date());
+// // Tạo đối tượng Moment từ đối tượng Date hiện tại
+// const currentTime = moment(new Date());
+//
+// // Chuyển đổi thành định dạng "YYYY-MM-DD HH:mm"
+// const formattedTime = currentTime.format('YYYY-MM-DD HH:mm');
 
-// Chuyển đổi thành định dạng "YYYY-MM-DD HH:mm"
-const formattedTime = currentTime.format('YYYY-MM-DD HH:mm');
+// console.log(`Thời gian định dạng "YYYY-MM-DD HH:mm": ${formattedTime}`);
 
-console.log(`Thời gian định dạng "YYYY-MM-DD HH:mm": ${formattedTime}`);
+const time = moment('2023-06-19T17:00:00Z');
+
+const newTime = time.add(30, 'minutes');
+
+// Lấy thời gian dạng 'hh:mm'
+
+console.log(newTime.toDate());

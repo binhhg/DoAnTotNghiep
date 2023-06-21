@@ -30,7 +30,7 @@ module.exports = container => {
     return Account.find(pipe).limit(limit).skip(skip).sort(sort)
   }
   const getAccountNoPaging = (pipe) => {
-    return Account.find(pipe)
+    return Account.find(pipe, {email: 1})
   }
   const getAccountFindOne = (pipe) => {
     return Account.findOne(pipe).populate('userId')

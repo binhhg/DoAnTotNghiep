@@ -119,11 +119,11 @@ function Example() {
                     {
                         id: 'adasbhdgashbdhasd',
                         title: 'event 1',
-                        start: '2023-06-17',
+                        start: '2023-06-19T17:00:00Z',
                         // end: '2023-06-04T06:00:00+07',
                         // color: 'red',
                         createdBy: 'binh',
-                        summary: 'giôi thieu ne'
+                        summary: 'giôi thieu ne',
                         // className: 'fc-rejected-event'
                         // allDay: true
                     }, {
@@ -160,7 +160,23 @@ function Example() {
                             // Loại bỏ ngày '2023-05-05'
                         },
                         duration: '24:00'
-                    },
+                    }, {
+                        "_id": "6492b2bf618d183aa051860e",
+                        "userId": "6480e1ba965ca4f7d5fa60af",
+                        "title": "ahihih",
+                        "description": "heee",
+                        "location": "zzzz",
+                        "allDay": 1,
+                        "start": "2023-06-19T17:00:00Z",
+                        // "end": "2023-06-20T17:00:00Z",
+                        wkst: 'MO',
+                        "rrule": {
+                            "freq": "WEEKLY",
+                            "dtstart": "2023-06-21",
+                            "byweekday": ["TU"]
+                        },
+                        // "duration": "24:00",
+                    }
                 ]}
                 editable={'true'}
                 height={'100vh'}
