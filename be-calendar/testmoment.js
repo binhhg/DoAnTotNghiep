@@ -35,3 +35,21 @@ const newTime = time.add(30, 'minutes');
 // Lấy thời gian dạng 'hh:mm'
 
 console.log(newTime.toDate());
+
+function getDuration (start, end) {
+    if (!start || !end) {
+        return '00:00'
+    }
+    const startMoment = moment(start)
+    const endMoment = moment(end)
+    const duration = moment.duration(endMoment.diff(startMoment))
+    const days = duration.days()
+    const hours = duration.hours()
+    const minutes = duration.minutes()
+    const durationFormatted = `${hours + days * 24}:${minutes.toString().padStart(2, '0')}`
+    return durationFormatted
+
+}
+console.log(getDuration('2023-06-19T17:00:00.000Z','2023-06-20'))
+const a = moment('2023-06-19T17:00:00.000Z').format('YYYY-MM-DD')
+console.log(a)

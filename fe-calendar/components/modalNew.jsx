@@ -14,6 +14,7 @@ import {
 import 'bootstrap/dist/css/bootstrap.min.css'
 import eventEmitter from '../utils/eventEmitter'
 import DatePicker from 'react-datepicker'
+import makeAnimated from 'react-select/animated'
 import Select from 'react-select'
 import 'react-datepicker/dist/react-datepicker.css'
 import {UserApi} from '../apis/user'
@@ -78,7 +79,7 @@ const thuConfig = {
     }
 }
 export default function ModalNew({show, handle}) {
-
+    const animatedComponents = makeAnimated();
     const option = [
         {value: 1, label: 'Không lặp lại'},
         {value: 2, label: 'Hằng ngày', rrule: {freq: 'DAILY'}},
@@ -174,13 +175,15 @@ export default function ModalNew({show, handle}) {
     const handleSave = async () => {
         try {
             let st = start
+            let en = end
             if (allDay) {
                 st = moment(st).format('YYYY-MM-DD')
+                en = moment(en).format('YYYY-MM-DD')
             }
             const body = {
                 allDay,
-                st,
-                end,
+                start: st,
+                end: en,
                 title,
                 location,
                 description,
@@ -551,11 +554,12 @@ export default function ModalNew({show, handle}) {
                         isClearable={!create}
                         isSearchable
                         isDisabled={disableAccount}
+                        components={animatedComponents}
                         placeholder={'chọn tài khoản đồng bộ'}
                         name="colors"
                         defaultValue={accounts[0]}
                         options={mailOption}
-                        closeMenuOnSelect={false}
+                        closeMenuOnSelect={!create}
                         className="basic-multi-select"
                         classNamePrefix="select"
                         onChange={(option) => handleChangeMail(option)}

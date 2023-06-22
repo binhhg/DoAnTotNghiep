@@ -163,7 +163,7 @@ function Example() {
                     }, {
                         "_id": "6492b2bf618d183aa051860e",
                         "userId": "6480e1ba965ca4f7d5fa60af",
-                        "title": "ahihih",
+                        "title": "ua alo",
                         "description": "heee",
                         "location": "zzzz",
                         "allDay": 1,
@@ -171,10 +171,13 @@ function Example() {
                         // "end": "2023-06-20T17:00:00Z",
                         wkst: 'MO',
                         "rrule": {
-                            "freq": "WEEKLY",
-                            "dtstart": "2023-06-21",
-                            "byweekday": ["TU"]
-                        },
+                            "freq" : "WEEKLY",
+                            "dtstart" : "2023-06-20",
+                            "interval" : 3,
+                            "byweekday" : [
+                                "TU"
+                            ]
+                        }
                         // "duration": "24:00",
                     }
                 ]}
