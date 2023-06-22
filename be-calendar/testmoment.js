@@ -34,22 +34,30 @@ const newTime = time.add(30, 'minutes');
 
 // Lấy thời gian dạng 'hh:mm'
 
-console.log(newTime.toDate());
+// console.log(newTime.toDate());
+//
+// function getDuration (start, end) {
+//     if (!start || !end) {
+//         return '00:00'
+//     }
+//     const startMoment = moment(start)
+//     const endMoment = moment(end)
+//     const duration = moment.duration(endMoment.diff(startMoment))
+//     const days = duration.days()
+//     const hours = duration.hours()
+//     const minutes = duration.minutes()
+//     const durationFormatted = `${hours + days * 24}:${minutes.toString().padStart(2, '0')}`
+//     return durationFormatted
+//
+// }
+// console.log(getDuration('2023-06-19T17:00:00.000Z','2023-06-20'))
+// const a = moment('2023-06-19T17:00:00.000Z').format('YYYY-MM-DD')
+// console.log(a)
 
-function getDuration (start, end) {
-    if (!start || !end) {
-        return '00:00'
-    }
-    const startMoment = moment(start)
-    const endMoment = moment(end)
-    const duration = moment.duration(endMoment.diff(startMoment))
-    const days = duration.days()
-    const hours = duration.hours()
-    const minutes = duration.minutes()
-    const durationFormatted = `${hours + days * 24}:${minutes.toString().padStart(2, '0')}`
-    return durationFormatted
 
-}
-console.log(getDuration('2023-06-19T17:00:00.000Z','2023-06-20'))
-const a = moment('2023-06-19T17:00:00.000Z').format('YYYY-MM-DD')
-console.log(a)
+const time1 = moment('2023-06-16T17:00:00Z');
+const time2 = moment('2023-06-17T02:00:00Z');
+
+// Kiểm tra xem hai thời gian có cùng ngày, tháng, năm hay không
+const sameDate = time1.isSame(time2, 'day');
+console.log(sameDate)

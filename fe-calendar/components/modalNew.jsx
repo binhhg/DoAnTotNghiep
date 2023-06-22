@@ -98,7 +98,7 @@ export default function ModalNew({show, handle}) {
     const [accounts, setAccounts] = useState([])
     const [description, setDescription] = useState('')
     const [mailOption, setMailOption] = useState([])
-    const [optionSelected, setOptionSelected] = useState(option[0])
+    const [optionSelected, setOptionSelected] = useState(0)
     const [showModal2, setShowModal2] = useState(false)
     const [errMsg, setErrMsg] = useState('')
     const [disableAccount, setDisableAccount] = useState(false)
@@ -132,6 +132,11 @@ export default function ModalNew({show, handle}) {
     const [repeatMonth, setRepeatMonth] = useState([])
     const [repeatMonthSelected, setRepeatMonthSelected] = useState(null)
 
+
+    //modal edit
+
+    const [showEdit, setShowEdit] = useState(false)
+    const [checkEdit, setCheckEdit] = useState(1)
     const handleInputChange = (e) => {
         setInputText(e.target.value)
     }
@@ -169,7 +174,7 @@ export default function ModalNew({show, handle}) {
             console.log('edit')
             handle(false)
             setInputText('')
-            setOptionSelected(option[0])
+            setOptionSelected(0)
         }
     }
     const handleSave = async () => {
@@ -190,8 +195,8 @@ export default function ModalNew({show, handle}) {
                 accounts,
                 attendees
             }
-            if (optionSelected?.rrule) {
-                body.rrule = optionSelected.rrule
+            if (optionSelect[optionSelected]?.rrule) {
+                body.rrule = optionSelect[optionSelected].rrule
                 body.rrule.dtstart = st
             }
             handle(false)
@@ -205,6 +210,7 @@ export default function ModalNew({show, handle}) {
     }
     const handleChangeOption = (op) => {
         const value = op.value
+        const index = optionSelect.findIndex(item => item.value === value)
         if (value === 3) {
             const a = moment(start).set({hour: 0, minute: 0, second: 0}).add(3, 'months')
             const s = new Date(start)
@@ -234,7 +240,7 @@ export default function ModalNew({show, handle}) {
             setEndCount(10)
             setShowModal2(true)
         }
-        setOptionSelected(op)
+        setOptionSelected(index)
     }
     const handleSetAllDay = () => {
         if (!allDay) {
@@ -317,6 +323,44 @@ export default function ModalNew({show, handle}) {
         FR: 'thứ 6',
         SA: 'thứ 7',
         SU: 'chủ nhật'
+    }
+    const handleSetStart = (date) => {
+        const st1 = moment(date)
+        const st2 = moment(start)
+        if(!st2.isSame(st1,'day')){
+            console.log('vao day oke ')
+            const cc = date.getDay()
+            const app = appearance(date)
+            const thu = thuConfig[cc]
+            const ok = optionSelect.map((value,index) => {
+                if(index === 2){
+                    return {
+                        value: 4,
+                        label: 'Hàng tuần vào ngày ' + thu.label,
+                        rrule: {
+                            freq: 'WEEKLY',
+                            dtstart: date,
+                            byweekday: [thu.key]
+                        }
+                    }
+                } else if(index === 3){
+                    return  {
+                        value: 5,
+                        label: 'Hàng tháng vào ngày ' + thu.label + ' lần ' + app.text + ' của tháng',
+                        rrule: {
+                            freq: 'MONTHLY',
+                            dtstart: date,
+                            byweekday: [thu.key],
+                            bysetpos: +app.number
+                        }
+                    }
+                } else {
+                    return value
+                }
+            })
+            setOptionSelect(ok)
+        }
+        setStart(date)
     }
     useEffect(() => {
         eventEmitter.on('showModalNew', result => {
@@ -448,10 +492,10 @@ export default function ModalNew({show, handle}) {
                         label,
                         rrule
                     })
-                    setOptionSelected(op2[op2.length - 1])
+                    setOptionSelected(op2.length +op.length - 1)
                 }
             } else {
-                setOptionSelected(op[0])
+                setOptionSelected(0)
             }
             if (result?.extendedProps?.booking) {
                 const acc = result.extendedProps.booking.accountId
@@ -489,7 +533,7 @@ export default function ModalNew({show, handle}) {
                         timeFormat="HH:mm"
                         // closeOnSelect={true}
                         shouldCloseOnSelect={true}
-                        onChange={(date) => setStart(date)}
+                        onChange={(date) => handleSetStart(date)}
                         dateFormat={!allDay ? 'dd/MM/yyyy HH:mm' : 'dd/MM/yyyy'}
                         showTimeInput
                         timeInputFormat="HH:mm"
@@ -501,7 +545,7 @@ export default function ModalNew({show, handle}) {
                         selected={end}
                         showTimeSelect={!allDay}
                         timeFormat="HH:mm"
-                        onChange={(date) => setEnd(new Date(date))}
+                        onChange={(date) => setEnd(date)}
                         dateFormat={!allDay ? 'dd/MM/yyyy HH:mm' : 'dd/MM/yyyy'}
                         showTimeInput
                         closeOnSelect
@@ -538,7 +582,7 @@ export default function ModalNew({show, handle}) {
                     <Form.Group className={'mb-2 w-full'}>
                         <Select
                             options={optionSelect}
-                            value={optionSelected}
+                            value={optionSelect[optionSelected]}
                             className={'basic-single'}
                             classNamePrefix={'select'}
                             onChange={(option) => handleChangeOption(option)}
@@ -605,7 +649,7 @@ export default function ModalNew({show, handle}) {
         }
     }
     const handleCloseModal2 = () => {
-        setOptionSelected(optionSelect[0])
+        setOptionSelected(0)
         setShowModal2(!showModal2)
     }
     const handleSaveModal2 = () => {
@@ -656,8 +700,63 @@ export default function ModalNew({show, handle}) {
         console.log(label)
         optionSelect.splice(len - 1, 0, qq)
         setOptionSelect(optionSelect)
-        setOptionSelected(qq)
+        setOptionSelected(optionSelect.length -2)
         setShowModal2(!showModal2)
+    }
+    const ShowEdit = (props) => {
+        if (!showEdit) {
+            return null
+        }
+
+        console.log('dddd',data)
+        return (
+            <Modal
+                {...props}
+                size="sm"
+                className={'c-modal'}
+                aria-labelledby="contained-modal-title-vcenter"
+                centered
+            >
+                <Modal.Body>
+                    {!isRecurring ? <div>Bạn có chắc chắn muốn sửa</div> : (
+                        <>
+
+                            <Form>
+                                <Form.Label>Chỉnh sửa sự kiện định kỳ</Form.Label>
+                                <div>
+                                    <Form.Check type="radio"
+                                                label={'Chỉ sự kiện này'}
+                                                value={1}
+                                                name={'group1'}
+                                                defaultChecked
+                                                onSelect={() => setCheckEdit(1)}
+                                                className={'mb-3'}
+                                    />
+                                    <Form.Check type="radio"
+                                                label={'Sự kiện này và các sự kiện về sau'}
+                                                value={2}
+                                                name={'group1'}
+                                                onSelect={() => setCheckEdit(2)}
+                                                className={'mb-3'}
+                                    />
+                                    <Form.Check type="radio"
+                                                label={'Tất cả sự kiện'}
+                                                value={3}
+                                                name={'group1'}
+                                                onSelect={() => setCheckEdit(3)}
+                                                className={'mb-3'}
+                                    />
+                                </div>
+                            </Form>
+                        </>
+                    )}
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant={'light'} onClick={props.onHide}>Hủy</Button>
+                    <Button variant={'light'} onClick={handleOkModalDelete}>Ok</Button>
+                </Modal.Footer>
+            </Modal>
+        )
     }
     const bodyModal2 = () => {
         return (
@@ -845,6 +944,9 @@ export default function ModalNew({show, handle}) {
                     </Button>
                 </Modal.Footer>
             </Modal>
+            <ShowEdit
+                show={showEdit}
+                onHide={() => setShowEdit(false)}/>
         </>
     )
 }
