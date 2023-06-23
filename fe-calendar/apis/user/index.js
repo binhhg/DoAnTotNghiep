@@ -10,5 +10,13 @@ export const UserApi = {
         } catch (e) {
             return null
         }
+    },
+    async getUser(){
+        try {
+            const { data } = await api.get('/user')
+            return data
+        } catch (e) {
+            return null
+        }
     }
 }

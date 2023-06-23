@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import {TwitterPicker} from 'react-color'
 import {ColorConfig} from '../apis/colorConfig'
 
+import 'bootstrap/dist/css/bootstrap.min.css'
 export default function ColorCard({colorConfig, setColorConfig}) {
     const [accounts, setAccounts] = useState([])
 

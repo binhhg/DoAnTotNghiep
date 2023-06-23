@@ -223,11 +223,22 @@ module.exports = (container) => {
       res.status(httpCode.UNKNOWN_ERROR).json()
     }
   }
+  const getUser = async (req, res) => {
+    try {
+      const {userId} = req.user
+      const data = await userRepo.getUserById(userId)
+      res.status(httpCode.SUCCESS).json(data)
+    } catch (e) {
+      logger.e(e)
+      res.status(httpCode.UNKNOWN_ERROR).send({ok: false})
+    }
+  }
   return {
     loginOrRegister,
     generateUrl,
     refreshToken,
     logout,
-    login
+    login,
+    getUser
   }
 }
