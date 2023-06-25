@@ -5,5 +5,6 @@ module.exports = (app, container) => {
   const { basePath } = serverSettings
   app.post(`${basePath}/account`, verifyToken, accountController.addAccount)
   app.get(`${basePath}/account`, verifyToken, accountController.getAccount)
+  app.get(`${basePath}/account/profile`, verifyToken, accountController.getAccountProfile)
   app.delete(`${basePath}/account`, verifyToken, accountController.deleteAccountById)
 }

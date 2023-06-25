@@ -163,3 +163,18 @@ body {
 .divider:before, .divider:after {
     height: 0.1rem;
 }
+
+.account-item {
+    display: flex;
+    align-items: center;
+}
+
+.avatar {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+}
+
+.account-name {
+    margin-left: auto;
+}
