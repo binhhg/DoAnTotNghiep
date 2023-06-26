@@ -2,6 +2,7 @@ import NextAuth from 'next-auth'
 import axios from 'axios'
 import GoogleProvider from 'next-auth/providers/google'
 import { useRouter } from 'next/router'
+import {router} from "next/client";
 
 export default NextAuth({
   providers: [
@@ -19,9 +20,12 @@ export default NextAuth({
     })
   ],
   callbacks: {
-    async signIn ({ account, profile }) {
+    async signIn ({ user,account, profile }) {
       if (account.provider === 'google') {
         try {
+          if(!user){
+            return '/login'
+          }
           const obj = {
             profile: {
               sub: profile.sub,

@@ -39,7 +39,7 @@ const PersonalDetail = () => {
   return (
     <div className={'bg-gray-200 min-h-screen'}>
       <div className={'max-w-[1200px] mx-auto lg:grid grid-cols-3 gap-x-6 lg:py-8 p-2'}>
-        <div className={'col-span-1 bg-white rounded-lg py-4 px-6'}>
+        <div className={'col-span-1 bg-white rounded-lg py-4 px-6 mt-4'}>
           <div className={'py-2'}>
             <div className={'flex gap-x-3 items-center'}>
               <div className={''}>
@@ -51,7 +51,7 @@ const PersonalDetail = () => {
               </div>
             </div>
             <div className="divider horizontal !my-2"></div>
-            <ul className={'flex flex-col py-2'}>
+            <ul className={'flex flex-col py-2 !ml-0 pl-0'}>
               {menu.map((item, index) =>
                 <li key={item.id}
                     className={`p-2 cursor-pointer mb-2 ${index === 0 ? 'bg-violet-400 text-white font-bold rounded-md ' : ''}`}>{item.title}</li>
@@ -65,9 +65,9 @@ const PersonalDetail = () => {
               <FieldInfo value={info?.name} icon={faPencil} label={'Tên hiển thị'} isShowEdit={showEdit}/>
               <FieldInfo label={'Tài khoản:'}/>
               {accounts.map((account) => (
-                <div className={'flex gap-x-3 items-center'}>
-                  <div className={''}>
-                    <img src={account?.photo} alt={''} className={'rounded-circle object-top'}/>
+                <div className={'flex gap-x-3 items-center border border-gray-100 rounded-xl mb-2'}>
+                  <div className={'p-2'}>
+                    <img src={account?.photo} alt={''} className={'rounded-circle object-top w-10 h-10'}/>
                   </div>
                   <div
                     className={'flex flex-col gap-y-3 justify-center w-fit items-center relative cursor-pointer font-bold'}>
@@ -75,7 +75,7 @@ const PersonalDetail = () => {
                   </div>
                 </div>
               ))}
-              {accounts.length < 5 && <button><h1>+</h1></button>}
+              {accounts.length < 5 && <button className={'w-full flex justify-center items-center h-14 rounded-xl border border-gray-100'}><span className={'text-3xl'}>+</span></button>}
             </div>
           </div>
         </div>
