@@ -85,14 +85,14 @@ async function addCalendar () {
     summary: 'Ttest cai de ne 3',
     description: 'Mô tả sự kiện',
     start: {
-      dateTime: '2023-06-10T06:30:00+07:00',
+      dateTime: '2023-06-28T06:30:00+07:00',
       timeZone: 'Asia/Ho_Chi_Minh'
     },
     end: {
-      dateTime: '2023-06-10T08:30:00+07:00',
+      dateTime: '2023-06-28T08:30:00+07:00',
       timeZone: 'Asia/Ho_Chi_Minh'
     },
-    recurrence: ['RRULE:FREQ=DAILY;BYDAY=MO,TU,WE,TH,FR'],
+    // recurrence: ['RRULE:FREQ=DAILY;BYDAY=MO,TU,WE,TH,FR'],
     // conferenceData: {
     //   createRequest: {
     //     requestId: '7qxalsvy0e',
@@ -105,9 +105,9 @@ async function addCalendar () {
     reminders: {
       useDefault: true
     },
-    // attendees: [
-    //   { email: 'binhpt@carpla.vn' }
-    // ],
+    attendees: [
+      { email: 'binhpt@carpla.vn' }
+    ]
   }
   const calendar = google.calendar({ version: 'v3' })
   calendar.events.insert({
@@ -202,6 +202,7 @@ async function deleteCalendar (id) {
     console.log('res ne ', res.data)
   })
 }
+
 async function deleteCalendar2 (id) {
   const calendar = google.calendar({ version: 'v3' })
   calendar.events.delete({
@@ -218,6 +219,7 @@ async function deleteCalendar2 (id) {
     console.log('res ne ', res.data)
   })
 }
+
 async function getInstences (id) {
   // Tạo client cho Google Calendar API
   const calendar = google.calendar({ version: 'v3', auth: oauth2Client })
@@ -243,12 +245,34 @@ async function getInstences (id) {
   }
 }
 
+async function getAndUpdate (id) {
+  try {
+    const calendar = google.calendar({ version: 'v3' })
+    const { data } = await calendar.events.get({
+      auth: oauth2Client,
+      calendarId: 'primary',
+      eventId: id
+    })
+    data.attendees = [{ email: 'binhhghg456@gmail.com' }, { email: 'binhpt@carpla.vn' }]
+    data.summary = 'aaaaaa'
+    await calendar.events.patch({
+      auth: oauth2Client,
+      calendarId: 'primary',
+      eventId: id,
+      resource: { summary: 'sazas', recurrence: [] }
+    })
+  } catch (e) {
+    console.log(e)
+  }
+}
+
 // deleteCalendar('0pl8un75t77hrophqk6ng9u7a9_20230622T020000Z').then()
 // update1EventOfRecurringEvent('7lf1hc0bs3qgjvgikm4cikdiai').then()
 // addNewRecurringFromCurrentRecurring('oln8rmgncjq4leouusbsftvt88').then()
 listCalendars().then()
 // deleteCalendar2('7lf1hc0bs3qgjvgikm4cikdiai').then()
 // addCalendar().then()
+// getAndUpdate('ue0e0rkj88cf1le5s009ao42es').then()
 // getInstences('0pl8un75t77hrophqk6ng9u7a9').then()
 // admin.initializeApp({
 //   credential: admin.credential.cert(serviceAccount)
