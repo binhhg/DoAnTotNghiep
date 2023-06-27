@@ -44,7 +44,7 @@ module.exports = (container) => {
         try {
             const oauth2Client = new google.auth.OAuth2(web.client_id, web.client_secret, process.env.REDIRECT_URI || 'http://localhost:3000/signIn')
             oauth2Client.setCredentials({refresh_token: token})
-            const calendar = google.calendar({version: 'v3', auth: oauth2Client,})
+            const calendar = google.calendar({version: 'v3', auth: oauth2Client})
             const {data} = await calendar.events.delete({
                 calendarId: 'primary',
                 eventId: id,
@@ -56,10 +56,27 @@ module.exports = (container) => {
             return {ok: false, msg: e}
         }
     }
+    async function getCalendarById(token,id){
+        try {
+
+            const oauth2Client = new google.auth.OAuth2(web.client_id, web.client_secret, process.env.REDIRECT_URI || 'http://localhost:3000/signIn')
+            oauth2Client.setCredentials({refresh_token: token})
+            const calendar = google.calendar({version: 'v3', auth: oauth2Client})
+            const {data} = await calendar.events.get({
+                calendarId: 'primary',
+                eventId: id
+            })
+            return {ok: true, data}
+        } catch (e) {
+            console.log(e)
+            return {ok: false, msg: e}
+        }
+    }
 
     return {
         addCalendar,
         updateCalendar,
-        deleteCalendar
+        deleteCalendar,
+        getCalendarById
     }
 }
