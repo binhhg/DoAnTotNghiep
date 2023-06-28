@@ -231,7 +231,7 @@ async function getInstences (id) {
       // orderBy: 'created'
       eventId: id,
       // timeMin: '2023-06-07'
-      originalStart: '2023-06-22T09:00:00+07:00'
+      // originalStart: '2023-06-22T09:00:00+07:00'
     })
     const calendars = response.data.items
     console.log(response.data.items)
@@ -253,13 +253,12 @@ async function getAndUpdate (id) {
       calendarId: 'primary',
       eventId: id
     })
-    data.attendees = [{ email: 'binhhghg456@gmail.com' }, { email: 'binhpt@carpla.vn' }]
-    data.summary = 'aaaaaa'
-    await calendar.events.patch({
+    delete data.recurrence
+    await calendar.events.update({
       auth: oauth2Client,
       calendarId: 'primary',
       eventId: id,
-      resource: { summary: 'sazas', recurrence: [] }
+      resource: data
     })
   } catch (e) {
     console.log(e)
@@ -272,8 +271,8 @@ async function getAndUpdate (id) {
 listCalendars().then()
 // deleteCalendar2('7lf1hc0bs3qgjvgikm4cikdiai').then()
 // addCalendar().then()
-// getAndUpdate('ue0e0rkj88cf1le5s009ao42es').then()
-// getInstences('0pl8un75t77hrophqk6ng9u7a9').then()
+// getAndUpdate('7jj0vdnqik02jtpqe1v4ciqvlt').then()
+// getInstences('2ntgfcc0q9a8q5c9o62su8r1hl').then()
 // admin.initializeApp({
 //   credential: admin.credential.cert(serviceAccount)
 // })
