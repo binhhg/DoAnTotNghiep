@@ -20,8 +20,10 @@ module.exports = (joi, mongoose, { joi2MongoSchema, schemas }) => {
     attachments: joi.array().items(joi.string().allow('')).default([]),
     hangoutLink: joi.string().allow(''),
     recurrence: joi.array().items(joi.string().allow('')).default([]),
-    createdBy: joi.object().default('').unknown(),
-    organizer: joi.object().default('').unknown(),
+    createdBy: joi.object().default({}).unknown(),
+    organizer: joi.object().default({}).unknown(),
+    originalStartTime: joi.object().default({}).unknown(),
+    recurringEventId: joi.string().default(''),
     sequence: joi.number().default(0) // dùng khi update cần truyền lên để tránh conflict
   })
   const eventSchema = joi2MongoSchema(eventJoi, {

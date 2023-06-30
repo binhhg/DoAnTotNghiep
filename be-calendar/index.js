@@ -253,7 +253,7 @@ async function getAndUpdate (id) {
       calendarId: 'primary',
       eventId: id
     })
-    delete data.recurrence
+    data.recurrence.push('EXDATE:20230701T013000Z')
     await calendar.events.update({
       auth: oauth2Client,
       calendarId: 'primary',
@@ -271,7 +271,7 @@ async function getAndUpdate (id) {
 listCalendars().then()
 // deleteCalendar2('7lf1hc0bs3qgjvgikm4cikdiai').then()
 // addCalendar().then()
-// getAndUpdate('7jj0vdnqik02jtpqe1v4ciqvlt').then()
+// getAndUpdate('5cctom9vihk0ltj1ucjupl35rb').then()
 // getInstences('2ntgfcc0q9a8q5c9o62su8r1hl').then()
 // admin.initializeApp({
 //   credential: admin.credential.cert(serviceAccount)

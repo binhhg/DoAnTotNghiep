@@ -40,6 +40,24 @@ module.exports = (container) => {
       return { ok: false, msg: e }
     }
   }
+  async function updateCalendarPatch (token, id, dataSend) {
+    try {
+      const oauth2Client = new google.auth.OAuth2(web.client_id, web.client_secret, process.env.REDIRECT_URI || 'http://localhost:3000/signIn')
+      oauth2Client.setCredentials({ refresh_token: token })
+      const calendar = google.calendar({ version: 'v3', auth: oauth2Client })
+      const { data } = await calendar.events.patch({
+        calendarId: 'primary',
+        eventId: id,
+        resource: dataSend,
+        sendUpdates: 'all',
+        supportsAttachments: true
+      })
+      return { ok: true, data }
+    } catch (e) {
+      console.log(e)
+      return { ok: false, msg: e }
+    }
+  }
 
   async function deleteCalendar (token, id) {
     try {
@@ -60,7 +78,6 @@ module.exports = (container) => {
 
   async function getCalendarById (token, id) {
     try {
-
       const oauth2Client = new google.auth.OAuth2(web.client_id, web.client_secret, process.env.REDIRECT_URI || 'http://localhost:3000/signIn')
       oauth2Client.setCredentials({ refresh_token: token })
       const calendar = google.calendar({ version: 'v3', auth: oauth2Client })
@@ -79,6 +96,7 @@ module.exports = (container) => {
     addCalendar,
     updateCalendar,
     deleteCalendar,
-    getCalendarById
+    getCalendarById,
+    updateCalendarPatch
   }
 }
