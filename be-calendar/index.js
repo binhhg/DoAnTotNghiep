@@ -253,7 +253,7 @@ async function getAndUpdate (id) {
       calendarId: 'primary',
       eventId: id
     })
-    data.recurrence.push('EXDATE:20230701T013000Z')
+    data.recurrence.push('EXDATE:20230706T013000Z')
     await calendar.events.update({
       auth: oauth2Client,
       calendarId: 'primary',

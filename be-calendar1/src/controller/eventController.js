@@ -450,7 +450,7 @@ module.exports = (container) => {
               hangoutLink: dd.hangoutLink,
               creator: dd.creator,
               sequence: dd.sequence,
-              organizer: dd.organizer,
+              organizer: dd.organizer
             }
             const {
               error: e,
@@ -555,6 +555,7 @@ module.exports = (container) => {
         result.push(addEv)
         return res.status(httpCode.SUCCESS).json({ data: result })
       } else {
+
       }
     } catch (e) {
       logger.e(e)

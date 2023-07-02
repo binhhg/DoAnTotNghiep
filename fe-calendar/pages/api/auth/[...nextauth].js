@@ -1,8 +1,6 @@
 import NextAuth from 'next-auth'
 import axios from 'axios'
 import GoogleProvider from 'next-auth/providers/google'
-import { useRouter } from 'next/router'
-import {router} from "next/client";
 
 export default NextAuth({
   providers: [
