@@ -11,6 +11,14 @@ export const CalendarApi = {
       return null
     }
   },
+  async updateCalendar (id,body) {
+    try {
+      const { data } = await api.put(`${ApiConfig.calendar}/event/${id}`, body)
+      return data
+    } catch (e) {
+      return null
+    }
+  },
   async getEvent () {
     try {
       const { data } = await api.get(`${ApiConfig.calendar}/event`)

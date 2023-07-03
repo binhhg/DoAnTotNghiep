@@ -3,4 +3,5 @@ module.exports = (app, container) => {
   app.post('/event', eventController.addEvent)
   app.get('/event', eventController.getEvent)
   app.delete('/event/:id', eventController.deleteEvent)
+  app.put('/event/:id', eventController.updateEvent)
 }
