@@ -10,11 +10,11 @@ module.exports = (joi, mongoose, { joi2MongoSchema, schemas }) => {
     title: joi.string().required(),
     description: joi.string().allow(''),
     location: joi.string().allow(''),
-    allDay:joi.number().valid(0,1).default(0),
+    allDay: joi.number().valid(0, 1).default(0),
     start: joi.string().allow(''),
     end: joi.string().allow(''),
     rrule: joi.object().unknown(),
-    exdate: joi.string().allow(''),
+    exdate: joi.array().items(joi.string()).default([]),
     duration: joi.string().allow(''),
     state: joi.number().valid(...Object.values(stateConfig)).default(1)
   })
