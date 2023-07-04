@@ -149,15 +149,16 @@ function Example () {
               rrule: {
                 freq: 'WEEKLY',
                 dtstart: '2023-06-10T05:00:00Z',
-                byweekday: ['MO', 'TU', 'WE', 'TH', 'FR']
                 // Loại bỏ ngày '2023-05-05'
+                until: '2023-07-06T17:00:00Z'
               }
             },
             rrule: {
               freq: 'DAILY',
-              dtstart: '2023-06-10T06:00:00Z'
+              dtstart: '2023-06-10T06:00:00Z',
               // byweekday: ['MO', 'TU', 'WE', 'TH', 'FR', 'SA']
               // Loại bỏ ngày '2023-05-05'
+              until: '2023-07-07'
             },
             duration: '04:00',
             exdate: ['2023-07-05']

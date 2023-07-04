@@ -125,18 +125,17 @@ async function addCalendar () {
 
 async function update1EventOfRecurringEvent (id) {
   const event = {
-    // start: {
-    //   dateTime: '2023-06-07T09:00:00+07:00',
-    //   timeZone: 'Asia/Ho_Chi_Minh'
-    // },
-    // end: {
-    //   dateTime: '2023-06-07T11:00:00+07:00',
-    //   timeZone: 'Asia/Ho_Chi_Minh'
-    // },
+    start: {
+      dateTime: '2023-06-07T09:00:00+07:00',
+      timeZone: 'Asia/Ho_Chi_Minh'
+    },
+    end: {
+      dateTime: '2023-06-07T11:00:00+07:00',
+      timeZone: 'Asia/Ho_Chi_Minh'
+    },
     recurringEventId: id,
-    status: 'cancelled',
     originalStartTime: {
-      dateTime: '2023-06-22T20:30:00+07:00',
+      dateTime: '2023-07-06T16:30:00Z',
       timeZone: 'Asia/Ho_Chi_Minh'
     }
   }
@@ -253,8 +252,8 @@ async function getAndUpdate (id) {
       calendarId: 'primary',
       eventId: id
     })
-    data.recurrence.push('EXDATE:20230706T013000Z')
-    await calendar.events.update({
+    data.recurrence  =  [ 'RRULE:FREQ=DAILY;UNTIL=20230706T170000Z' ]
+    await calendar.events.patch({
       auth: oauth2Client,
       calendarId: 'primary',
       eventId: id,
@@ -266,12 +265,12 @@ async function getAndUpdate (id) {
 }
 
 // deleteCalendar('0pl8un75t77hrophqk6ng9u7a9_20230622T020000Z').then()
-// update1EventOfRecurringEvent('7lf1hc0bs3qgjvgikm4cikdiai').then()
+// update1EventOfRecurringEvent('cq8452or5br9flmdvubg2ak1gs').then()
 // addNewRecurringFromCurrentRecurring('oln8rmgncjq4leouusbsftvt88').then()
-listCalendars().then()
+getAndUpdate('67pvaoi966gfm8edrennp3sr1t').then()
+// listCalendars().then()
 // deleteCalendar2('7lf1hc0bs3qgjvgikm4cikdiai').then()
 // addCalendar().then()
-// getAndUpdate('5cctom9vihk0ltj1ucjupl35rb').then()
 // getInstences('2ntgfcc0q9a8q5c9o62su8r1hl').then()
 // admin.initializeApp({
 //   credential: admin.credential.cert(serviceAccount)

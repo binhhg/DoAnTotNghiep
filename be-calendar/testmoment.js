@@ -55,9 +55,10 @@ const newTime = time.add(30, 'minutes');
 // console.log(a)
 
 
-const time1 = moment('2023-06-16T17:00:00Z');
+const time1 = moment('2023-06-16');
 const time2 = moment('2023-06-17T02:00:00Z');
 
-// Kiểm tra xem hai thời gian có cùng ngày, tháng, năm hay không
-const sameDate = time1.isSame(time2, 'day');
-console.log(sameDate)
+const a = new Date()
+
+const b = moment(time1).set({ hour: 0, minute: 0, second: 0 }).format('YYYYMMDD') +'T170000Z'
+console.log(b)

@@ -217,6 +217,7 @@ const Calendar = forwardRef((props, ref) => {
     )
   }
   const handleOkModalDelete = async () => {
+    console.log(checkDelete)
     try {
       if (!isRecurring) {
         const del = ref.current.getApi()
