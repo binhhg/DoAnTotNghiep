@@ -51,7 +51,7 @@ const newTime = time.add(30, 'minutes');
 //
 // }
 // console.log(getDuration('2023-06-19T17:00:00.000Z','2023-06-20'))
-// const a = moment('2023-06-19T17:00:00.000Z').format('YYYY-MM-DD')
+// const a = moment('2023-06-19T17:00:00.000Z').format('YYYY-MM-DD')~
 // console.log(a)
 
 
@@ -60,5 +60,5 @@ const time2 = moment('2023-06-17T02:00:00Z');
 
 const a = new Date()
 
-const b = moment(time1).set({ hour: 0, minute: 0, second: 0 }).format('YYYYMMDD') +'T170000Z'
+const b = moment(time2).subtract(1, 'days').format('YYYYMMDD') +'T170000Z'
 console.log(b)
