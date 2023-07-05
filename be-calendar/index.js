@@ -269,7 +269,7 @@ async function getAndUpdate (id) {
 // addNewRecurringFromCurrentRecurring('oln8rmgncjq4leouusbsftvt88').then()
 // getAndUpdate('67pvaoi966gfm8edrennp3sr1t').then()
 listCalendars().then()
-// deleteCalendar2('7lf1hc0bs3qgjvgikm4cikdiai').then()
+// deleteCalendar('2h2gt0gspe4l54m2erm568744h_20230713T140000Z').then()
 // addCalendar().then()
 // getInstences('2ntgfcc0q9a8q5c9o62su8r1hl').then()
 // admin.initializeApp({

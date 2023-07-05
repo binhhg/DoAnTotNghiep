@@ -59,6 +59,6 @@ const time1 = moment('2023-06-16');
 const time2 = moment('2023-06-17T02:00:00Z');
 
 const a = new Date()
-
+console.log(moment(time2).set({ hour:0, minute:0,second:0,millisecond:0 }).format('YYYYMMDDTHHmmss') +'Z')
 const b = moment(time2).subtract(1, 'days').format('YYYYMMDD') +'T170000Z'
 console.log(b)

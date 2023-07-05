@@ -81,8 +81,8 @@ const Calendar = forwardRef((props, ref) => {
     eventEmitter.on('updateEvent', event => {
       const up = ref.current.getApi()
       console.log('evv', event)
-      for(const va of event) {
-        va.extendedProps = {...va}
+      for (const va of event) {
+        va.extendedProps = { ...va }
         va.id = va._id
         if (va.up) {
           console.log('day neeee')
@@ -235,17 +235,31 @@ const Calendar = forwardRef((props, ref) => {
     console.log(checkDelete)
     try {
       if (!isRecurring) {
+        const { data: zz } = await CalendarApi.deleteEvent(data.id, {
+          type: 1,
+          accountId: data?.extendedProps?.booking?.accountId,
+          calendarId: data?.extendedProps?.booking?.calendarId
+        })
         const del = ref.current.getApi()
         const ev = del.getEventById(data.id)
         // await CalendarApi.deleteEvent(data.id, { type: 1 })
         ev.remove()
       } else {
-        // const zz = await CalendarApi.deleteEvent(data.id, {
-        //   start: data.start,
-        //   end: data.end,
-        //   type: 2,
-        //   delete: checkDelete
-        // })
+        let st = data.start
+        let en = data.end
+        if (data.allDay) {
+          st = moment(st).format('YYYY-MM-DD')
+          en = moment(en).format('YYYY-MM-DD')
+        }
+        const zz = await CalendarApi.deleteEvent(data.id, {
+          start: st,
+          end: en,
+          type: 2,
+          delete: checkDelete,
+          accountId: data?.extendedProps?.booking?.accountId,
+          calendarId: data?.extendedProps?.booking?.calendarId,
+          rrule: data?.rrule
+        })
       }
       setShowDelete(!showDelete)
       setShow(!show)
@@ -275,27 +289,38 @@ const Calendar = forwardRef((props, ref) => {
 
               <Form>
                 <Form.Label>Xóa sự kiện định kỳ</Form.Label>
-                <div>
+                <div onChange={(event) => {
+                  setCheckDelete(+event.target.defaultValue)
+                }}>
                   <Form.Check type="radio"
                               label={'Chỉ sự kiện này'}
                               value={1}
+                              id={'50'}
                               name={'group1'}
-                              defaultChecked
-                              onSelect={() => setCheckDelete(1)}
+                              checked={checkDelete === 1}
+                    // onChange={() => {
+                    //   console.log('vao day 1')
+                    //   setCheckEdit(1)}}
                               className={'mb-3'}
-                  />
+                  />}
                   <Form.Check type="radio"
                               label={'Sự kiện này và các sự kiện về sau'}
                               value={2}
+                              id={'51'}
                               name={'group1'}
-                              onSelect={() => setCheckDelete(2)}
+                              checked={checkDelete === 2}
+                    // onChange={(ev) => {
+                    //   console.log('vao day 2')
+                    //   setCheckEdit(2)}}
                               className={'mb-3'}
                   />
                   <Form.Check type="radio"
                               label={'Tất cả sự kiện'}
                               value={3}
+                              id={'52'}
                               name={'group1'}
-                              onSelect={() => setCheckDelete(3)}
+                              checked={checkDelete === 3}
+                    // onChange={() => setCheckEdit(3)}
                               className={'mb-3'}
                   />
                 </div>
