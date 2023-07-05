@@ -790,7 +790,12 @@ export default function ModalNew ({ show, handle }) {
           dd.rrule.dtstart = data.extendedProps.rrule.dtstart
         }
       }
-      const up = await CalendarApi.updateCalendar(data.id, dd)
+      const {data: zz} = await CalendarApi.updateCalendar(data.id, dd)
+      setShowEdit(false)
+      handle(false)
+      setCheckEdit(1)
+      eventEmitter.emit('updateEvent', zz)
+
     } catch (e) {
       console.log(e)
       handle(false)

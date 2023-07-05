@@ -73,9 +73,24 @@ const Calendar = forwardRef((props, ref) => {
       const add = ref.current.getApi()
       for (const va of event) {
         va.extendedProps = { ...va }
+        va.id = va._id
         // add.addEvent(va)
       }
       add.addEventSource(event)
+    })
+    eventEmitter.on('updateEvent', event => {
+      const up = ref.current.getApi()
+      console.log('evv', event)
+      for(const va of event) {
+        va.extendedProps = {...va}
+        va.id = va._id
+        if (va.up) {
+          console.log('day neeee')
+          const a = up.getEventById(va.id)
+          a.remove()
+        }
+      }
+      up.addEventSource(event)
     })
   }, [])
   const freqText = {
