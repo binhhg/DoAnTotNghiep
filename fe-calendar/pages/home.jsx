@@ -1,64 +1,60 @@
-import React, { useEffect, useRef } from 'react'
-import 'bootstrap/dist/css/bootstrap.min.css'
-import { Modal, Button } from 'react-bootstrap'
+import Image from "next/image";
+import React, {Fragment, useState, useEffect} from "react";
+import icon_google from "../assets/googel.svg";
+import background from "../assets/img/home.png";
+import {useRouter} from "next/router";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faSpinner} from "@fortawesome/free-solid-svg-icons";
 
-export default function Home () {
-  const modalRef = useRef(null)
+export default function Home() {
+    const router = useRouter();
+    const [error, setError] = useState("");
+    const [number, setNumber] = useState("");
+    const [flag, setFlag] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [result, setResult] = useState("");
+    const [code, setCode] = useState("");
 
-  const closeModal = () => {
-    const modal = modalRef.current
-    if (modal) {
-      modal.classList.remove('exampleModal')
-      modal.style.display = 'none'
-      document.body.classList.remove('modal-open')
-    }
-  }
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (modalRef.current && !modalRef.current.contains(event.target)) {
-        closeModal()
-      }
-    }
+    // useEffect(() => {
+    //   if (Object.keys(user).length > 0) router.push(`/`);
+    // }, [user, router]);
 
-    document.addEventListener('mousedown', handleClickOutside)
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-    }
-  }, [])
-
-  function handelModal () {
-    const modal = document.getElementById('exampleModal')
-    modal.classList.add('show')
-    modal.style.display = 'block'
-    document.body.classList.add('modal-open')
-  }
-
-  return (
-    <>
-      <button type="button" className="btn btn-primary" onClick={() => handelModal()}>
-        Launch demo modal
-      </button>
-      <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel"
-           aria-hidden="true">
-        <div className="modal-dialog">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h1 className="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    return (<div
+        className={"flex items-center justify-end"}
+        style={{
+            backgroundImage: `url(${background.src})`,
+            backgroundRepeat: "no-repeat",
+            width: "100%",
+            height: "100vh",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+        }}
+    >
+        <div
+            className="px-6 py-8 w-[500px] rounded-lg lg:box-shadow mx-auto lg:ml-60 !mt-60 lg:my-0 my-8">
+            <div>ICalendar thuận tiện nhanh chóng, tích hợp đồng bộ với nhiều tài khoản.
             </div>
-            <div className="modal-body">
-              ...
+            <div className={"font-semibold text-center"}>Đăng nhập ngay</div>
+            <Fragment>
+                <div className="flex flex-col gap-y-1 py-2"></div>
+
+            </Fragment>
+            <div className="text-center flex flex-col gap-y-2">
+                <div
+                    className="flex bg-white items-center justify-center gap-x-2 rounded-lg shadow-lg p-4 cursor-pointer hover:bg-gray-200 border-gray-300 border-[1px]"
+                    onClick={() => {
+                    }}
+                >
+                    <Image
+                        src={icon_google}
+                        alt={"icon-google"}
+                        width={30}
+                        height={30}
+                    />
+                    <span>Google</span>
+                </div>
             </div>
-            <div className="modal-footer">
-              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" className="btn btn-primary">Save changes</button>
-            </div>
-          </div>
         </div>
-      </div>
-    </>
-
-  )
+    </div>);
 }

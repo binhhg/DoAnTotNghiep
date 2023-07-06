@@ -258,6 +258,7 @@ const Calendar = forwardRef((props, ref) => {
           delete: checkDelete,
           accountId: data?.extendedProps?.booking?.accountId,
           calendarId: data?.extendedProps?.booking?.calendarId,
+          bookingId: data?.extendedProps?.booking?._id,
           rrule: data?.rrule
         })
       }
@@ -302,7 +303,7 @@ const Calendar = forwardRef((props, ref) => {
                     //   console.log('vao day 1')
                     //   setCheckEdit(1)}}
                               className={'mb-3'}
-                  />}
+                  />
                   <Form.Check type="radio"
                               label={'Sự kiện này và các sự kiện về sau'}
                               value={2}

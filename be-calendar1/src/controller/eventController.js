@@ -712,9 +712,8 @@ module.exports = (container) => {
                   const {
                     ok: ok1,
                     data: data1
-                  } = await googleHelper.updateCalendarPatch(data.refreshToken, id, { recurrence: [a] })
+                  } = await googleHelper.updateCalendarPatch(data.refreshToken, body.calendarId, { recurrence: [a] })
                   if(ok1){
-
                   }
                 }
               }
