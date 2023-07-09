@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { signIn, signOut } from 'next-auth/react'
+import { signIn } from 'next-auth/react'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import { Button } from 'react-bootstrap'

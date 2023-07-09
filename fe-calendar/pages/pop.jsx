@@ -161,7 +161,7 @@ function Example () {
               until: '2023-07-07'
             },
             duration: '04:00',
-            exdate: ['2023-07-05']
+            exdate: ['20230704T060000Z']
           }, {
             '_id': '6492b2bf618d183aa051860e',
             'userId': '6480e1ba965ca4f7d5fa60af',

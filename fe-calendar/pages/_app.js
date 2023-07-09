@@ -9,13 +9,15 @@ import { useRouter } from 'next/router'
 export default function App ({ Component, pageProps }) {
   const router = useRouter()
   useEffect(() => {
-    const token = localStorage.getItem('token')
-    const path = router.pathname
-    if (!token && (path !== '/' && path !== '/login' && path !== '/test')) {
-      router.push('/home')
-    } else if (token && path === '/') {
-      router.push('/home')
-    }
+    (async () => {
+      const token = localStorage.getItem('token')
+      const path = router.pathname
+      if (!token && (path !== '/' && path !== '/login' && path !== '/test')) {
+        router.push('/home')
+      } else if (token && path === '/home') {
+        router.push('/lich')
+      }
+    })()
   })
   return <>
     <Component {...pageProps} />

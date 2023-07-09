@@ -225,12 +225,23 @@ module.exports = (container) => {
   }
   const getUser = async (req, res) => {
     try {
-      const {userId} = req.user
+      const { userId } = req.user
       const data = await userRepo.getUserById(userId)
       res.status(httpCode.SUCCESS).json(data)
     } catch (e) {
       logger.e(e)
-      res.status(httpCode.UNKNOWN_ERROR).send({ok: false})
+      res.status(httpCode.UNKNOWN_ERROR).send({ ok: false })
+    }
+  }
+  const updateInfo = async (req, res) => {
+    try {
+      const { userId } = req.user
+      const body = req.body
+      const up = await userRepo.updateUser(userId, body)
+      res.status(httpCode.SUCCESS).json({ ok: true, data: up })
+    } catch (e) {
+      logger.e(e)
+      res.status(httpCode.UNKNOWN_ERROR).send({ ok: false })
     }
   }
   return {
@@ -239,6 +250,7 @@ module.exports = (container) => {
     refreshToken,
     logout,
     login,
-    getUser
+    getUser,
+    updateInfo
   }
 }

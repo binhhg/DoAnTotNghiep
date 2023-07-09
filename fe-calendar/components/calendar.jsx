@@ -90,6 +90,7 @@ const Calendar = forwardRef((props, ref) => {
           a.remove()
         }
       }
+      console.log('ua lo a',event)
       up.addEventSource(event)
     })
   }, [])
@@ -235,9 +236,10 @@ const Calendar = forwardRef((props, ref) => {
     console.log(checkDelete)
     try {
       if (!isRecurring) {
-        const { data: zz } = await CalendarApi.deleteEvent(data.id, {
+        await CalendarApi.deleteEvent(data.id, {
           type: 1,
           accountId: data?.extendedProps?.booking?.accountId,
+          bookingId: data?.extendedProps?.booking?._id,
           calendarId: data?.extendedProps?.booking?.calendarId
         })
         const del = ref.current.getApi()
@@ -251,7 +253,7 @@ const Calendar = forwardRef((props, ref) => {
           st = moment(st).format('YYYY-MM-DD')
           en = moment(en).format('YYYY-MM-DD')
         }
-        const zz = await CalendarApi.deleteEvent(data.id, {
+        const { data: zz } = await CalendarApi.deleteEvent(data.id, {
           start: st,
           end: en,
           type: 2,
@@ -259,8 +261,26 @@ const Calendar = forwardRef((props, ref) => {
           accountId: data?.extendedProps?.booking?.accountId,
           calendarId: data?.extendedProps?.booking?.calendarId,
           bookingId: data?.extendedProps?.booking?._id,
-          rrule: data?.rrule
+          rrule: data?.extendedProps?.rrule
         })
+        if (zz && zz.length) {
+          console.log(zz)
+          const ca = ref.current.getApi()
+          for (const va of zz) {
+            const ev = ca.getEventById(va.id)
+            if (ev) {
+              if (va.type === 'delete') {
+                ev.remove()
+              } else {
+                ev.remove()
+                const add = va?.data
+                add.extendedProps = { ...add }
+                add.id = add._id
+                ca.addEvent(add)
+              }
+            }
+          }
+        }
       }
       setShowDelete(!showDelete)
       setShow(!show)

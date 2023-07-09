@@ -17,11 +17,11 @@ export default NextAuth({
     })
   ],
   callbacks: {
-    async signIn ({ user,account, profile }) {
+    async signIn ({ user, account, profile }) {
       if (account.provider === 'google') {
         try {
-          if(!user){
-            return '/login'
+          if (!user) {
+            return '/home'
           }
           const obj = {
             profile: {
@@ -44,7 +44,7 @@ export default NextAuth({
         } catch (error) {
           // Xử lý lỗi
           console.error('Lỗi khi gọi API đăng nhập tới backend:', error)
-          return '/signIn'
+          return '/home'
         }
       }
       return true // Do different verification for other providers that don't have `email_verified`

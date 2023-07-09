@@ -12,7 +12,7 @@ module.exports = (container) => {
   const { googleHelper, userHelper } = container.resolve('helper')
   const mediator = container.resolve('mediator')
   const { eventRepo, bookingRepo } = container.resolve('repo')
-  const EventTypeConfig = {
+  const eventTypeConfig = {
     NOT_RECURRING: 1,
     RECURRING: 2
   }
@@ -200,7 +200,6 @@ module.exports = (container) => {
       }
       const result = []
       if (body.accounts && body.accounts.length) {
-        console.log('vay day')
         const accounts = body.accounts
         const send = formatData(body)
         for (const va of accounts) {
@@ -249,20 +248,6 @@ module.exports = (container) => {
     } catch (e) {
       logger.e(e)
       res.status(httpCode.UNKNOWN_ERROR).end()
-    }
-  }
-  const deleteEvent = async (req, res) => {
-    try {
-      const { id } = req.params
-      if (id) {
-        await eventRepo.deleteEvent(id)
-        res.status(httpCode.SUCCESS).send({ ok: true })
-      } else {
-        res.status(httpCode.BAD_REQUEST).end()
-      }
-    } catch (e) {
-      logger.e(e)
-      res.status(httpCode.UNKNOWN_ERROR).send({ ok: false })
     }
   }
   const updateEvent = async (req, res) => {
@@ -364,9 +349,11 @@ module.exports = (container) => {
         return res.status(httpCode.SUCCESS).json({ data: result })
       } else if (event.checkEdit === 1) { // chinh sua su kien lap lai: chi su kien nay
         const ev = await eventRepo.updateEvent(id, {
-          $push: { exdate: event?.originalStartDate || event?.originalStartDateTime }
+          $push: { exdate: moment.utc(event?.originalStartDate || event?.originalStartDateTime).format('YYYYMMDDTHHmmss\\Z') }
         }).lean()
         ev.up = 1
+        const boo = await bookingRepo.findOneBooking({ eventId: ev._id })
+        ev.booking = boo
         result.push(ev)
         delete value.rrule
         let addEvent = await eventRepo.addEvent(value)
@@ -649,31 +636,39 @@ module.exports = (container) => {
       res.status(httpCode.UNKNOWN_ERROR).send({ ok: false })
     }
   }
-  const getEventById = async (req, res) => {
+  const deleteEvent = async (req, res) => {
     try {
       const { id } = req.params
       const body = req.body
       if (id) {
-        if (!body.type || body.type === eventConfig.NOT_RECURRING) {
+        if (!body.type || body.type === eventTypeConfig.NOT_RECURRING) {
           await eventRepo.deleteEvent(id)
-          if (body.calendarId && body.accountId) {
+          if (body.calendarId && body.accountId && body.bookingId) {
             const { data } = await userHelper.getAccountById(body.accountId)
             if (data) {
-              await googleHelper.deleteCalendar(data.refreshToken, id)
+              setTimeout(async () => {
+                await googleHelper.deleteCalendar(data.refreshToken, body.calendarId)
+              }, 1)
+              await bookingRepo.deleteBooking(body.bookingId)
             }
           }
           return res.status(httpCode.SUCCESS).json({ data: [{ id: id, type: 'delete' }] })
         } else {
           if (body.delete === 1) {
+            const del = moment.utc(body.start).format('YYYYMMDDTHHmmss\\Z')
             const up = await eventRepo.updateEvent(id, {
               $push: {
-                exdate: body.start
+                exdate: del
               }
-            })
+            }).lean()
             if (body.calendarId && body.accountId) {
               const { data } = await userHelper.getAccountById(body.accountId)
               if (data) {
-                await googleHelper.deleteCalendar(data.refreshToken, id + `_${moment(body.start).format('YYYYMMDDTHHmmss') + 'Z'}`)
+                const booking = await bookingRepo.getBookingById(body.bookingId)
+                up.booking = booking
+                setTimeout(async () => {
+                  await googleHelper.deleteCalendar(data.refreshToken, body.calendarId + `_${del}`)
+                }, 1)
               }
             }
             return res.status(httpCode.SUCCESS).json({ data: [{ id: id, type: 'update', data: up }] })
@@ -689,16 +684,16 @@ module.exports = (container) => {
                   second: 0
                 }).toJSON()
               }
-            })
+            }).lean()
             if (body.calendarId && body.accountId) {
               const { data } = await userHelper.getAccountById(body.accountId)
               if (data) {
-                const { ok, data: da } = await googleHelper.getCalendarById(data.refreshToken, id)
+                const { ok, data: da } = await googleHelper.getCalendarById(data.refreshToken, body.calendarId)
                 if (ok) {
                   const { recurrence } = da
                   let a = ''
-                  if (recurrence.includes('UNTIL')) {
-                    const b = recurrence.split(';')
+                  if (recurrence[0].includes('UNTIL')) {
+                    const b = recurrence[0].split(';')
                     for (const c of b) {
                       if (!c.includes('UNTIL')) {
                         a += ';' + c
@@ -708,17 +703,73 @@ module.exports = (container) => {
                   } else {
                     a = recurrence
                   }
-                  a += `_${moment(body.start).subtract(1, 'days').format('YYYYMMDD') + 'T170000Z'}`
+                  a += `;UNTIL=${moment(body.start).subtract(1, 'days').format('YYYYMMDD') + 'T170000Z'}`
                   const {
                     ok: ok1,
                     data: data1
                   } = await googleHelper.updateCalendarPatch(data.refreshToken, body.calendarId, { recurrence: [a] })
-                  if(ok1){
+                  if (!ok1) {
+                    return res.status(httpCode.BAD_REQUEST).json({ msg: 'co loi xay ra khi dong bo' })
                   }
+                  const booking = await bookingRepo.updateBooking(body.bookingId, {
+                    recurrence: data1.rerecurrence,
+                    sequence: data1.sequence
+                  })
+                  up.booking = booking
+                  return res.status(httpCode.SUCCESS).json({ data: [{ id: id, type: 'update', data: up }] })
                 }
               }
             }
             return res.status(httpCode.SUCCESS).json({ data: [{ id: id, type: 'update', data: up }] })
+          } else {
+            if (body.calendarId && body.accountId) {
+              const agg = [
+                {
+                  $match: {
+                    calendarId: body.calendarId
+                  }
+                },
+                {
+                  $graphLookup: {
+                    from: 'bookings',
+                    startWith: '$calendarId',
+                    connectFromField: 'calendarId',
+                    connectToField: 'recurringEventId',
+                    maxDepth: 3,
+                    depthField: 'depth',
+                    as: 'child'
+                  }
+                }, {
+                  $addFields: {
+                    events: '$child.eventId'
+                  }
+                },
+                {
+                  $addFields: {
+                    bookings: '$child._id'
+                  }
+                }
+
+              ]
+              const data = await bookingRepo.getBookingAgg(agg)
+              const { events, bookings } = data[0]
+              bookings.push(data[0]._id)
+              events.push(data[0].eventId)
+              await eventRepo.removeEvent({ _id: { $in: events } })
+              const { data: da } = await userHelper.getAccountById(body.accountId)
+              await googleHelper.deleteCalendar(da.refreshToken, body.calendarId)
+              await bookingRepo.removeBooking({ _id: { $in: bookings } })
+              const mapp = events.map(va => {
+                return {
+                  id: va,
+                  type: 'delete'
+                }
+              })
+              return res.status(httpCode.SUCCESS).json({ data: mapp })
+            } else {
+              await eventRepo.deleteEvent(id)
+              return res.status(httpCode.SUCCESS).json({ data: [{ id: id, type: 'delete' }] })
+            }
           }
         }
       } else {
@@ -764,8 +815,7 @@ module.exports = (container) => {
   return {
     addEvent,
     getEvent,
-    getEventById,
-    updateEvent,
-    deleteEvent
+    deleteEvent,
+    updateEvent
   }
 }

@@ -111,7 +111,7 @@ export default function Test () {
     if (isLoggedIn && !account) { // login roi va khong phai lien ket
       console.log('vao day chua')
       console.log(router)
-      router.push('/')
+      router.push('/lich')
     } else {
       (async () => {
         const qq = new URLSearchParams(window.location.search)
@@ -141,15 +141,15 @@ export default function Test () {
           const check = await login(zz)
           console.log(check)
           if (check) {
-            return router.push('/signIn')
+            return router.push('/lich')
           }
-          return router.push('/login')
+          return router.push('/home')
         } else {
           const check = await accessAccount(zz)
           if (check) {
             return router.push('/lich')
           }
-          return router.push('/login')
+          return router.push('/home')
         }
       })()
     }

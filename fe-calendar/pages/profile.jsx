@@ -2,10 +2,9 @@ import React, { useEffect, useState } from 'react'
 import 'react-toastify/dist/ReactToastify.css'
 import { faPencil } from '@fortawesome/free-solid-svg-icons'
 import FieldInfo from '../components/FieldInfo'
-import { useRouter } from 'next/router'
 import { UserApi } from '../apis/user'
-
-import { Card, ListGroup } from 'react-bootstrap'
+import eventEmitter from '../utils/eventEmitter'
+import { signIn } from 'next-auth/react'
 
 const menu = [
   {
@@ -14,10 +13,11 @@ const menu = [
   }
 ]
 
-// {
-//   id: 2,
-//   title: 'Cấu hình thông báo'
-// }
+async function handlerSignGoogle () {
+  console.log('vao day ne')
+  const qq = await signIn('google')
+  console.log('vcl', qq)
+}
 
 const PersonalDetail = () => {
   const [info, setInfo] = useState({})
@@ -35,7 +35,15 @@ const PersonalDetail = () => {
       setAccounts(acc)
     })()
   }, [])
-
+  useEffect(() => {
+    eventEmitter.on('updateInfo', (name) => {
+      console.log('ua name', name)
+      setInfo({
+        ...info,
+        name: name
+      })
+    })
+  }, [])
   return (
     <div className={'bg-gray-200 min-h-screen'}>
       <div className={'max-w-[1200px] mx-auto lg:grid grid-cols-3 gap-x-6 lg:py-8 p-2'}>
@@ -75,7 +83,12 @@ const PersonalDetail = () => {
                   </div>
                 </div>
               ))}
-              {accounts.length < 5 && <button className={'w-full flex justify-center items-center h-14 rounded-xl border border-gray-100'}><span className={'text-3xl'}>+</span></button>}
+              {accounts.length < 5 &&
+              <button className={'w-full flex justify-center items-center h-14 rounded-xl border border-gray-100'}><span
+                className={'text-3xl'} onClick={async () => {
+                await localStorage.setItem('account', true)
+                handlerSignGoogle()
+              }}>+</span></button>}
             </div>
           </div>
         </div>

@@ -29,7 +29,8 @@ export const CalendarApi = {
   },
   async deleteEvent (id, body) {
     try {
-      const { data } = await api.get(`${ApiConfig.calendar}/event/${id}`, body)
+      console.log('body ne ', body)
+      const { data } = await api.patch(`${ApiConfig.calendar}/event/${id}`, body)
       return data
     } catch (e) {
       return null

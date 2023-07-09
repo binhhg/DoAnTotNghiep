@@ -26,5 +26,13 @@ export const UserApi = {
     } catch (e) {
       return null
     }
+  },
+  async updateInfo (body) {
+    try {
+      const { data } = await api.put('/user', body)
+      return data
+    } catch (e) {
+      return null
+    }
   }
 }

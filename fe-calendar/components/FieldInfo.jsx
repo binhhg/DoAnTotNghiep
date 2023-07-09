@@ -1,7 +1,10 @@
-import React, {useEffect, useState} from 'react';
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import React, { useEffect, useState } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import 'bootstrap/dist/css/bootstrap.min.css'
-const FieldInfo = ({label, value, icon, isShowEdit: isShowEditProp}) => {
+import eventEmitter from '../utils/eventEmitter'
+import { UserApi } from '../apis/user'
+
+const FieldInfo = ({ label, value, icon, isShowEdit: isShowEditProp }) => {
   const [isShowEdit, setIsShowEdit] = useState(isShowEditProp)
   const [displayName, setDisplayName] = useState('')
   const [showErr, setShowErr] = useState(false)
@@ -15,15 +18,18 @@ const FieldInfo = ({label, value, icon, isShowEdit: isShowEditProp}) => {
     setShowErr(false)
   }
   const handleUpdate = async () => {
-    if(displayName && displayName.trim() !== '') {
-      // await handleUpdateProfile({name: displayName}) // goi api
+    if (displayName && displayName.trim() !== '') {
+      const { ok, data } = await UserApi.updateInfo({ name: displayName })
+      if (ok) {
+        eventEmitter.emit('updateInfo', displayName)
+      }
       setIsShowEdit(false)
     } else {
       setShowErr(true)
     }
   }
   const handleChangeInput = (e) => {
-   setDisplayName(e.target.value)
+    setDisplayName(e.target.value)
   }
 
   const handleCancel = () => {
@@ -49,25 +55,30 @@ const FieldInfo = ({label, value, icon, isShowEdit: isShowEditProp}) => {
                 />
                 {showErr && <p className={'text-md text-error'}>Vui lòng nhập tên hiển thị</p>}
                 <div className={'float-right flex items-center gap-x-3 py-2'}>
-                  <button className={'text-sm px-2 py-1 rounded-md border border-base-100 bg-base-200 text-black-400'} onClick={handleCancel}>Hủy bỏ</button>
-                  <button className={'btn btn-primary text-white text-sm px-2 py-1 rounded-md'} onClick={handleUpdate}>Cập nhật</button>
+                  <button className={'text-sm px-2 py-1 rounded-md border border-base-100 bg-base-200 text-black-400'}
+                          onClick={handleCancel}>Hủy bỏ
+                  </button>
+                  <button className={'btn btn-primary text-white text-sm px-2 py-1 rounded-md'}
+                          onClick={handleUpdate}>Cập nhật
+                  </button>
                 </div>
               </div>
             </div>)
             :
-            <div className={'lg:px-2 font-bold text-info'} style={{wordBreak: 'break-word'}}>{displayName}</div>
+            <div className={'lg:px-2 font-bold text-info'} style={{ wordBreak: 'break-word' }}>{displayName}</div>
           }
         </div>
         {!isShowEdit && (
           <div
-            className={`w-8 h-8 flex items-center justify-center ${icon ? 'bg-base-200 rounded-full cursor-pointer' : ''}`} onClick={handleShowEdit}>
+            className={`w-8 h-8 flex items-center justify-center ${icon ? 'bg-base-200 rounded-full cursor-pointer' : ''}`}
+            onClick={handleShowEdit}>
             {icon && <FontAwesomeIcon icon={icon} style={{ fontSize: '14px', color: '#22c55e' }}/>}
           </div>
         )
         }
       </div>
     </>
-  );
-};
+  )
+}
 
-export default FieldInfo;
+export default FieldInfo
