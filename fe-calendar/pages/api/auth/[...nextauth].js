@@ -6,7 +6,6 @@ export default NextAuth({
     GoogleProvider({
       clientId: '217109832798-u2oasqosr3fa40n9nkmfvluq65vrkjbd.apps.googleusercontent.com',
       clientSecret: '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',
-      callbackUrl: "http://localhost:3000/api/auth/callback/google",
       authorization: {
         params: {
           scope: 'email profile https://www.googleapis.com/auth/calendar',
