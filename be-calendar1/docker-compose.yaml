@@ -1,0 +1,53 @@
+version: '3.2'
+
+services:
+  mongodb:
+    image: mongo:latest
+    ports:
+      - '8016:27017'
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=binhhg
+      - MONGO_INITDB_ROOT_PASSWORD=hagiang123
+    command: mongod
+    volumes:
+      - /media/NewHDD/erp/mongo-data:/data/db
+    networks:
+      - calendar
+    restart: always
+  calendar:
+    image: "calendar:latest"
+    ports:
+      - '9002:3000'
+    environment:
+      PORT: '3000'
+      TZ: 'Asia/Bangkok'
+      DB_SERVERS: 'mongodb:27017'
+      DB_PORT: "3306"
+      DB_USER: 'binhhg'
+      DB_PASS: 'hagiang123'
+    networks:
+      - calendar
+    restart: always
+  user:
+    image: "user:latest"
+    ports:
+      - '9001:3000'
+    environment:
+      PORT: '3000'
+      TZ: 'Asia/Bangkok'
+    networks:
+      - calendar
+    restart: always
+  web:
+    image: "web:latest"
+    ports:
+      - '9000:3000'
+    environment:
+      PORT: '3000'
+      TZ: 'Asia/Bangkok'
+    networks:
+      - calendar
+    restart: always
+networks:
+  calendar:
+    driver: bridge

@@ -72,7 +72,7 @@ const PersonalDetail = () => {
             <div className={'w-full'}>
               <FieldInfo value={info?.name} icon={faPencil} label={'Tên hiển thị'} isShowEdit={showEdit}/>
               <FieldInfo label={'Tài khoản:'}/>
-              {accounts.map((account) => (
+              {(accounts || []).map((account) => (
                 <div className={'flex gap-x-3 items-center border border-gray-100 rounded-xl mb-2'}>
                   <div className={'p-2'}>
                     <img src={account?.photo} alt={''} className={'rounded-circle object-top w-10 h-10'}/>
@@ -83,7 +83,7 @@ const PersonalDetail = () => {
                   </div>
                 </div>
               ))}
-              {accounts.length < 5 &&
+              {(accounts|| []).length < 5 &&
               <button className={'w-full flex justify-center items-center h-14 rounded-xl border border-gray-100'}><span
                 className={'text-3xl'} onClick={async () => {
                 await localStorage.setItem('account', true)
