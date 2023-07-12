@@ -14,7 +14,6 @@ const httpCode = {
   ADMIN_REQUIRE: 406,
   UNAUTHORIZED: 401
 }
-
 const dbSettings = {
   db: process.env.DB || 'da-user',
   user: process.env.DB_USER || '',
