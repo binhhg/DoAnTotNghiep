@@ -5,6 +5,7 @@ module.exports = container => {
     const c = new Attendee(cate)
     return c.save()
   }
+
   const getAttendeeById = (id) => {
     return Attendee.findById(id)
   }
