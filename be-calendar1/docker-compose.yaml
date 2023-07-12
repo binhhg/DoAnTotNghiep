@@ -17,7 +17,7 @@ services:
   calendar:
     image: "calendar:latest"
     ports:
-      - '9002:3000'
+      - '8502:3000'
     environment:
       PORT: '3000'
       TZ: 'Asia/Bangkok'
@@ -32,7 +32,7 @@ services:
   user:
     image: "user:latest"
     ports:
-      - '9001:3000'
+      - '8501:3000'
     environment:
       PORT: '3000'
       TZ: 'Asia/Bangkok'
@@ -46,7 +46,7 @@ services:
   web:
     image: "web:latest"
     ports:
-      - '9000:3000'
+      - '8500:3000'
     environment:
       PORT: '3000'
       TZ: 'Asia/Bangkok'
