@@ -1,6 +1,22 @@
 version: '3.2'
 
 services:
+  rabbitmq:
+    image: rabbitmq:3.8.9-management
+    volumes:
+      - /media/NewHDD/calendar/.docker/rabbitmq/etc/:/var/run/rabbitmq/
+      - /media/NewHDD/calendar/.docker/rabbitmq/data/:/var/lib/rabbitmq/
+      - /media/NewHDD/calendar/.docker/rabbitmq/logs/:/var/log/rabbitmq/
+    ports:
+      - 15666:15672
+      - 15667:5672
+    environment:
+      # provide your credentials here
+      - RABBITMQ_DEFAULT_PASS=fdjfj123asd11
+      - RABBITMQ_DEFAULT_USER=thanglongtcd
+    networks:
+      - calendar
+    restart: always
   mongodb:
     image: mongo:latest
     ports:
@@ -10,7 +26,7 @@ services:
       - MONGO_INITDB_ROOT_PASSWORD=hagiang123
     command: mongod
     volumes:
-      - /media/NewHDD/erp/mongo-data:/data/db
+      - /media/NewHDD/calendar/mongo-data:/data/db
     networks:
       - calendar
     restart: always

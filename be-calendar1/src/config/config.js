@@ -48,7 +48,7 @@ const urlConfig = {
 const serverHelper = function () {
   const jwt = require('jsonwebtoken')
   const crypto = require('crypto')
-  const secretKey = process.env.SECRET_B2_KEY || '112customer#$!@!'
+  const secretKey = process.env.SECRET_KEY || '112customer#$!@!'
 
   function decodeToken (token) {
     return jwt.decode(token)
