@@ -2,8 +2,7 @@ module.exports = (joi, mongoose, { joi2MongoSchema, schemas }) => {
   const { ObjectId } = mongoose.Types
   const stateConfig = {
     NORMAL: 1,
-    MEDIUM: 2,
-    IMPORTANT: 3
+    IMPORTANT: 2
   }
   const eventJoi = joi.object({
     userId: joi.string().required(),

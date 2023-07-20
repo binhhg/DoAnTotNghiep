@@ -1,4 +1,5 @@
 const moment = require('moment')
+const {Int32} = require("mongodb");
 module.exports = (container) => {
     const logger = container.resolve('logger')
     const ObjectId = container.resolve('ObjectId')
@@ -829,17 +830,8 @@ module.exports = (container) => {
     const updateLevel = async (req, res) => {
         try {
             const {id} = req.params
-            await eventRepo.updateEvent(id, {
-                $set: {
-                    state: {
-                        $cond: {
-                            if: {$eq: ['$state', 1]},
-                            then: 2,
-                            else: 1
-                        }
-                    }
-                }
-            })
+            const {state} = req.body
+            await eventRepo.updateEvent(id, {state})
             res.status(httpCode.SUCCESS).json({ok: true})
         } catch (e) {
             logger.e(e)
