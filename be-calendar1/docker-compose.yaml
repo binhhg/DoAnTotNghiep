@@ -12,8 +12,8 @@ services:
       - 15667:5672
     environment:
       # provide your credentials here
-      - RABBITMQ_DEFAULT_PASS=fdjfj123asd11
-      - RABBITMQ_DEFAULT_USER=thanglongtcd
+      - RABBITMQ_DEFAULT_PASS=hagiang123
+      - RABBITMQ_DEFAULT_USER=binhhg
     networks:
       - calendar
     restart: always
@@ -59,8 +59,8 @@ services:
     networks:
       - calendar
     restart: always
-  web:
-    image: "web:latest"
+  calendar-web:
+    image: "calendar-web:latest"
     ports:
       - '8500:3000'
     environment:
