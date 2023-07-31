@@ -104,7 +104,7 @@ module.exports = container => {
                         if (item.recurringEventId) {
                             const check = await bookingRepo.findOneAndPopulate({calendarId: item.recurringEventId}).lean()
                             if (check) {
-                                await eventRepo.updateEvent(check.eventId, {
+                                await eventRepo.updateEvent(check.eventId._id, {
                                     $push: {
                                         exdate: item.originalStartTime.date ? item.originalStartTime.date : moment(item.originalStartTime.dateTime).toJSON()
                                     }
@@ -131,7 +131,7 @@ module.exports = container => {
                     if (va1.recurringEventId) {
                         const check = await bookingRepo.findOneAndPopulate({calendarId: va1.recurringEventId}).lean()
                         if (check) {
-                            await eventRepo.updateEvent(check.eventId, {
+                            await eventRepo.updateEvent(check.eventId._id, {
                                 $push: {
                                     exdate: va1.originalStartTime.date ? va1.originalStartTime.date : moment(va1.originalStartTime.dateTime).toJSON()
                                 }
@@ -160,7 +160,7 @@ module.exports = container => {
                     const check = await bookingRepo.findOneAndPopulate({calendarId: item.recurringEventId}).lean()
                     if (check) {
                         if (item.recurringEventId) {
-                            await eventRepo.updateEvent(check.eventId, {
+                            await eventRepo.updateEvent(check.eventId._id, {
                                 $push: {
                                     exdate: item.originalStartTime.date ? item.originalStartTime.date : moment(item.originalStartTime.dateTime).toJSON()
                                 }
@@ -191,7 +191,7 @@ module.exports = container => {
                     if (va1.recurringEventId) {
                         const check = await bookingRepo.findOneAndPopulate({calendarId: va1.recurringEventId}).lean()
                         if (check) {
-                            await eventRepo.updateEvent(check.eventId, {
+                            await eventRepo.updateEvent(check.eventId._id, {
                                 $push: {
                                     exdate: va1.originalStartTime.date ? va1.originalStartTime.date : moment(va1.originalStartTime.dateTime).toJSON()
                                 }
