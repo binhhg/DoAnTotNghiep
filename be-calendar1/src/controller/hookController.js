@@ -135,10 +135,12 @@ module.exports = container => {
             }
             const sync = await syncResourceRepo.checkExist({accountId: new ObjectId(accountId)}).lean()
             if(!sync){
+                console.log('loi sync')
                 return res.status(httpCode.BAD_REQUEST).json({msg: 'k co sync'})
             }
             const {ok, data: syn} = await googleHelper.getListSyncToken(data.refreshToken, sync.syncToken)
             if(!ok){
+                console.log('loi syn')
                 return res.status(httpCode.BAD_REQUEST).json({msg: 'loi lay ban ghi voi syncToken r'})
             }
             await syncResourceRepo.updateSyncResource(sync._id, {
