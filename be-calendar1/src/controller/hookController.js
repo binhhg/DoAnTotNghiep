@@ -11,7 +11,10 @@ module.exports = container => {
             Event
         }
     } = container.resolve('models')
-
+    const appearance = (date) => {
+        const dayOfMonth = date.getDate()
+        return Math.ceil(dayOfMonth / 7)
+    }
     function getDuration(start, end) {
         if (!start || !end) {
             return '00:00'
@@ -36,6 +39,9 @@ module.exports = container => {
                 if (+(dm[1]).charAt(0)) {
                     rrule['bysetpos'] = +(dm[1]).charAt(0)
                     rrule['byweekday'] = dm[1].slice(1).split(',')
+                } else if(+(dm[1]).charAt(1)){
+                    rrule['bysetpos'] = 4
+                    rrule['byweekday'] = dm[1].slice(2).split(',')
                 } else {
                     rrule['byweekday'] = dm[1].split(',')
                 }
@@ -58,6 +64,7 @@ module.exports = container => {
         }
         if (data.recurrence) {
             ev.rrule = text2Rrule(data.recurrence[0])
+            ev.rrule.dtstart = ev.start
             ev.duration = getDuration(ev.start, ev.end)
         }
         const boo = {

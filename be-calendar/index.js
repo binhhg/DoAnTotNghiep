@@ -85,6 +85,25 @@ async function watchCalendar () {
     console.error('Lỗi khi lấy danh sách calendar:', error)
   }
 }
+async function deleteWatchCalendar () {
+  // Tạo client cho Google Calendar API
+  const calendar = google.calendar({ version: 'v3', auth: oauth2Client })
+
+  try {
+    // Lấy danh sách calendar
+    const response = await calendar.channels.stop({
+      resource: {
+        id: "4211f2bb-230d-450d-864f-d1e2fbe9dac1",
+        resourceId: "QqnBWo74dEh8hBYJaul5gdT6maw"
+      }
+    })
+    const aa = response.data
+    console.log(aa)
+    console.log(response)
+  } catch (error) {
+    console.error('Lỗi khi lấy danh sách calendar:', error)
+  }
+}
 
 async function addCalendar () {
   const event = {
@@ -275,7 +294,8 @@ async function getAndUpdate (id) {
 // addNewRecurringFromCurrentRecurring('oln8rmgncjq4leouusbsftvt88').then()
 // getAndUpdate('67pvaoi966gfm8edrennp3sr1t').then()
 // listCalendars().then()
-watchCalendar().then()
+// watchCalendar().then()
+deleteWatchCalendar().then()
 // deleteCalendar('hcdsrlkkcvem3srbcvsjug67d0').then()
 // addCalendar().then()
 // getInstences('2ntgfcc0q9a8q5c9o62su8r1hl').then()
