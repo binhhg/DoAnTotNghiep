@@ -1,8 +1,8 @@
 const repo = (container) => {
   const bookingRepo = require('./bookingRepo')(container)
   const eventRepo = require('./eventRepo')(container)
-  const attendeeRepo = require('./attendeeRepo')(container)
-  return { eventRepo, bookingRepo, attendeeRepo }
+  const syncResourceRepo = require('./syncResourceRepo')(container)
+  return { eventRepo, bookingRepo, syncResourceRepo }
 }
 const connect = (container) => {
   const dbPool = container.resolve('db')

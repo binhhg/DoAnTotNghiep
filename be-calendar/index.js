@@ -1,4 +1,5 @@
 const { google } = require('googleapis')
+const { v4 : uuidv4 } = require('uuid');
 const { web } = require('./credentials.json')
 const admin = require('firebase-admin')
 const moment = require('moment')
@@ -28,7 +29,7 @@ const oauth2Client = new google.auth.OAuth2(web.client_id, web.client_secret, 'h
 // }
 
 // getToken('4/0AbUR2VOP_9ZitdeyU0wqDuCwe4q3YE13u0Irx18XpvnRFd2jyBYCyrjNeD_7IXDwrNZE1g').then()
-oauth2Client.setCredentials({ refresh_token: '1//0e-74PN8ULWs7CgYIARAAGA4SNwF-L9Irq0ZQoKrswz3jiauKZAqfciOH-olzmrNKLO4_FMyE2DrK-AidtSRt3ZtSf7bJ7_-nDXg' })
+oauth2Client.setCredentials({ refresh_token: '1//0gEOYD8LyEqgOCgYIARAAGBASNwF-L9IrWB_E2ygNPLik1E3iPyuw0lXvtgXJjX4ba0S-l3R3MDf-aHZjVn8G39xO8RKYUw-uTXU' })
 
 async function listCalendars () {
   // Tạo client cho Google Calendar API
@@ -38,14 +39,19 @@ async function listCalendars () {
     // Lấy danh sách calendar
     const response = await calendar.events.list({
       calendarId: 'primary', // Để lấy lịch của người dùng chính (primary calendar)
-      timeMin: new Date().toISOString(), // Lấy sự kiện từ ngày hiện tạilượng sự kiện tối đa
+      // timeMin: new Date().toISOString(), // Lấy sự kiện từ ngày hiện tạilượng sự kiện tối đa
       singleEvents: false,
-      showDeleted: false
-      // orderBy: 'created'
+      // showDeleted: false,
+      syncToken: "CMi899zVtoADEMi899zVtoADGAUg7u7RhgI="
+      // orderBy: 'starttime'
     })
     const calendars = response.data.items
-    console.log(response.data.items)
-    // In ra danh sách calendar
+    console.log(response.data)
+    // In ra danh sách calendar\
+    calendars.sort((a,b) => {
+      if(a.id < b.id) return -1
+      return 1
+    })
     console.log(calendars.length, 'leng ne')
     calendars.forEach((calendar) => {
       console.log(`${calendar.summary} (${calendar.id})`)
@@ -64,10 +70,10 @@ async function watchCalendar () {
     const response = await calendar.events.watch({
       calendarId: 'primary',
       resource: {
-        id: '123456789',
-        token: 'asbhdgasdasdbvdhasvdh',
+        id: uuidv4(),
+        token: '64bdf8fecd11322ac363e9f8',
         type: 'web_hook',
-        address: process.env.WEB_HOOK_URL || 'http://localhost:8501/hookTest',
+        address: process.env.WEB_HOOK_URL || 'https://api.icalendar.click/user/hookTest',
         params: {
           ttl: '3600'
         }
@@ -269,6 +275,7 @@ async function getAndUpdate (id) {
 // addNewRecurringFromCurrentRecurring('oln8rmgncjq4leouusbsftvt88').then()
 // getAndUpdate('67pvaoi966gfm8edrennp3sr1t').then()
 listCalendars().then()
+// watchCalendar().then()
 // deleteCalendar('hcdsrlkkcvem3srbcvsjug67d0').then()
 // addCalendar().then()
 // getInstences('2ntgfcc0q9a8q5c9o62su8r1hl').then()

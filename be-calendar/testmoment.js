@@ -54,8 +54,12 @@ const newTime = time.add(30, 'minutes')
 // const a = moment('2023-06-19T17:00:00.000Z').format('YYYY-MM-DD')~
 // console.log(a)
 
-const start = '2023-07-04T06:00:00.000Z'
-const utcTime = moment.utc(start).format('YYYYMMDDTHHmmss\\Z')
-const b = start.replace(/-/gi, '').replace(/:/gi, '')
+// const start = '2023-07-04T06:00:00.000Z'
+// const utcTime = moment.utc(start).format('YYYYMMDDTHHmmss\\Z')
+// const b = start.replace(/-/gi, '').replace(/:/gi, '')
+// console.log(b)
+// console.log(utcTime)
+
+const a = '2023-07-31'
+const b = moment(a).toJSON()
 console.log(b)
-console.log(utcTime)

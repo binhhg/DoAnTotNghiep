@@ -35,6 +35,12 @@ module.exports = container => {
   const removeEvent = (pipe) => {
     return Event.deleteMany(pipe)
   }
+  const findOneAndUpdate = (pipe,up) => {
+    return Event.findOneAndUpdate(pipe,up)
+  }
+  const findOne = (pipe) => {
+    return Event.findOne(pipe)
+  }
   return {
     getEventNoPaging,
     removeEvent,
@@ -45,6 +51,8 @@ module.exports = container => {
     updateEvent,
     checkIdExist,
     getCount,
-    getEvent
+    getEvent,
+    findOneAndUpdate,
+    findOne
   }
 }

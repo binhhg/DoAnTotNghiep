@@ -39,8 +39,8 @@ module.exports = container => {
   container.registerValue('ObjectId', mongoose.Types.ObjectId)
   const Event = require('./event.model')(joi, mongoose, { joi2MongoSchema })
   const Booking = require('./booking.model')(joi, mongoose, { joi2MongoSchema })
-  const Attendee = require('./attendee.model')(joi, mongoose, { joi2MongoSchema })
-  const schemas = { Event, Booking, Attendee }
+  const SyncResource = require('./syncResource.model')(joi, mongoose, { joi2MongoSchema })
+  const schemas = { Event, Booking, SyncResource }
   const schemaValidator = (obj, type) => {
     const schema = schemas[type]
     if (schema) {

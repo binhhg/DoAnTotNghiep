@@ -38,6 +38,9 @@ module.exports = container => {
   const findOneBooking = (pipe) => {
     return Booking.findOne(pipe)
   }
+  const findOneAndPopulate = (pipe) => {
+    return Booking.findOne(pipe).populate('eventId')
+  }
   return {
     getBookingNoPaging,
     removeBooking,
@@ -49,6 +52,7 @@ module.exports = container => {
     checkIdExist,
     getCount,
     getBooking,
-    findOneBooking
+    findOneBooking,
+    findOneAndPopulate
   }
 }

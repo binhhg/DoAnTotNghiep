@@ -1,5 +1,4 @@
 const moment = require('moment')
-const {Int32} = require("mongodb");
 module.exports = (container) => {
     const logger = container.resolve('logger')
     const ObjectId = container.resolve('ObjectId')
@@ -765,10 +764,12 @@ module.exports = (container) => {
                             const {events, bookings} = data[0]
                             bookings.push(data[0]._id)
                             events.push(data[0].eventId)
-                            await eventRepo.removeEvent({_id: {$in: events}})
+                            await eventRepo.removeEvent({id: {$in: events}})
                             const {data: da} = await userHelper.getAccountById(body.accountId)
-                            await googleHelper.deleteCalendar(da.refreshToken, body.calendarId)
-                            await bookingRepo.removeBooking({_id: {$in: bookings}})
+                            setTimeout(async () => {
+                                await googleHelper.deleteCalendar(da.refreshToken, body.calendarId)
+                                await bookingRepo.removeBooking({_id: {$in: bookings}})
+                            }, 1)
                             const mapp = events.map(va => {
                                 return {
                                     id: va,
@@ -792,7 +793,6 @@ module.exports = (container) => {
     }
     const getEvent = async (req, res) => {
         try {
-            const {level} = req.query
             const {userId} = req.user
             const pipe = [
                 {
@@ -816,10 +816,6 @@ module.exports = (container) => {
                     }
                 }
             ]
-            if (level) {
-                console.log('zz')
-                pipe[0].$match.state = +level
-            }
             const data = await eventRepo.getEventAgg(pipe)
             res.status(httpCode.SUCCESS).json(data)
         } catch (e) {
