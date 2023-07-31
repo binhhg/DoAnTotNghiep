@@ -29,7 +29,7 @@ const oauth2Client = new google.auth.OAuth2(web.client_id, web.client_secret, 'h
 // }
 
 // getToken('4/0AbUR2VOP_9ZitdeyU0wqDuCwe4q3YE13u0Irx18XpvnRFd2jyBYCyrjNeD_7IXDwrNZE1g').then()
-oauth2Client.setCredentials({ refresh_token: '1//0gEOYD8LyEqgOCgYIARAAGBASNwF-L9IrWB_E2ygNPLik1E3iPyuw0lXvtgXJjX4ba0S-l3R3MDf-aHZjVn8G39xO8RKYUw-uTXU' })
+oauth2Client.setCredentials({ refresh_token: '1//0grT68rnR0s1NCgYIARAAGBASNwF-L9IrWN1IKIor5yT9yUanq-Y3nhrV4LAZwzTAxgBMdMKHN88rnkHkcQ_SPmRCyd20Ugc7hRI' })
 
 async function listCalendars () {
   // Tạo client cho Google Calendar API
@@ -73,7 +73,7 @@ async function watchCalendar () {
         id: uuidv4(),
         token: '64bdf8fecd11322ac363e9f8',
         type: 'web_hook',
-        address: process.env.WEB_HOOK_URL || 'https://api.icalendar.click/user/hookTest',
+        address: process.env.WEB_HOOK_URL || 'https://api.icalendar.click/calendar/hookTest',
         params: {
           ttl: '3600'
         }
