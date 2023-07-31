@@ -42,6 +42,10 @@ services:
       DB_USER: 'binhhg'
       DB_PASS: 'hagiang123'
       USER_URL: 'http://user:3000'
+      RABBIT_HOST: 'rabbitmq'
+      RABBIT_PORT: '5672'
+      RABBIT_USER: 'binhhg'
+      RABBIT_PASS: 'hagiang123'
     networks:
       - calendar
     restart: always

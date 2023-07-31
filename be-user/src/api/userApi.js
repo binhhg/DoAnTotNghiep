@@ -4,6 +4,7 @@ module.exports = (app, container) => {
   const { userController } = container.resolve('controller')
   const { verifyToken } = container.resolve('middleware')
   app.post(`${basePath}/login`, userController.login)
+  app.post(`${basePath}/logout`, userController.logout)
   app.get(`${basePath}/user`, verifyToken, userController.getUser)
   app.put(`${basePath}/user`, verifyToken, userController.updateInfo)
   app.post(`${basePath}/user/loginOrRegister`, userController.loginOrRegister)
