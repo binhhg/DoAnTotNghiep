@@ -90,6 +90,7 @@ module.exports = container => {
             if (headers['x-goog-resource-state'] === 'sync') { // dong bo lan dau
                 const zz = await syncResourceRepo.checkExist({accountId: new ObjectId(accountId)})
                 if (zz) {
+                    console.log('dang ky lai k can dong bo lai')
                     return res.status(httpCode.SUCCESS).json({ok: true})
                 }
                 const {ok, data: cals} = await googleHelper.getListCalendar(data.refreshToken)
@@ -138,7 +139,7 @@ module.exports = container => {
                         }
                     }
                 }
-                res.status(httpCode.SUCCESS).json({ok: true})
+                return res.status(httpCode.SUCCESS).json({ok: true})
             }
             const sync = await syncResourceRepo.checkExist({accountId: new ObjectId(accountId)}).lean()
             if(!sync){
@@ -170,7 +171,7 @@ module.exports = container => {
                     }
                     continue
                 }
-                const check = await bookingRepo.findOneAndPopulate({calendarId: item.recurringEventId}).lean()
+                const check = await bookingRepo.findOneAndPopulate({calendarId: item.id}).lean()
                 const {event, booking} = formatData(item, data)
                 if (!check) { //tao moi
                     const {error, value} = schemaValidator(event, 'Event')
