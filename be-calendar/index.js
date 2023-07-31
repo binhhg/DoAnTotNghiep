@@ -75,7 +75,7 @@ async function watchCalendar () {
         type: 'web_hook',
         address: process.env.WEB_HOOK_URL || 'https://api.icalendar.click/calendar/hook',
         params: {
-          ttl: '1800'
+          ttl: '600'
         }
       }
     })

@@ -113,10 +113,6 @@ module.exports = (container) => {
             })
             console.log(response.data)
             // In ra danh sách calendar
-            console.log(calendars.length, 'leng ne')
-            calendars.forEach((calendar) => {
-                console.log(`${calendar.summary} (${calendar.id})`)
-            })
             return {ok:true, data: calendars}
         } catch (error) {
             console.error('Lỗi khi lấy danh sách calendar:', error)
