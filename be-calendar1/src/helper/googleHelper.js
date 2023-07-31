@@ -131,6 +131,7 @@ module.exports = (container) => {
                 syncToken:syncToken
             })
             const calendars = response.data
+            console.log('thay doi ', calendars)
             return {ok:true, data: calendars}
         } catch (error) {
             console.error('Lỗi khi lấy danh sách calendar:', error)
