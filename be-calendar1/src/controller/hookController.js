@@ -22,8 +22,7 @@ module.exports = container => {
         const days = duration.days()
         const hours = duration.hours()
         const minutes = duration.minutes()
-        const durationFormatted = `${hours + days * 24}:${minutes.toString().padStart(2, '0')}`
-        return durationFormatted
+        return `${hours + days * 24}:${minutes.toString().padStart(2, '0')}`
     }
 
     const text2Rrule = (qq) => {
@@ -190,11 +189,17 @@ module.exports = container => {
                         console.log(error)
                         res.status(httpCode.BAD_REQUEST).end()
                     }
+                    if(oldEv.rrule && !value.rrule){
+                        value.$unset = {rrule: '', duration: ''}
+                    }
                     await eventRepo.updateEvent(oldEv._id,value)
                     const {error: er1, value: va1} = schemaValidator(booking,'Booking')
                     if (er1) {
                         console.log(er1)
                         res.status(httpCode.BAD_REQUEST).end()
+                    }
+                    if(check.recurrence && !va1.recurrence){
+                        va1.$unset = {recurrence: ''}
                     }
                     await bookingRepo.updateBooking(check._id, va1)
                 }
