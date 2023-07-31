@@ -49,9 +49,9 @@ module.exports = container => {
     const formatData = (data, account) => {
         const ev = {
             userId: account.userId,
-            title: data.summary,
-            description: data.description,
-            location: data.location,
+            title: data.summary || 'Không có tiêu đề',
+            description: data?.description,
+            location: data?.location,
             allDay: data?.start?.date ? 1 : 0,
             start: data?.start?.date ? data.start.date : moment(data.start.dateTime).toJSON(),
             end: data?.end?.date ? data.end.date : moment(data.end.dateTime).toJSON(),
@@ -113,7 +113,7 @@ module.exports = container => {
                     }
                     let zz = await eventRepo.addEvent(value)
                     zz = zz.toObject()
-                    booking.eventId = zz._id
+                    booking.eventId = zz._id.toString()
                     const {error: er1, value: va1} = schemaValidator(booking, 'Booking')
                     if (er1) {
                         console.log(er1)
@@ -171,7 +171,7 @@ module.exports = container => {
                     }
                     let zz = await eventRepo.addEvent(value)
                     zz = zz.toObject()
-                    booking.eventId = zz._id
+                    booking.eventId = zz._id.toString()
                     const {error: er1, value: va1} = schemaValidator(booking, 'Booking')
                     if (er1) {
                         console.log(er1)
@@ -190,7 +190,7 @@ module.exports = container => {
                     }
                 } else {
                     const {eventId: oldEv} = check
-                    booking.eventId = check._id
+                    booking.eventId = check._id.toString()
                     const {error, value} = schemaValidator(event, 'Event')
                     if (error) {
                         console.log(error)
