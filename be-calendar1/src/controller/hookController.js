@@ -206,7 +206,7 @@ module.exports = container => {
                         console.log(error)
                         res.status(httpCode.BAD_REQUEST).end()
                     }
-                    if(oldEv.rrule && !value.rrule){
+                    if(oldEv.rrule && !event.rrule){
                         value.$unset = {rrule: '', duration: ''}
                     }
                     await eventRepo.updateEvent(oldEv._id,value)
@@ -215,7 +215,7 @@ module.exports = container => {
                         console.log(er1)
                         res.status(httpCode.BAD_REQUEST).end()
                     }
-                    if(check.recurrence && !va1.recurrence){
+                    if(check.recurrence && !booking.recurrence){
                         va1.$unset = {recurrence: ''}
                     }
                     await bookingRepo.updateBooking(check._id, va1)
