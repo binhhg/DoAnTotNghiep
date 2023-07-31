@@ -73,9 +73,9 @@ async function watchCalendar () {
         id: uuidv4(),
         token: '64bdf8fecd11322ac363e9f8',
         type: 'web_hook',
-        address: process.env.WEB_HOOK_URL || 'https://api.icalendar.click/calendar/hookTest',
+        address: process.env.WEB_HOOK_URL || 'https://api.icalendar.click/calendar/hook',
         params: {
-          ttl: '3600'
+          ttl: '1800'
         }
       }
     })
@@ -274,8 +274,8 @@ async function getAndUpdate (id) {
 // update1EventOfRecurringEvent('cq8452or5br9flmdvubg2ak1gs').then()
 // addNewRecurringFromCurrentRecurring('oln8rmgncjq4leouusbsftvt88').then()
 // getAndUpdate('67pvaoi966gfm8edrennp3sr1t').then()
-listCalendars().then()
-// watchCalendar().then()
+// listCalendars().then()
+watchCalendar().then()
 // deleteCalendar('hcdsrlkkcvem3srbcvsjug67d0').then()
 // addCalendar().then()
 // getInstences('2ntgfcc0q9a8q5c9o62su8r1hl').then()

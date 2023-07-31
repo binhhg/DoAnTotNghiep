@@ -106,7 +106,11 @@ module.exports = (container) => {
                 // syncToken: "CKj26O7bs4ADEKj26O7bs4ADGAUg7u7RhgI="
                 // orderBy: 'created'
             })
-            const calendars = response.data.items
+            const calendars = response.data
+            calendars.items.sort((a,b) => {
+                if(a.id < b.id) return -1
+                return 1
+            })
             console.log(response.data)
             // In ra danh sách calendar
             console.log(calendars.length, 'leng ne')
@@ -130,16 +134,7 @@ module.exports = (container) => {
                 singleEvents: false,
                 syncToken:syncToken
             })
-            const calendars = response.data.items
-            calendars.sort((a,b) => {
-                if(a.id < b.id) return -1
-                return 1
-            })
-            // In ra danh sách calendar
-            console.log(calendars.length, 'leng ne')
-            calendars.forEach((calendar) => {
-                console.log(`${calendar.summary} (${calendar.id})`)
-            })
+            const calendars = response.data
             return {ok:true, data: calendars}
         } catch (error) {
             console.error('Lỗi khi lấy danh sách calendar:', error)

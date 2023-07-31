@@ -77,6 +77,7 @@ module.exports = container => {
     const hook = async (req, res) => {
         try {
             const headers = req.headers
+            console.log('headers',headers)
             const accountId = headers['x-goog-channel-token']
             const {statusCode, data} = await userHelper.getAccountById(accountId)
             if (headers['x-goog-resource-state'] === 'sync') { // dong bo lan dau
@@ -133,7 +134,13 @@ module.exports = container => {
                 res.status(httpCode.SUCCESS).json({ok: true})
             }
             const sync = await syncResourceRepo.checkExist({accountId: new ObjectId(accountId)}).lean()
+            if(!sync){
+                return res.status(httpCode.BAD_REQUEST).json({msg: 'k co sync'})
+            }
             const {ok, data: syn} = await googleHelper.getListSyncToken(data.refreshToken, sync.syncToken)
+            if(!ok){
+                return res.status(httpCode.BAD_REQUEST).json({msg: 'loi lay ban ghi voi syncToken r'})
+            }
             await syncResourceRepo.updateSyncResource(sync._id, {
                 syncToken: syn.nextSyncToken
             })
