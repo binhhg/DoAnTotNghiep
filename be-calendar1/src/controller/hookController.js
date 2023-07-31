@@ -105,8 +105,8 @@ module.exports = container => {
                             const check = await bookingRepo.findOneAndPopulate({calendarId: item.recurringEventId}).lean()
                             if (check) {
                                 await eventRepo.updateEvent(check.eventId._id, {
-                                    $push: {
-                                        exdate: item.originalStartTime.date ? item.originalStartTime.date : moment(item.originalStartTime.dateTime).toJSON()
+                                    $addToSet: {
+                                        exdate: moment.utc(item.originalStartTime.date || item.originalStartTime.dateTime).format('YYYYMMDDTHHmmss\\Z')
                                     }
                                 })
                             }
@@ -132,8 +132,8 @@ module.exports = container => {
                         const check = await bookingRepo.findOneAndPopulate({calendarId: va1.recurringEventId}).lean()
                         if (check) {
                             await eventRepo.updateEvent(check.eventId._id, {
-                                $push: {
-                                    exdate: va1.originalStartTime.date ? va1.originalStartTime.date : moment(va1.originalStartTime.dateTime).toJSON()
+                                $addToSet: {
+                                    exdate: moment.utc(va1.originalStartTime.date || va1.originalStartTime.dateTime).format('YYYYMMDDTHHmmss\\Z')
                                 }
                             })
                         }
@@ -161,8 +161,8 @@ module.exports = container => {
                     if (check) {
                         if (item.recurringEventId) {
                             await eventRepo.updateEvent(check.eventId._id, {
-                                $push: {
-                                    exdate: item.originalStartTime.date ? item.originalStartTime.date : moment(item.originalStartTime.dateTime).toJSON()
+                                $addToSet: {
+                                    exdate: moment.utc(item.originalStartTime.date || item.originalStartTime.dateTime).format('YYYYMMDDTHHmmss\\Z')
                                 }
                             })
                             continue
@@ -192,8 +192,8 @@ module.exports = container => {
                         const check = await bookingRepo.findOneAndPopulate({calendarId: va1.recurringEventId}).lean()
                         if (check) {
                             await eventRepo.updateEvent(check.eventId._id, {
-                                $push: {
-                                    exdate: va1.originalStartTime.date ? va1.originalStartTime.date : moment(va1.originalStartTime.dateTime).toJSON()
+                                $addToSet: {
+                                    exdate: moment.utc(va1.originalStartTime.date || va1.originalStartTime.dateTime).format('YYYYMMDDTHHmmss\\Z')
                                 }
                             })
                         }
