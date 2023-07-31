@@ -200,7 +200,7 @@ module.exports = container => {
                     }
                 } else {
                     const {eventId: oldEv} = check
-                    booking.eventId = check._id.toString()
+                    booking.eventId = oldEv._id.toString()
                     const {error, value} = schemaValidator(event, 'Event')
                     if (error) {
                         console.log(error)
