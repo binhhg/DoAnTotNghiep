@@ -74,7 +74,7 @@ module.exports = container => {
             accountId: account._id,
             attendees: data?.attendees,
             hangoutLink: data?.hangoutLink,
-            recurrence: data?.recurrence,
+            recurrence: data?.recurrence || [],
             organizer: data?.organizer,
             createdBy: data?.createdBy,
             originalStartTime: data?.originalStartTime,
