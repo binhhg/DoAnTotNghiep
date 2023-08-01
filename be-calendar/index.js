@@ -47,6 +47,7 @@ async function listCalendars () {
     })
     const calendars = response.data.items
     console.log(response.data)
+    console.log(JSON.stringify(calendars[calendars.length-1]))
     // In ra danh sách calendar\
     calendars.sort((a,b) => {
       if(a.id < b.id) return -1
@@ -293,8 +294,8 @@ async function getAndUpdate (id) {
 // update1EventOfRecurringEvent('cq8452or5br9flmdvubg2ak1gs').then()
 // addNewRecurringFromCurrentRecurring('oln8rmgncjq4leouusbsftvt88').then()
 // getAndUpdate('67pvaoi966gfm8edrennp3sr1t').then()
-// listCalendars().then()
-watchCalendar().then()
+listCalendars().then()
+// watchCalendar().then()
 // deleteWatchCalendar().then()
 // deleteCalendar('hcdsrlkkcvem3srbcvsjug67d0').then()
 // addCalendar().then()

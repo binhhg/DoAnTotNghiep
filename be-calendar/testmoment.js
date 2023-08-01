@@ -61,5 +61,5 @@ const newTime = time.add(30, 'minutes')
 // console.log(utcTime)
 
 const a = '2023-07-31'
-const b = moment(a).toJSON()
+const b = moment(a).format('YYYYMMDD')
 console.log(b)

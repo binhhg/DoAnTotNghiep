@@ -349,7 +349,7 @@ module.exports = (container) => {
                 return res.status(httpCode.SUCCESS).json({data: result})
             } else if (event.checkEdit === 1) { // chinh sua su kien lap lai: chi su kien nay
                 const ev = await eventRepo.updateEvent(id, {
-                    $push: {exdate: moment.utc(event?.originalStartDate || event?.originalStartDateTime).format('YYYYMMDDTHHmmss\\Z')}
+                    $push: {exdate: event?.originalStartDate? moment(event?.originalStartDate).format('YYYYMMDD') : moment.utc(event.originalStartDateTime).format('YYYYMMDDTHHmmss\\Z')}
                 }).lean()
                 ev.up = 1
                 const boo = await bookingRepo.findOneBooking({eventId: ev._id})
@@ -363,9 +363,16 @@ module.exports = (container) => {
                     const send = formatData(event)
                     if (event.booking) { // kp account mac dinh, origin thi can lay ngay can sua
                         send.recurringEventId = event.booking.calendarId
-                        send.originalStartTime = {
-                            dateTime: event?.originalStartDateTime, // chua sua
-                            timeZone: 'Asia/Ho_Chi_Minh'
+                        if(event.originalStartDate){
+                            send.originalStartTime = {
+                                date: event.originalStartDateTime, // chua sua
+                                timeZone: 'Asia/Ho_Chi_Minh'
+                            }
+                        } else {
+                            send.originalStartTime = {
+                                dateTime: event.originalStartDateTime, // chua sua
+                                timeZone: 'Asia/Ho_Chi_Minh'
+                            }
                         }
                         const accountId = event.booking.accountId
                         const {statusCode, data} = await userHelper.getAccountById(accountId)
@@ -655,7 +662,12 @@ module.exports = (container) => {
                     return res.status(httpCode.SUCCESS).json({data: [{id: id, type: 'delete'}]})
                 } else {
                     if (body.delete === 1) {
-                        const del = moment.utc(body.start).format('YYYYMMDDTHHmmss\\Z')
+                        let del
+                        if(body.allDay){
+                            del = moment(body.start).format('YYYYMMDD')
+                        } else {
+                            del = moment.utc(body.start).format('YYYYMMDDTHHmmss\\Z')
+                        }
                         const up = await eventRepo.updateEvent(id, {
                             $push: {
                                 exdate: del
@@ -666,8 +678,14 @@ module.exports = (container) => {
                             if (data) {
                                 const booking = await bookingRepo.getBookingById(body.bookingId)
                                 up.booking = booking
+                                let b
+                                if(body.calendarId.includes('_')){
+                                    b = body.calendarId.split('_')[0]
+                                } else {
+                                    b = body.calendarId
+                                }
                                 setTimeout(async () => {
-                                    await googleHelper.deleteCalendar(data.refreshToken, body.calendarId + `_${del}`)
+                                    await googleHelper.deleteCalendar(data.refreshToken, b + `_${del}`)
                                 }, 1)
                             }
                         }

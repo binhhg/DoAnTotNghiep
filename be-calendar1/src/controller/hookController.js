@@ -106,7 +106,7 @@ module.exports = container => {
                             if (check) {
                                 await eventRepo.updateEvent(check.eventId._id, {
                                     $addToSet: {
-                                        exdate: moment.utc(item.originalStartTime.date || item.originalStartTime.dateTime).format('YYYYMMDDTHHmmss\\Z')
+                                        exdate: item.originalStartTime.date ? moment(item.originalStartTime.date).format('YYYYMMDD') : moment.utc(item.originalStartTime.dateTime).format('YYYYMMDDTHHmmss\\Z')
                                     }
                                 })
                             }
@@ -133,7 +133,7 @@ module.exports = container => {
                         if (check) {
                             await eventRepo.updateEvent(check.eventId._id, {
                                 $addToSet: {
-                                    exdate: moment.utc(va1.originalStartTime.date || va1.originalStartTime.dateTime).format('YYYYMMDDTHHmmss\\Z')
+                                    exdate: va1.originalStartTime.date ? moment(va1.originalStartTime.date).format('YYYYMMDD') :  moment.utc(va1.originalStartTime.dateTime).format('YYYYMMDDTHHmmss\\Z')
                                 }
                             })
                         }
@@ -162,7 +162,7 @@ module.exports = container => {
                         if (item.recurringEventId) {
                             await eventRepo.updateEvent(check.eventId._id, {
                                 $addToSet: {
-                                    exdate: moment.utc(item.originalStartTime.date || item.originalStartTime.dateTime).format('YYYYMMDDTHHmmss\\Z')
+                                    exdate: item.originalStartTime.date ? moment(item.originalStartTime.date).format('YYYYMMDD') : moment.utc(item.originalStartTime.dateTime).format('YYYYMMDDTHHmmss\\Z')
                                 }
                             })
                             continue
@@ -193,7 +193,7 @@ module.exports = container => {
                         if (check) {
                             await eventRepo.updateEvent(check.eventId._id, {
                                 $addToSet: {
-                                    exdate: moment.utc(va1.originalStartTime.date || va1.originalStartTime.dateTime).format('YYYYMMDDTHHmmss\\Z')
+                                    exdate: va1.originalStartTime.date? moment(va1.originalStartTime.date).format('YYYYMMDD'): moment.utc(va1.originalStartTime.dateTime).format('YYYYMMDDTHHmmss\\Z')
                                 }
                             })
                         }
