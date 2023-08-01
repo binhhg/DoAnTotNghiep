@@ -94,7 +94,7 @@ async function deleteWatchCalendar () {
     // Lấy danh sách calendar
     const response = await calendar.channels.stop({
       resource: {
-        id: "4211f2bb-230d-450d-864f-d1e2fbe9dac1",
+        id: "cf8bbf2e-f6bd-48c5-b2b7-868d4a3f94c7",
         resourceId: "QqnBWo74dEh8hBYJaul5gdT6maw"
       }
     })
@@ -294,8 +294,8 @@ async function getAndUpdate (id) {
 // update1EventOfRecurringEvent('cq8452or5br9flmdvubg2ak1gs').then()
 // addNewRecurringFromCurrentRecurring('oln8rmgncjq4leouusbsftvt88').then()
 // getAndUpdate('67pvaoi966gfm8edrennp3sr1t').then()
-listCalendars().then()
-// watchCalendar().then()
+// listCalendars().then()
+watchCalendar().then()
 // deleteWatchCalendar().then()
 // deleteCalendar('hcdsrlkkcvem3srbcvsjug67d0').then()
 // addCalendar().then()

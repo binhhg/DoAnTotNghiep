@@ -157,17 +157,21 @@ module.exports = container => {
             const {items} = syn
             for (const item of items) {
                 if (item.status === 'cancelled') {
-                    const check = await bookingRepo.findOneAndPopulate({calendarId: item.recurringEventId}).lean()
-                    if (check) {
-                        if (item.recurringEventId) {
-                            await eventRepo.updateEvent(check.eventId._id, {
-                                $addToSet: {
-                                    exdate: item.originalStartTime.date ? moment(item.originalStartTime.date).format('YYYYMMDD') : moment.utc(item.originalStartTime.dateTime).format('YYYYMMDDTHHmmss\\Z')
-                                }
-                            })
-                            continue
+                    if(item.recurringEventId) {
+                        const check = await bookingRepo.findOneAndPopulate({calendarId: item.recurringEventId}).lean()
+                        if (check) {
+                                await eventRepo.updateEvent(check.eventId._id, {
+                                    $addToSet: {
+                                        exdate: item.originalStartTime.date ? moment(item.originalStartTime.date).format('YYYYMMDD') : moment.utc(item.originalStartTime.dateTime).format('YYYYMMDDTHHmmss\\Z')
+                                    }
+                                })
                         }
-                        await eventRepo.deleteEvent(check.eventId._id)
+                    } else {
+                        const check = await bookingRepo.findOneAndPopulate({calendarId: item.id}).lean()
+                        if(check){
+                            await eventRepo.deleteEvent(check.eventId._id)
+                            await bookingRepo.deleteBooking(check._id)
+                        }
                     }
                     continue
                 }
