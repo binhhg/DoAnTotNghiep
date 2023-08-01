@@ -41,6 +41,9 @@ module.exports = container => {
   const updateOne = (pipe, update) => {
     return Config.findOneAndUpdate(pipe, update)
   }
+  const updateOneConfig = (pipe,up) => {
+    return Config.updateOne(pipe,up)
+  }
   return {
     getConfigNoPaging,
     removeConfig,
@@ -53,6 +56,7 @@ module.exports = container => {
     getCount,
     getConfig,
     getConfigFindOne,
-    updateOne
+    updateOne,
+    updateOneConfig
   }
 }

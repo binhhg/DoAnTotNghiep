@@ -62,9 +62,22 @@ module.exports = (container) => {
   }
   const deleteAccountById = async (req, res) => {
     try {
+      const { userId } = req.user
       const { id } = req.params
       if (id) {
-        await accountRepo.deleteAccount(id)
+        const check = await accountRepo.getAccountById(id).lean()
+        if(check){
+          const {_id, refreshToken} = check
+          await accountRepo.deleteAccount(id)
+          await configRepo.updateOneConfig({userId: new ObjectId(userId)}, {
+            $pull: {
+              accountColor: {
+                accountId: ObjectId(id)
+              }
+            }
+          })
+        }
+
         res.status(httpCode.SUCCESS).send({ ok: true })
       } else {
         res.status(httpCode.BAD_REQUEST).end()
