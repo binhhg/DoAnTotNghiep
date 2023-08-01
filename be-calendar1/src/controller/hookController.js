@@ -167,7 +167,7 @@ module.exports = container => {
                             })
                             continue
                         }
-                        await eventRepo.deleteEvent(check.eventId)
+                        await eventRepo.deleteEvent(check.eventId._id)
                     }
                     continue
                 }
