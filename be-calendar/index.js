@@ -81,7 +81,7 @@ async function watchCalendar () {
       }
     })
     const aa = response.data
-    const qq = 4
+    console.log(aa)
   } catch (error) {
     console.error('Lỗi khi lấy danh sách calendar:', error)
   }

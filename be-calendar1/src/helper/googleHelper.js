@@ -73,7 +73,7 @@ module.exports = (container) => {
             return {ok: true, data}
         } catch (e) {
             console.log(e)
-            return {ok: false, msg: e}
+            return {ok: true, msg: e}
         }
     }
 

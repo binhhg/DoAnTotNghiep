@@ -15,6 +15,7 @@ module.exports = container => {
         const dayOfMonth = date.getDate()
         return Math.ceil(dayOfMonth / 7)
     }
+
     function getDuration(start, end) {
         if (!start || !end) {
             return '00:00'
@@ -39,7 +40,7 @@ module.exports = container => {
                 if (+(dm[1]).charAt(0)) {
                     rrule['bysetpos'] = +(dm[1]).charAt(0)
                     rrule['byweekday'] = dm[1].slice(1).split(',')
-                } else if(+(dm[1]).charAt(1)){
+                } else if (+(dm[1]).charAt(1)) {
                     rrule['bysetpos'] = 4
                     rrule['byweekday'] = dm[1].slice(2).split(',')
                 } else {
@@ -84,7 +85,7 @@ module.exports = container => {
     const hook = async (req, res) => {
         try {
             const headers = req.headers
-            console.log('headers',headers)
+            console.log('headers', headers)
             const accountId = headers['x-goog-channel-token']
             const {statusCode, data} = await userHelper.getAccountById(accountId)
             if (headers['x-goog-resource-state'] === 'sync') { // dong bo lan dau
@@ -133,7 +134,7 @@ module.exports = container => {
                         if (check) {
                             await eventRepo.updateEvent(check.eventId._id, {
                                 $addToSet: {
-                                    exdate: va1.originalStartTime.date ? moment(va1.originalStartTime.date).format('YYYYMMDD') :  moment.utc(va1.originalStartTime.dateTime).format('YYYYMMDDTHHmmss\\Z')
+                                    exdate: va1.originalStartTime.date ? moment(va1.originalStartTime.date).format('YYYYMMDD') : moment.utc(va1.originalStartTime.dateTime).format('YYYYMMDDTHHmmss\\Z')
                                 }
                             })
                         }
@@ -142,12 +143,12 @@ module.exports = container => {
                 return res.status(httpCode.SUCCESS).json({ok: true})
             }
             const sync = await syncResourceRepo.checkExist({accountId: new ObjectId(accountId)}).lean()
-            if(!sync){
+            if (!sync) {
                 console.log('loi sync')
                 return res.status(httpCode.BAD_REQUEST).json({msg: 'k co sync'})
             }
             const {ok, data: syn} = await googleHelper.getListSyncToken(data.refreshToken, sync.syncToken)
-            if(!ok){
+            if (!ok) {
                 console.log('loi syn')
                 return res.status(httpCode.BAD_REQUEST).json({msg: 'loi lay ban ghi voi syncToken r'})
             }
@@ -157,22 +158,22 @@ module.exports = container => {
             const {items} = syn
             for (const item of items) {
                 if (item.status === 'cancelled') {
-                    if(item.recurringEventId) {
+                    if (item.recurringEventId) {
                         const check = await bookingRepo.findOneAndPopulate({calendarId: item.recurringEventId}).lean()
                         if (check) {
-                                await eventRepo.updateEvent(check.eventId._id, {
-                                    $addToSet: {
-                                        exdate: item.originalStartTime.date ? moment(item.originalStartTime.date).format('YYYYMMDD') : moment.utc(item.originalStartTime.dateTime).format('YYYYMMDDTHHmmss\\Z')
-                                    }
-                                })
-                        }
-                    } else {
-                        const check = await bookingRepo.findOneAndPopulate({calendarId: item.id}).lean()
-                        if(check){
-                            await eventRepo.deleteEvent(check.eventId._id)
-                            await bookingRepo.deleteBooking(check._id)
+                            await eventRepo.updateEvent(check.eventId._id, {
+                                $addToSet: {
+                                    exdate: item.originalStartTime.date ? moment(item.originalStartTime.date).format('YYYYMMDD') : moment.utc(item.originalStartTime.dateTime).format('YYYYMMDDTHHmmss\\Z')
+                                }
+                            })
                         }
                     }
+                    const check = await bookingRepo.findOneAndPopulate({calendarId: item.id}).lean()
+                    if (check) {
+                        await eventRepo.deleteEvent(check.eventId._id)
+                        await bookingRepo.deleteBooking(check._id)
+                    }
+
                     continue
                 }
                 const check = await bookingRepo.findOneAndPopulate({calendarId: item.id}).lean()
@@ -197,7 +198,7 @@ module.exports = container => {
                         if (check) {
                             await eventRepo.updateEvent(check.eventId._id, {
                                 $addToSet: {
-                                    exdate: va1.originalStartTime.date? moment(va1.originalStartTime.date).format('YYYYMMDD'): moment.utc(va1.originalStartTime.dateTime).format('YYYYMMDDTHHmmss\\Z')
+                                    exdate: va1.originalStartTime.date ? moment(va1.originalStartTime.date).format('YYYYMMDD') : moment.utc(va1.originalStartTime.dateTime).format('YYYYMMDDTHHmmss\\Z')
                                 }
                             })
                         }
@@ -210,16 +211,16 @@ module.exports = container => {
                         console.log(error)
                         res.status(httpCode.BAD_REQUEST).end()
                     }
-                    if(oldEv.rrule && !event.rrule){
+                    if (oldEv.rrule && !event.rrule) {
                         value.$unset = {rrule: '', duration: ''}
                     }
-                    await eventRepo.updateEvent(oldEv._id,value)
-                    const {error: er1, value: va1} = schemaValidator(booking,'Booking')
+                    await eventRepo.updateEvent(oldEv._id, value)
+                    const {error: er1, value: va1} = schemaValidator(booking, 'Booking')
                     if (er1) {
                         console.log(er1)
                         res.status(httpCode.BAD_REQUEST).end()
                     }
-                    if(check.recurrence && !booking.recurrence){
+                    if (check.recurrence && !booking.recurrence) {
                         va1.$unset = {recurrence: ''}
                     }
                     await bookingRepo.updateBooking(check._id, va1)
