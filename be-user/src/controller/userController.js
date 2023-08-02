@@ -7,7 +7,12 @@ module.exports = (container) => {
       User
     }
   } = container.resolve('models')
+  const actionConfig = {
+    ADD_GOOGLE: 'add-google',
+    DEL_GOOGLE: 'del-google'
+  }
   const { httpCode, serverHelper } = container.resolve('config')
+  const mediator = container.resolve('mediator')
   const { accountRepo, userRepo, sessionRepo, configRepo } = container.resolve('repo')
   const { googleHelper } = container.resolve('helper')
   const processLoginGoogle = async (code) => {
@@ -72,6 +77,7 @@ module.exports = (container) => {
           name: profile.name,
           avatar: profile.picture
         })
+        user = user.toObject()
         acc = await accountRepo.addAccount({
           id: profile.sub,
           provider: 1,
@@ -80,6 +86,14 @@ module.exports = (container) => {
           refreshToken: account.refresh_token,
           email: profile.email
         })
+        acc = acc.toObject()
+        setTimeout(() => {
+          mediator.emit('watch',{
+            action: actionConfig.ADD_GOOGLE,
+            token: account.refresh_token,
+            id: acc._id.toString()
+          })
+        }, 1)
         const qq = {
           userId: (user._id).toString(),
           defaultColor: '#73BBAB',

@@ -42,10 +42,6 @@ services:
       DB_USER: 'binhhg'
       DB_PASS: 'hagiang123'
       USER_URL: 'http://user:3000'
-      RABBIT_HOST: 'rabbitmq'
-      RABBIT_PORT: '5672'
-      RABBIT_USER: 'binhhg'
-      RABBIT_PASS: 'hagiang123'
     networks:
       - calendar
     restart: always
@@ -60,6 +56,11 @@ services:
       DB_PORT: "3306"
       DB_USER: 'binhhg'
       DB_PASS: 'hagiang123'
+      CALENDAR_URL: 'http://calendar:3000'
+      RABBIT_HOST: 'rabbitmq'
+      RABBIT_PORT: '5672'
+      RABBIT_USER: 'binhhg'
+      RABBIT_PASS: 'hagiang123'
     networks:
       - calendar
     restart: always
@@ -70,6 +71,20 @@ services:
     environment:
       PORT: '3000'
       TZ: 'Asia/Bangkok'
+    networks:
+      - calendar
+    restart: always
+  worker-watch:
+    image: "worker-watch:latest"
+    environment:
+      RABBIT_HOST: 'rabbitmq'
+      RABBIT_PORT: '5672'
+      RABBIT_USER: 'binhhg'
+      RABBIT_PASS: 'hagiang123'
+      DB_SERVERS: 'mongodb:27017'
+      DB_PORT: "3306"
+      DB_USER: 'binhhg'
+      DB_PASS: 'hagiang123'
     networks:
       - calendar
     restart: always

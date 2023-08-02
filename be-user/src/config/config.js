@@ -14,6 +14,20 @@ const httpCode = {
   ADMIN_REQUIRE: 406,
   UNAUTHORIZED: 401
 }
+const urlConfig = {
+  calendar: process.env.CALENDAR_URL || 'http://localhost:8503'
+}
+const rabbitConfig = {
+  host: process.env.RABBIT_HOST || 'mayhao',
+  port: process.env.RABBIT_PORT || 5672,
+  user: process.env.RABBIT_USER || 'wilad',
+  pass: process.env.RABBIT_PASS || 'wilad0304'
+}
+const workerConfig = {
+  queueName: 'watch.google',
+  exchange: 'watch',
+  exchangeType: 'direct'
+}
 const dbSettings = {
   db: process.env.DB || 'da-user',
   user: process.env.DB_USER || '',
@@ -60,4 +74,4 @@ const serverHelper = function () {
 
   return { decodeToken, encryptPassword, verifyToken, genToken, generateHash, canRefreshToken }
 }
-module.exports = { dbSettings, serverHelper: serverHelper(), serverSettings, httpCode, firebaseConfig }
+module.exports = { dbSettings, serverHelper: serverHelper(), serverSettings, httpCode, firebaseConfig, rabbitConfig, workerConfig,urlConfig }

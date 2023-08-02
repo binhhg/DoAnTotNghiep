@@ -1,4 +1,5 @@
 module.exports = container => {
     const googleHelper = require('./googleHelper')(container)
-    return { googleHelper}
+    const calendarHelper = require('./calendarHelper')(container)
+    return { googleHelper, calendarHelper}
 }

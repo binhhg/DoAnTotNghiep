@@ -94,7 +94,7 @@ async function deleteWatchCalendar () {
     // Lấy danh sách calendar
     const response = await calendar.channels.stop({
       resource: {
-        id: "cf8bbf2e-f6bd-48c5-b2b7-868d4a3f94c7",
+        id: "0bba2564-0def-4e2d-b202-e5615c52719f",
         resourceId: "QqnBWo74dEh8hBYJaul5gdT6maw"
       }
     })

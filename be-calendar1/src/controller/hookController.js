@@ -88,6 +88,10 @@ module.exports = container => {
             console.log('headers', headers)
             const accountId = headers['x-goog-channel-token']
             const {statusCode, data} = await userHelper.getAccountById(accountId)
+            if (statusCode !== httpCode.SUCCESS) {
+                console.log('xoa account nay roi')
+                return res.status(httpCode.SUCCESS).json({ok: true})
+            }
             if (headers['x-goog-resource-state'] === 'sync') { // dong bo lan dau
                 const zz = await syncResourceRepo.checkExist({accountId: new ObjectId(accountId)})
                 if (zz) {
