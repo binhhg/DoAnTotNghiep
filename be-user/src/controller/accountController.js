@@ -30,7 +30,6 @@ module.exports = (container) => {
                 refreshToken: account.refresh_token,
                 email: profile.email
             })
-            acco = acco.toObject()
             await configRepo.updateOne({userId: userId}, {
                 $push: {
                     accountColor: {
@@ -86,7 +85,7 @@ module.exports = (container) => {
                     await configRepo.updateOneConfig({userId: new ObjectId(userId)}, {
                         $pull: {
                             accountColor: {
-                                accountId: ObjectId(id)
+                                accountId: new ObjectId(id)
                             }
                         }
                     })

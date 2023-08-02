@@ -77,7 +77,6 @@ module.exports = (container) => {
           name: profile.name,
           avatar: profile.picture
         })
-        user = user.toObject()
         acc = await accountRepo.addAccount({
           id: profile.sub,
           provider: 1,
@@ -86,7 +85,6 @@ module.exports = (container) => {
           refreshToken: account.refresh_token,
           email: profile.email
         })
-        acc = acc.toObject()
         setTimeout(() => {
           mediator.emit('watch',{
             action: actionConfig.ADD_GOOGLE,

@@ -6,5 +6,5 @@ module.exports = (app, container) => {
   app.post(`${basePath}/account`, verifyToken, accountController.addAccount)
   app.get(`${basePath}/account`, verifyToken, accountController.getAccount)
   app.get(`${basePath}/account/profile`, verifyToken, accountController.getAccountProfile)
-  app.delete(`${basePath}/account`, verifyToken, accountController.deleteAccountById)
+  app.delete(`${basePath}/account/:id`, verifyToken, accountController.deleteAccountById)
 }

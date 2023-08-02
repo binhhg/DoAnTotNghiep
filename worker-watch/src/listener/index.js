@@ -31,10 +31,12 @@ module.exports.start = function (container) {
         switch (action) {
             case actionConfig.ADD_GOOGLE: {
                 const {data} = await googleHelper.watchCalendar(id,token)
-                watchRepo.addWatch(data)
+                await watchRepo.addWatch(data)
+                console.log('add watch')
                 return true
             }
             case actionConfig.DEL_GOOGLE: {
+                console.log('vao day')
                 const watch = await watchRepo.getWatchFindOne({token: id}).lean()
                 if(!watch){
                     console.log('sao k co watch')

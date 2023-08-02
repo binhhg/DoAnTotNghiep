@@ -2,11 +2,11 @@ const {httpCode} = require("../config");
 module.exports = container => {
     const logger = container.resolve('logger')
     const ObjectId = container.resolve('ObjectId')
-    const {eventRepo, bookingRepo, syncResource} = container.resolve('repo')
+    const {eventRepo, bookingRepo, syncResourceRepo} = container.resolve('repo')
     const removeAll = async (req, res) => {
         try {
             const body = req.body
-            await syncResource.removeSyncResource({accountId: new ObjectId(body.id)})
+            await syncResourceRepo.removeSyncResource({accountId: new ObjectId(body.id)})
             const data = await bookingRepo.findMany({
                 accountId: new ObjectId(body.id)
             }).lean()
