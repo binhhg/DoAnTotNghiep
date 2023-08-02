@@ -811,6 +811,7 @@ module.exports = (container) => {
     }
     const getEvent = async (req, res) => {
         try {
+            const {level} = req.query
             const {userId} = req.user
             const pipe = [
                 {
@@ -834,6 +835,10 @@ module.exports = (container) => {
                     }
                 }
             ]
+            if (level) {
+                console.log('zz')
+                pipe[0].$match.state = +level
+            }
             const data = await eventRepo.getEventAgg(pipe)
             res.status(httpCode.SUCCESS).json(data)
         } catch (e) {
@@ -845,7 +850,8 @@ module.exports = (container) => {
         try {
             const {id} = req.params
             const {state} = req.body
-            await eventRepo.updateEvent(id, {state})
+            console.log(state)
+            await eventRepo.updateEvent(id, {$set: {state: +state}})
             res.status(httpCode.SUCCESS).json({ok: true})
         } catch (e) {
             logger.e(e)
