@@ -47,7 +47,7 @@ module.exports = (container) => {
                 mediator.emit('watch',{
                     action: actionConfig.ADD_GOOGLE,
                     token: account.refresh_token,
-                    id: acc._id
+                    id: acco._id
                 })
             }, 1)
             return {ok: true}
