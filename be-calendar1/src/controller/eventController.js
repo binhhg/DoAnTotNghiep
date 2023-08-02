@@ -782,7 +782,7 @@ module.exports = (container) => {
                             const {events, bookings} = data[0]
                             bookings.push(data[0]._id)
                             events.push(data[0].eventId)
-                            await eventRepo.removeEvent({id: {$in: events}})
+                            await eventRepo.removeEvent({_id: {$in: events}})
                             const {data: da} = await userHelper.getAccountById(body.accountId)
                             setTimeout(async () => {
                                 await googleHelper.deleteCalendar(da.refreshToken, body.calendarId)

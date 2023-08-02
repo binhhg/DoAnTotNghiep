@@ -15,7 +15,7 @@ module.exports = container => {
                 events.push(va.eventId._id)
                 bookings.push(va._id)
             }
-            await eventRepo.removeEvent({id: {$in: events}})
+            await eventRepo.removeEvent({_id: {$in: events}})
             await bookingRepo.removeBooking({_id: {$in: bookings}})
             return res.status(200).json({ok: true})
         } catch (e) {

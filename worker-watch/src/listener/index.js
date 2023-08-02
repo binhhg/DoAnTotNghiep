@@ -42,6 +42,7 @@ module.exports.start = function (container) {
                     console.log('sao k co watch')
                 } else {
                     await googleHelper.deleteWatchCalendar(token,watch.id,watch.resourceId)
+                    await watchRepo.deleteWatch(watch._id)
                 }
                 return true
             }
