@@ -29,7 +29,7 @@ module.exports = async (container) => {
         for (const value of list) {
             console.log('zo')
             const time = value.expiration / 1000
-            if ((time - a) < 129600) {
+            if ((time - a) < 129600) { // 1,5 ngay
                 const {statusCode, data: acc} = await userHelper.getAccountById()
                 if (statusCode !== httpCode.SUCCESS) {
                     console.log('bi xoa r')
