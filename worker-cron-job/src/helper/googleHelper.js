@@ -41,7 +41,7 @@ module.exports = (container) => {
         }
       })
       data = response.data
-      console.log('zzz', data)
+      console.log('zzz', response)
       return { data }
     } catch (e) {
       console.log(e)

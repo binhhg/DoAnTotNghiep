@@ -36,7 +36,7 @@ module.exports = async (container) => {
                     return false
                 }
                 await googleHelper.deleteWatchCalendar(acc.refreshToken, value.id, value.resourceId)
-                const newWatch = await googleHelper.watchCalendar(value.token, acc.refreshToken)
+                const {data : newWatch} = await googleHelper.watchCalendar(value.token, acc.refreshToken)
                 await watchRepo.updateWatch(value._id, newWatch)
             }
         }
@@ -44,7 +44,7 @@ module.exports = async (container) => {
     }
 
     const job = new cronJob(
-        '40 15 * * *',
+        '50 15 * * *',
         async () => {
             await cron()
         },
