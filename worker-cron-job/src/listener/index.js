@@ -30,7 +30,7 @@ module.exports = async (container) => {
             console.log('zo')
             const time = value.expiration / 1000
             if ((time - a) < 129600) { // 1,5 ngay
-                const {statusCode, data: acc} = await userHelper.getAccountById()
+                const {statusCode, data: acc} = await userHelper.getAccountById(value.token)
                 if (statusCode !== httpCode.SUCCESS) {
                     console.log('bi xoa r')
                     return false
@@ -44,7 +44,7 @@ module.exports = async (container) => {
     }
 
     const job = new cronJob(
-        '35 15 * * *',
+        '40 15 * * *',
         async () => {
             await cron()
         },
