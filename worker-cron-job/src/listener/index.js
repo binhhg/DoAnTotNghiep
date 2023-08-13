@@ -44,7 +44,7 @@ module.exports = async (container) => {
     }
 
     const job = new cronJob(
-        '50 15 * * *',
+        '00 11 * * *',
         async () => {
             await cron()
         },

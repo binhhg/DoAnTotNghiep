@@ -16,8 +16,8 @@ module.exports = (container) => {
           type: 'web_hook',
           address: process.env.WEB_HOOK_URL || 'https://api.icalendar.click/calendar/hook',
           params: {
-            // ttl: '604800'
-            ttl: '3600'
+            ttl: '604800'
+            // ttl: '3600'
           }
         }
       })
