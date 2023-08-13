@@ -12,7 +12,7 @@ module.exports = container => {
             }).lean()
             const events = [], bookings = []
             for (const va of data) {
-                events.push(va.eventId._id)
+                events.push(va?.eventId?._id)
                 bookings.push(va._id)
             }
             await eventRepo.removeEvent({_id: {$in: events}})
