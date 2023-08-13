@@ -180,7 +180,7 @@ module.exports = container => {
 
                     continue
                 }
-                const check = await bookingRepo.findOneAndPopulate({calendarId: item.id}).lean()
+                const check = await bookingRepo.findOneAndPopulate({calendarId: item.id, accountId: new ObjectId(accountId)}).lean()
                 const {event, booking} = formatData(item, data)
                 if (!check) { //tao moi
                     const {error, value} = schemaValidator(event, 'Event')
