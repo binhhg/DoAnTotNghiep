@@ -37,6 +37,7 @@ module.exports = async (container) => {
                 }
                 await googleHelper.deleteWatchCalendar(acc.refreshToken, value.id, value.resourceId)
                 const {data : newWatch} = await googleHelper.watchCalendar(value.token, acc.refreshToken)
+                console.log('data moiws ', value._id,newWatch)
                 await watchRepo.updateWatch(value._id, newWatch)
             }
         }
